@@ -111,6 +111,8 @@ resource "docker_container" "airport-nightingale" {
 
   env           = ["NAME=${var.airport_nightingale}"]
 
+  command       = ["--", "-d", "hw:1"]
+
   devices {
     host_path = "/dev/snd"
   }

@@ -37,7 +37,7 @@ resource "null_resource" "machine" {
       "printf 'APT::Periodic::Unattended-Upgrade \"1\";\\n'             | sudo tee -a /etc/apt/apt.conf.d/51-dmp-unattended-upgrades",
       "printf 'APT::Periodic::AutocleanInterval \"7\";\\n'              | sudo tee -a /etc/apt/apt.conf.d/51-dmp-unattended-upgrades",
       # XXX this is a problem with system using encrypted partitions requiring manual input of password
-      # "printf 'Unattended-Upgrade::Automatic-Reboot \"true\";\\n'       | sudo tee -a /etc/apt/apt.conf.d/51-dmp-unattended-upgrades",
+      "printf 'Unattended-Upgrade::Automatic-Reboot \"false\";\\n'       | sudo tee -a /etc/apt/apt.conf.d/51-dmp-unattended-upgrades",
       "printf 'Unattended-Upgrade::Origins-Pattern {\\n'                | sudo tee -a /etc/apt/apt.conf.d/51-dmp-unattended-upgrades",
       "printf '        \"origin=*\";\\n'                                | sudo tee -a /etc/apt/apt.conf.d/51-dmp-unattended-upgrades",
       "printf '};\\n'                                                   | sudo tee -a /etc/apt/apt.conf.d/51-dmp-unattended-upgrades",
