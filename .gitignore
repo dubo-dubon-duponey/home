@@ -2,4 +2,5 @@
 /.idea
 .terraform
 terraform.tfstate*
-/scratch/flash-raspberry/cache
+*/flash-raspberry/cache
+*.tfvars
