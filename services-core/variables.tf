@@ -4,6 +4,12 @@ variable "image_dns" {
   default     = "dubodubonduponey/coredns:v1"
 }
 
+variable "dns_name" {
+  description = "DNS-TLS server name"
+  type        = string
+  default     = "dns.example.com"
+}
+
 variable "static_ip" {
   description = "Existing floating ip on Digital Ocean, to be attached to the droplet"
   type        = string
@@ -28,4 +34,3 @@ variable "dns_upstream_ips" {
 locals {
   dns_upstream_addresses = "tls://${var.dns_upstream_ips[0]} tls://${var.dns_upstream_ips[1]}"
 }
-

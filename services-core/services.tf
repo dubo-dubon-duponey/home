@@ -1,4 +1,4 @@
-resource "docker_image" "system-dns-bastion" {
+resource "docker_image" "dns" {
   provider      = docker
   name          = data.docker_registry_image.system-dns.name
   pull_triggers = [data.docker_registry_image.system-dns.sha256_digest]
@@ -16,8 +16,8 @@ resource "docker_image" "system-dns-bastion" {
     inline = [
       "mkdir -p /home/container/config/dns",
       "mkdir -p /home/container/data/dns",
-      "chown container:docker /home/container/config/dns",
-      "mkdir container:docker /home/container/data/dns",
+      "chmod g+rwx /home/container/config/dns",
+      "chmod g+rwx /home/container/data/dns",
     ]
   }
 
@@ -25,33 +25,50 @@ resource "docker_image" "system-dns-bastion" {
   provisioner "file" {
 
     content     = <<EOF
-127.0.0.1:{$DNS_PORT} {
-    forward . ${local.dns_upstream_addresses} {
-       tls_servername ${var.dns_upstream_name}
-       health_check 5s
-    }
+# Classic DNS on 53, forwarding to a DoT upstream
+.:{$DNS_PORT} {
+  forward . ${local.dns_upstream_addresses} {
+    tls_servername ${var.dns_upstream_name}
+    health_check 5s
+  }
 
-    cache 86400
+  cache 86400
 
-    log
-    errors
+  log
+  errors
 }
+
+# Hot reload configuration
+. {
+    reload
+    erratic
+}
+
+# DoT, forwarding as well to a DoT server
+tls://.:{$TLS_PORT} {
+	tls /data/certificates/${var.dns_name}.crt /data/certificates/${var.dns_name}.key certificates/${var.dns_name}.issuer.crt
+
+  forward . ${local.dns_upstream_addresses} {
+    tls_servername ${var.dns_upstream_name}
+    health_check 5s
+  }
+
+  cache 86400
+
+  log
+  errors
+}
+
     EOF
     # XXX see above
     destination = "/home/container/config/dns/config.conf"
   }
 }
 
-# Copies the configs.d folder to /etc/configs.d
-#  provisioner "file" {
-#    source      = "config"
-#    destination = "/etc"
-#  }
-
-resource "docker_container" "system-dns-bastion" {
+resource "docker_container" "dns" {
   provider      = docker
   name          = "dns"
-  image         = docker_image.system-dns-bastion.latest
+  image         = docker_image.dns.latest
 
   connection {
     type        = "ssh"
@@ -78,7 +95,6 @@ resource "docker_container" "system-dns-bastion" {
   # DNS over TLS #, masquerading as HTTPS
   ports {
     internal    = 1853
-    # external    = 443
     external    = 853
   }
 
