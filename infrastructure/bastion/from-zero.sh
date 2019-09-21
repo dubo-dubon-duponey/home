@@ -81,7 +81,7 @@ init::docker(){
   # Set data path
   sudo mkdir -p /home/container/config
   sudo mkdir -p /home/container/data
-  sudo chown -R container:docker /home/container
+  sudo chown -R docker:container /home/container
   sudo chmod -R g+rwxs /home/container
 }
 
