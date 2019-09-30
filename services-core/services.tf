@@ -1,7 +1,7 @@
 resource "docker_image" "dns" {
   provider      = docker
-  name          = data.docker_registry_image.system-dns.name
-  pull_triggers = [data.docker_registry_image.system-dns.sha256_digest]
+  name          = data.docker_registry_image.dns.name
+  pull_triggers = [data.docker_registry_image.dns.sha256_digest]
 
   connection {
     type        = "ssh"
@@ -44,7 +44,7 @@ resource "docker_image" "dns" {
     erratic
 }
 
-# DoT, forwarding as well to a DoT server
+# DoT with letsencrypt cert, forwarding as well to a DoT server
 tls://.:{$TLS_PORT} {
 	tls /data/certificates/${var.dns_name}.crt /data/certificates/${var.dns_name}.key certificates/${var.dns_name}.issuer.crt
 
@@ -58,7 +58,6 @@ tls://.:{$TLS_PORT} {
   log
   errors
 }
-
     EOF
     # XXX see above
     destination = "/home/container/config/dns/config.conf"

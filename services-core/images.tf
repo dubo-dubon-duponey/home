@@ -1,3 +1,3 @@
-data "docker_registry_image" "system-dns" {
+data "docker_registry_image" "dns" {
   name = var.image_dns
 }

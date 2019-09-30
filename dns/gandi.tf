@@ -13,7 +13,7 @@ resource "gandi_zonerecord" "host-A" {
   type        = "A"
   ttl         = 300
   values      = [
-    var.bastion_static_ip,
+    var.static_ip,
   ]
 }
 
@@ -23,7 +23,7 @@ resource "gandi_zonerecord" "host-bastion" {
   type        = "A"
   ttl         = 300
   values      = [
-    var.bastion_static_ip,
+    var.static_ip,
   ]
 }
 
