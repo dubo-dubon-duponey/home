@@ -29,7 +29,7 @@ resource "docker_image" "dns" {
     health_check 5s
   }
 
-  cache 86400
+  cache 3600
 
   log
   errors
