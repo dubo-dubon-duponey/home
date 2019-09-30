@@ -59,8 +59,9 @@ resource "docker_container" "dns" {
   network_mode  = "bridge"
 
   env = [
-    "STAGING=",
-    "OVERWRITE_CONFIG=true",
+    "STAGING=true",
+    "DOMAIN=",
+    "OVERWRITE_CONFIG=",
     "UPSTREAM_SERVERS=${local.dns_upstream_addresses}",
     "UPSTREAM_NAME=${var.dns_upstream_name}",
   ]

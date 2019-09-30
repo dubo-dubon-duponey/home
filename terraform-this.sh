@@ -5,15 +5,17 @@ current=$(pwd)
 
 cd "$project" || exit 1
 
-terraform init .
-
 case "$2" in
   "destroy")
     terraform destroy -auto-approve -var-file="$current/config/$project.tfvars" .
   ;;
+  "output")
+    terraform output
+  ;;
   *)
+    terraform init .
     terraform apply -auto-approve -var-file="$current/config/$project.tfvars" .
   ;;
 esac
 
-cd - || exit 1
+cd - >/dev/null || exit 1
