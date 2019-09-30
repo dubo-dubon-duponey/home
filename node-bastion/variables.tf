@@ -1,9 +1,3 @@
-variable "image_dns" {
-  description = "Image to use for coredns"
-  type        = string
-  default     = "dubodubonduponey/coredns:v1"
-}
-
 variable "dns_upstream_name" {
   description = "Upstream DNS server name"
   type        = string

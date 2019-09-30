@@ -46,19 +46,12 @@ resource "docker_container" "dns" {
   name          = "dns"
   image         = docker_image.dns.latest
 
-  connection {
-    type        = "ssh"
-    user        = "dmp"
-    agent       = true
-    host        = "localhost"
-  }
-
   restart       = "always"
 
   network_mode  = "bridge"
 
   env = [
-    "STAGING=true",
+    "STAGING=",
     "DOMAIN=",
     "OVERWRITE_CONFIG=",
     "UPSTREAM_SERVERS=${local.dns_upstream_addresses}",

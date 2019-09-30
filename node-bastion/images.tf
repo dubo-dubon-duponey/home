@@ -1,3 +1,3 @@
 data "docker_registry_image" "dns" {
-  name = var.image_dns
+  name = "dubodubonduponey/coredns:v1"
 }

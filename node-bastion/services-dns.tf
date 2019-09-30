@@ -25,13 +25,6 @@ resource "docker_container" "dns" {
   name          = "dns"
   image         = docker_image.dns.latest
 
-  connection {
-    type        = "ssh"
-    user        = "docker"
-    agent       = true
-    host        = var.static_ip # NOTE: ipv4 of the droplet is private, so, depend on the droplet existence, just not on its ip
-  }
-
   restart       = "always"
 
   network_mode  = "bridge"
