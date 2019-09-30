@@ -110,6 +110,7 @@ resource "digitalocean_firewall" "bastion" {
   }
 
   # In DNS
+  /*
   inbound_rule {
     protocol              = "udp"
     port_range            = "53"
@@ -117,7 +118,6 @@ resource "digitalocean_firewall" "bastion" {
   }
 
   # in ad-hoc connections
-  /*
   inbound_rule {
     protocol              = "tcp"
     port_range            = "1000"

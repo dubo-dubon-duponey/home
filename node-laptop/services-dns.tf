@@ -35,7 +35,6 @@ resource "docker_image" "dns" {
   errors
 
   reload
-  erratic
 }
     EOF
     destination = "${var.docker_config}/config/dns/config.conf"
