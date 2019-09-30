@@ -22,7 +22,7 @@ variable "subdomain_home" {
   default     = "host-home"
 }
 
-variable "static_bastion" {
+variable "bastion_static_ip" {
   description = "Existing floating ip on Digital Ocean, to be attached to the droplet"
   type        = string
   default     = "1.2.3.4"

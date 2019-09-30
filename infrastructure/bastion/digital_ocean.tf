@@ -23,13 +23,13 @@ resource "digitalocean_droplet" "bastion" {
     random_string.root_password,
   ]
 
-  image       = "debian-10-x64"
-  name        = var.droplet_name
-  region      = local.digital_ocean_region
-  size        = "s-1vcpu-1gb"
-  ssh_keys    = [digitalocean_ssh_key.main.fingerprint]
-  ipv6               = true
-  private_networking = true
+  image               = "debian-10-x64"
+  name                = var.droplet_name
+  region              = local.digital_ocean_region
+  size                = "s-1vcpu-1gb"
+  ssh_keys            = [digitalocean_ssh_key.main.fingerprint]
+  ipv6                = true
+  private_networking  = true
 
   connection {
     type        = "ssh"
@@ -54,9 +54,18 @@ resource "digitalocean_droplet" "bastion" {
 }
 
 # IP from already created floating ip (necessary so that docker provider and others can rely on an existing ip in the provider definition)
-resource "digitalocean_floating_ip_assignment" "bastion" {
+/*resource "digitalocean_floating_ip_assignment" "bastion" {
   ip_address = var.static_ip
   droplet_id = digitalocean_droplet.bastion.id
+}*/
+
+resource "digitalocean_floating_ip" "bastion" {
+  region      = "tor1"
+}
+
+resource "digitalocean_floating_ip_assignment" "bastion" {
+  ip_address  = digitalocean_floating_ip.bastion.ip_address
+  droplet_id  = digitalocean_droplet.bastion.id
 }
 
 resource "digitalocean_firewall" "bastion" {
@@ -72,19 +81,42 @@ resource "digitalocean_firewall" "bastion" {
 
   droplet_ids = [digitalocean_droplet.bastion.id]
 
-  # in ssh, from everywhere
+  # in SSH, from everywhere
   inbound_rule {
     protocol              = "tcp"
     port_range            = "22"
     source_addresses      = ["0.0.0.0/0", "::/0"]
   }
 
-  # in https (or dns over tls masquerading as https), from everywhere
+  # in HTTPS (or DNS over TLS masquerading as https), from everywhere
   inbound_rule {
     protocol              = "tcp"
-    port_range            = "443" # 853
+    port_range            = "443"
     source_addresses      = ["0.0.0.0/0", "::/0"]
   }
+
+  # in DNS over TLS
+  inbound_rule {
+    protocol              = "tcp"
+    port_range            = "853"
+    source_addresses      = ["0.0.0.0/0", "::/0"]
+  }
+
+  # in HTTP
+  inbound_rule {
+    protocol              = "tcp"
+    port_range            = "80"
+    source_addresses      = ["0.0.0.0/0", "::/0"]
+  }
+
+  # in ad-hoc connections
+  /*
+  inbound_rule {
+    protocol              = "tcp"
+    port_range            = "1000"
+    source_addresses      = ["0.0.0.0/0", "::/0"]
+  }
+  */
 
   # out dns over tls to everywhere # upstream servers ip
   outbound_rule {

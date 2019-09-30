@@ -4,16 +4,10 @@ variable "token" {
   default     = "xxx-yyy"
 }
 
-variable "static_ip" {
-  description = "Existing floating ip on Digital Ocean, to be attached to the droplet"
-  type        = string
-  default     = "1.2.3.4"
-}
-
 variable "droplet_name" {
   description = "Name for the droplet (eg: /etc/hostname)"
   type        = string
-  default     = "something.example.om"
+  default     = "hostname.example.om"
 }
 
 variable "public_key" {
@@ -25,4 +19,3 @@ variable "public_key" {
 locals {
   digital_ocean_region = "tor1"
 }
-

@@ -16,4 +16,4 @@ On mac:
 brew install dubo-dubon-duponey/brews/terraform-provider-gandi
 ```
 
-Then review the configuration in variables.tf.
+Then tweak to fit your mileage, review the configuration in variables.tf and terraform it.

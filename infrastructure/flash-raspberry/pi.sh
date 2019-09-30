@@ -32,15 +32,16 @@ helpers::lastExternalDevice(){
 }
 
 device=$(helpers::lastExternalDevice)
-printf "We think this disk is the one you want: /dev/disk%s - here is the detailed info below\n" "$device"
-diskutil info "/dev/disk$device"
-printf "We are about to overwrite it. If this is NOT correct, CTRL+C NOW. Otherwise, enter to continue.\n"
+printf    "We think this disk is the one you want: /dev/disk%s - here is the detailed info below\n" "$device"
+diskutil  info "/dev/disk$device"
+
+printf    "We are about to overwrite it. If this is NOT correct, CTRL+C NOW. Otherwise, enter to continue.\n"
 read
 
-diskutil unmountDisk "/dev/disk$device"
-sudo dd bs=1m if=./cache/$version.img of=/dev/disk"$device" conv=sync
+diskutil  unmountDisk "/dev/disk$device"
+sudo      dd bs=1m if=./cache/$version.img of=/dev/disk"$device" conv=sync
 
-touch /Volumes/boot/ssh
-diskutil unmountDisk "/dev/disk$device"
+touch     /Volumes/boot/ssh
+diskutil  unmountDisk "/dev/disk$device"
 
-printf "Done. You may now eject the device card and boot the pi."
+printf    "Done. You may now eject the device card and boot the pi."

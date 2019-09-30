@@ -13,7 +13,7 @@ resource "gandi_zonerecord" "host-A" {
   type        = "A"
   ttl         = 300
   values      = [
-    var.static_bastion,
+    var.bastion_static_ip,
   ]
 }
 
@@ -23,7 +23,7 @@ resource "gandi_zonerecord" "host-bastion" {
   type        = "A"
   ttl         = 300
   values      = [
-    var.static_bastion,
+    var.bastion_static_ip,
   ]
 }
 
@@ -43,6 +43,16 @@ resource "gandi_zonerecord" "host-home" {
 resource "gandi_zonerecord" "sub-dns" {
   zone        = gandi_zone.domain.id
   name        = "dns"
+  type        = "CNAME"
+  ttl         = 300
+  values      = [
+    gandi_zonerecord.host-bastion.name
+  ]
+}
+
+resource "gandi_zonerecord" "sub-dev" {
+  zone        = gandi_zone.domain.id
+  name        = "dev"
   type        = "CNAME"
   ttl         = 300
   values      = [
