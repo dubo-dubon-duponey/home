@@ -109,6 +109,13 @@ resource "digitalocean_firewall" "bastion" {
     source_addresses      = ["0.0.0.0/0", "::/0"]
   }
 
+  # In DNS
+  inbound_rule {
+    protocol              = "udp"
+    port_range            = "53"
+    source_addresses      = ["0.0.0.0/0", "::/0"]
+  }
+
   # in ad-hoc connections
   /*
   inbound_rule {
@@ -125,7 +132,14 @@ resource "digitalocean_firewall" "bastion" {
     destination_addresses = ["0.0.0.0/0", "::/0"] # var.dns_upstream_ips
   }
 
-  # out https to anywhere - could be restricted to mirrors.digitalocean.com security.debian.org registry-1.docker.io maybe? (short of S3 as well...)
+  # out https and http to anywhere
+  # Apparently, debian packages are still on http
+  outbound_rule {
+    protocol              = "tcp"
+    port_range            = "80"
+    destination_addresses = ["0.0.0.0/0", "::/0"]
+  }
+
   outbound_rule {
     protocol              = "tcp"
     port_range            = "443"

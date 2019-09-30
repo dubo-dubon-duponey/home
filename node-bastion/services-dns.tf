@@ -10,57 +10,13 @@ resource "docker_image" "dns" {
     host        = var.static_ip # NOTE: ipv4 of the droplet is private, so, depend on the droplet existence, just not on its ip
   }
 
-  # XXX there seem to be a bug in the file provisioner, using HEREDOC content: if the destination is foo/bar, the actual content is put in a file named foo
-  # Creating the directory beforehand does workaround that
   provisioner "remote-exec" {
     inline = [
       "mkdir -p /home/container/config/dns",
-      "mkdir -p /home/container/data/dns",
+      "mkdir -p /home/container/certs/dns",
       "chmod g+rwx /home/container/config/dns",
-      "chmod g+rwx /home/container/data/dns",
+      "chmod g+rwx /home/container/certs/dns",
     ]
-  }
-
-  # Copy over the configuration
-  provisioner "file" {
-
-    content     = <<EOF
-# Classic DNS on 53, forwarding to a DoT upstream
-.:{$DNS_PORT} {
-  forward . ${local.dns_upstream_addresses} {
-    tls_servername ${var.dns_upstream_name}
-    health_check 5s
-  }
-
-  cache 86400
-
-  log
-  errors
-}
-
-# Hot reload configuration
-. {
-    reload
-    erratic
-}
-
-# DoT with letsencrypt cert, forwarding as well to a DoT server
-tls://.:{$TLS_PORT} {
-	tls /data/certificates/${var.dns_name}.crt /data/certificates/${var.dns_name}.key certificates/${var.dns_name}.issuer.crt
-
-  forward . ${local.dns_upstream_addresses} {
-    tls_servername ${var.dns_upstream_name}
-    health_check 5s
-  }
-
-  cache 86400
-
-  log
-  errors
-}
-    EOF
-    # XXX see above
-    destination = "/home/container/config/dns/config.conf"
   }
 }
 
@@ -79,6 +35,15 @@ resource "docker_container" "dns" {
   restart       = "always"
 
   network_mode  = "bridge"
+
+  env = [
+    "STAGING=",
+    "OVERWRITE_CONFIG=true",
+    "EMAIL=${var.certificate_email}",
+    "UPSTREAM_SERVERS=${local.dns_upstream_addresses}",
+    "UPSTREAM_NAME=${var.dns_upstream_name}",
+    "DOMAIN=${var.certificate_domain}",
+  ]
 
   capabilities {
     drop = ["ALL"]
@@ -106,13 +71,13 @@ resource "docker_container" "dns" {
   mounts {
     target      = "/config"
     source      = "/home/container/config/dns"
-    read_only   = true
+    read_only   = false
     type        = "bind"
   }
 
   mounts {
-    target      = "/data"
-    source      = "/home/container/data/dns"
+    target      = "/certs"
+    source      = "/home/container/certs/dns"
     read_only   = false
     type        = "bind"
   }

@@ -4,18 +4,6 @@ variable "image_dns" {
   default     = "dubodubonduponey/coredns:v1"
 }
 
-variable "dns_name" {
-  description = "DNS-TLS server name"
-  type        = string
-  default     = "dns.example.com"
-}
-
-variable "static_ip" {
-  description = "Existing floating ip on Digital Ocean, to be attached to the droplet"
-  type        = string
-  default     = "1.2.3.4"
-}
-
 variable "dns_upstream_name" {
   description = "Upstream DNS server name"
   type        = string
@@ -31,6 +19,14 @@ variable "dns_upstream_ips" {
   ]
 }
 
+variable "docker_config" {
+  description = "Local path for local docker containers configuration"
+  type        = string
+  default     = "/Users/dmp/Projects/Configuration"
+}
+
 locals {
-  dns_upstream_addresses = "tls://${var.dns_upstream_ips[0]} tls://${var.dns_upstream_ips[1]}"
+  # XXX broken right now
+  #  dns_upstream_addresses = "tls://${var.dns_upstream_ips[0]} tls://${var.dns_upstream_ips[1]}"
+  dns_upstream_addresses = "tls://${var.dns_upstream_ips[0]}"
 }
