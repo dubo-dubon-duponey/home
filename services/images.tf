@@ -1,62 +1,157 @@
-# System: router, logging
-data "docker_registry_image" "system-log" {
-  name = "dubodubonduponey/logspout:v1"
+######################################################
+# DNS
+######################################################
+resource "docker_image" "dns_nuc" {
+  provider      = docker.nucomedon
+  name          = data.docker_registry_image.dns.name
+  pull_triggers = [data.docker_registry_image.dns.sha256_digest]
+
+  connection {
+    type        = "ssh"
+    user        = local.nuc_fact_user
+    host        = local.nuc_ip
+    agent       = true
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir -p ${var.docker_config}/certs/dns",
+      "chmod g+rwx ${var.docker_config}/certs/dns",
+    ]
+  }
 }
 
-# Audio stuff
-data "docker_registry_image" "audio-airport" {
-  name = "dubodubonduponey/shairport-sync:v1"
+resource "docker_image" "dns_dac" {
+  provider      = docker.dacodac
+  name          = data.docker_registry_image.dns.name
+  pull_triggers = [data.docker_registry_image.dns.sha256_digest]
+
+  connection {
+    type        = "ssh"
+    user        = local.dac_fact_user
+    host        = local.dac_ip
+    agent       = true
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir -p ${var.docker_config}/certs/dns",
+      "chmod g+rwx ${var.docker_config}/certs/dns",
+    ]
+  }
 }
 
-data "docker_registry_image" "audio-raat" {
-  name = "dubodubonduponey/roon-bridge:v1"
+resource "docker_image" "dns_nig" {
+  provider      = docker.nightingale
+  name          = data.docker_registry_image.dns.name
+  pull_triggers = [data.docker_registry_image.dns.sha256_digest]
+
+  connection {
+    type        = "ssh"
+    user        = local.nig_fact_user
+    host        = local.nig_ip
+    agent       = true
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir -p ${var.docker_config}/certs/dns",
+      "chmod g+rwx ${var.docker_config}/certs/dns",
+    ]
+  }
 }
 
-data "docker_registry_image" "audio-roon" {
-  name = "dubodubonduponey/roon-server:v1"
+######################################################
+# Logger
+######################################################
+resource "docker_image" "logger_nuc" {
+  provider      = docker.nucomedon
+  name          = data.docker_registry_image.logger.name
+  pull_triggers = [data.docker_registry_image.logger.sha256_digest]
 }
 
-# Home services
-data "docker_registry_image" "home-share" {
-  name = "dubodubonduponey/netatalk:v1"
+resource "docker_image" "logger_dac" {
+  provider      = docker.dacodac
+  name          = data.docker_registry_image.logger.name
+  pull_triggers = [data.docker_registry_image.logger.sha256_digest]
 }
 
-data "docker_registry_image" "home-bridge" {
-  name = "dubodubonduponey/homebridge:v1"
+resource "docker_image" "logger_nig" {
+  provider      = docker.nightingale
+  name          = data.docker_registry_image.logger.name
+  pull_triggers = [data.docker_registry_image.logger.sha256_digest]
 }
 
-data "docker_registry_image" "system-letsencrypt" {
-  name = "linuxserver/letsencrypt"
+######################################################
+# Router
+######################################################
+resource "docker_image" "router" {
+  provider      = docker.nucomedon
+  name          = data.docker_registry_image.router.name
+  pull_triggers = [data.docker_registry_image.router.sha256_digest]
+
+  connection {
+    type        = "ssh"
+    user        = local.nuc_fact_user
+    host        = local.nuc_ip
+    agent       = true
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir -p ${var.docker_config}/config/router",
+      "mkdir -p ${var.docker_config}/data/router",
+      "mkdir -p ${var.docker_config}/certs/router",
+      "chmod g+rwx ${var.docker_config}/config/router",
+      "chmod g+rwx ${var.docker_config}/data/router",
+      "chmod g+rwx ${var.docker_config}/certs/router",
+    ]
+  }
 }
 
-/*
-data "docker_registry_image" "home-automation" {
-  name = "dubodubonduponey/hass:v1"
-}
-*/
-
-
-
-
-
-
-
-
-
-data "docker_registry_image" "video-plex" {
-  name = "plexinc/pms-docker"
-  #  name = "linuxserver/plex"
+######################################################
+# HomeKit
+######################################################
+resource "docker_image" "homekit-alsa-dac" {
+  provider = docker.dacodac
+  name = data.docker_registry_image.homekit-alsa.name
+  pull_triggers = [
+    data.docker_registry_image.homekit-alsa.sha256_digest]
 }
 
-data "docker_registry_image" "video-ombi" {
-  name = "linuxserver/ombi"
+resource "docker_image" "homekit-alsa-nuc" {
+  provider = docker.nucomedon
+  name = data.docker_registry_image.homekit-alsa.name
+  pull_triggers = [
+    data.docker_registry_image.homekit-alsa.sha256_digest]
 }
 
-# XXX need openvpn mixed into it
-data "docker_registry_image" "network-transmission" {
-  name = "linuxserver/transmission"
+resource "docker_image" "homekit-alsa-nig" {
+  provider = docker.nightingale
+  name = data.docker_registry_image.homekit-alsa.name
+  pull_triggers = [
+    data.docker_registry_image.homekit-alsa.sha256_digest]
 }
 
-#data "docker_registry_image" "dev-gitlab" {
-#  name = "gitlab/gitlab-ce:latest"
-#}
+
+
+
+resource "docker_image" "homebridge-dac" {
+  provider      = docker.dacodac
+  name          = data.docker_registry_image.homebridge.name
+  pull_triggers = [data.docker_registry_image.homebridge.sha256_digest]
+
+  connection {
+    type        = "ssh"
+    user        = local.dac_fact_user
+    host        = local.dac_ip
+    agent       = true
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir -p ${var.docker_config}/config/homebridge",
+      "chmod g+rwx ${var.docker_config}/config/homebridge",
+    ]
+  }
+}

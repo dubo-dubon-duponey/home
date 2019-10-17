@@ -43,7 +43,7 @@ resource "docker_container" "airport-croquette" {
   restart       = "always"
   network_mode  = docker_network.dac_hackvlan.name
 
-  env           = ["NAME=${var.airport_croquette}"]
+  env           = ["NAME=${var.airport_dac_server_name}"]
 
   privileged    = true
 
@@ -90,7 +90,7 @@ resource "docker_container" "airport-nucomedon" {
   restart       = "always"
   network_mode  = docker_network.nuc_hackvlan.name
 
-  env           = ["NAME=${var.airport_nucomedon}"]
+  env           = ["NAME=${var.airport_nuc_server_name}"]
 
   # XXX this shit is still necessary until we find a way to fix our soundcard mapping issue on the nuc
   command       = ["--", "-d", "hw:1"]
@@ -109,7 +109,7 @@ resource "docker_container" "airport-nightingale" {
   restart       = "always"
   network_mode  = "host"
 
-  env           = ["NAME=${var.airport_nightingale}"]
+  env           = ["NAME=${var.airport_nig_server_name}"]
 
   command       = ["--", "-d", "hw:1"]
 

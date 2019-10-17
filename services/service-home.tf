@@ -1,15 +1,124 @@
-# Images
-resource "docker_image" "home-bridge-dac" {
-  provider      = docker.dacodac
-  name          = data.docker_registry_image.home-bridge.name
-  pull_triggers = [data.docker_registry_image.home-bridge.sha256_digest]
+resource "docker_container" "homekit-alsa-dac" {
+  provider  = docker.dacodac
+  name      = "homekit-alsa"
+  image     = docker_image.homekit-alsa-dac.latest
+
+  network_mode  = docker_network.dac_hackvlan.name
+
+  labels        = {
+    "co.elastic.logs/enabled": true,
+  }
+
+  env = [
+    "HOMEKIT_NAME=${var.airport_dac_server_name}",
+    "HOMEKIT_PIN=14041976",
+  ]
+
+  # Required by the volume controller
+  devices {
+    host_path = "/dev/snd"
+  }
+
+  group_add = [
+    "audio"
+  ]
+
+  restart       = "always"
+  read_only     = true
+  capabilities {
+    drop = [
+      "ALL"
+    ]
+  }
 }
 
-resource "docker_image" "home-bridge-nuc" {
-  provider      = docker.nucomedon
-  name          = data.docker_registry_image.home-bridge.name
-  pull_triggers = [data.docker_registry_image.home-bridge.sha256_digest]
+resource "docker_container" "homekit-alsa-nig" {
+  provider  = docker.nightingale
+  name      = "homekit-alsa"
+  image     = docker_image.homekit-alsa-nig.latest
+
+  network_mode  = "host"
+
+  labels        = {
+    "co.elastic.logs/enabled": true,
+  }
+
+  env = [
+    "HOMEKIT_NAME=${var.airport_nig_server_name}",
+    "HOMEKIT_PIN=14041976",
+    "ALSA_DEVICE=PCM",
+  ]
+
+  # Required by the volume controller
+  devices {
+    host_path = "/dev/snd"
+  }
+
+  group_add = [
+    "audio"
+  ]
+
+  restart       = "always"
+  read_only     = true
+  capabilities {
+    drop = [
+      "ALL"
+    ]
+  }
 }
+
+/*
+XXX The mojo does not support software volume, so, no nuc
+*/
+
+# Containers
+resource "docker_container" "homebridge-dac" {
+  provider  = docker.dacodac
+  name      = "homebridge"
+  image     = docker_image.homebridge-dac.latest
+
+  network_mode  = docker_network.dac_hackvlan.name
+
+  env = [
+    "AVAHI_NAME=Homebridge (${local.dac_host})",
+  ]
+
+  labels        = {
+    "co.elastic.logs/enabled": true,
+  }
+
+  mounts {
+    target  = "/config"
+    source  = "/home/container/config/homebridge"
+    read_only = true
+    type    = "bind"
+  }
+
+  volumes {
+    volume_name = docker_volume.homebridge_data_dac.name
+    container_path = "/data"
+  }
+
+  # Required by the volume controller
+  devices {
+    host_path = "/dev/snd"
+  }
+
+  restart       = "always"
+#  read_only     = true
+  capabilities {
+    drop        = ["ALL"]
+    add         = [
+      "SYS_CHROOT",
+      "DAC_OVERRIDE",
+      "FOWNER",
+      "CHOWN",
+      "SETUID",
+      "SETGID",
+    ]
+  }
+}
+
 
 /*
 resource "docker_image" "home-automation" {
@@ -27,59 +136,6 @@ resource "docker_image" "home-share" {
   name          = data.docker_registry_image.home-share.name
   pull_triggers = [data.docker_registry_image.home-share.sha256_digest]
 }
-
-# Containers
-resource "docker_container" "home-bridge-dac" {
-  provider  = docker.dacodac
-  name      = "bridge"
-  image     = docker_image.home-bridge-dac.latest
-
-  restart   = "always"
-  network_mode  = docker_network.dac_hackvlan.name
-
-  env = [
-    "AVAHI_NAME=${local.dac_host}-bridge",
-  ]
-
-  mounts {
-    target  = "/root/.homebridge"
-    source  = "/home/data/config/homebridge"
-    read_only = false
-    type    = "bind"
-  }
-
-  # Required by the volume controller
-  devices {
-    host_path = "/dev/snd"
-  }
-}
-
-// Second homebridge is there solely for volume control of the DAC - not super useful
-resource "docker_container" "home-bridge-nuc" {
-  provider  = docker.nucomedon
-  name      = "bridge"
-  image     = docker_image.home-bridge-nuc.latest
-
-  restart   = "always"
-  network_mode  = docker_network.nuc_hackvlan.name
-
-  env = [
-    "AVAHI_NAME=${local.nuc_host}-bridge",
-  ]
-
-  mounts {
-    target  = "/root/.homebridge"
-    source  = "/home/data/config/homebridge"
-    read_only = false
-    type    = "bind"
-  }
-
-  # Required by the volume controller
-  devices {
-    host_path = "/dev/snd"
-  }
-}
-
 
 resource "docker_container" "home-share" {
   depends_on = [

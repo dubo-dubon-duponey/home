@@ -1,4 +1,4 @@
-
+# macVLAN for containers that need to broadcast (everything with mDNS: airport, afp, homebridge)
 resource "docker_network" "dac_hackvlan" {
   name      = "hackvlan"
   provider  = docker.dacodac
@@ -45,3 +45,26 @@ resource "docker_network" "nig_hackvlan" {
     ip_range = local.nig_range
   }
 }
+
+# Bridges networks (for all unprivileged containers)
+resource "docker_network" "nuc_bridge" {
+  name      = "hackbridge"
+  provider  = docker.nucomedon
+
+  driver = "bridge"
+}
+
+resource "docker_network" "dac_bridge" {
+  name      = "hackbridge"
+  provider  = docker.dacodac
+
+  driver = "bridge"
+}
+
+resource "docker_network" "nig_bridge" {
+  name      = "hackbridge"
+  provider  = docker.nightingale
+
+  driver = "bridge"
+}
+
