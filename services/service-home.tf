@@ -96,7 +96,7 @@ resource "docker_container" "home-share" {
   env = [
     "USERS=${var.afp_user}",
     "PASSWORDS=${random_string.afp_pwd.result}",
-    "NAME=${var.afp_name}",
+    "NAME=${var.afp_server_name}",
     "AVAHI_NAME=${local.nuc_host}-share",
   ]
 

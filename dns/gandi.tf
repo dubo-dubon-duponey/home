@@ -97,7 +97,7 @@ resource "gandi_zonerecord" "sub-MX" {
   zone        = gandi_zone.domain.id
   name        = "@"
   type        = "MX"
-  ttl         = 300
+  ttl         = 3600
   values      = [
     "10 mail.protonmail.ch.",
     "20 mailsec.protonmail.ch.",
