@@ -2,10 +2,13 @@ resource "docker_container" "logger_nuc" {
   provider      = docker.nucomedon
   name          = "logger"
   image         = docker_image.logger_nuc.latest
-  hostname      = "log.nucomedon.container"
+  hostname      = "logger.nucomedon.container"
 
   network_mode  = docker_network.nuc_bridge.name
-  user          = "root"
+
+  labels        = {
+    "co.elastic.logs/enabled": false,
+  }
 
   env           = [
     "ELASTICSEARCH_HOSTS=[\"${local.nuc_ip}:9200\"]",
@@ -14,10 +17,6 @@ resource "docker_container" "logger_nuc" {
     "MODULES=coredns system",
   ]
 
-  labels        = {
-    "co.elastic.logs/enabled": false,
-  }
-
   mounts {
     target      = "/var/lib/docker/containers"
     source      = "/var/lib/docker/containers"
@@ -47,12 +46,10 @@ resource "docker_container" "logger_nuc" {
   }
 
   # DNS config and dependencies
-  /*
   depends_on    = [
     docker_container.dns_nuc
   ]
   dns           = [docker_container.dns_nuc.ip_address]
-  */
 
   # Secure it
   restart       = "always"
@@ -60,16 +57,20 @@ resource "docker_container" "logger_nuc" {
   capabilities {
     drop        = ["ALL"]
   }
+  user          = "root"
 }
 
 resource "docker_container" "logger_dac" {
   provider      = docker.dacodac
   name          = "logger"
   image         = docker_image.logger_dac.latest
-  hostname      = "log.dacodac.container"
+  hostname      = "logger.dacodac.container"
 
-  network_mode  = "bridge"
-  user          = "root"
+  network_mode  = docker_network.dac_bridge.name
+
+  labels        = {
+    "co.elastic.logs/enabled": false,
+  }
 
   env           = [
     "ELASTICSEARCH_HOSTS=[\"${local.nuc_ip}:9200\"]",
@@ -77,10 +78,6 @@ resource "docker_container" "logger_dac" {
     "MODULES=coredns system",
   ]
 
-  labels        = {
-    "co.elastic.logs/enabled": false,
-  }
-
   mounts {
     target      = "/var/lib/docker/containers"
     source      = "/var/lib/docker/containers"
@@ -110,12 +107,10 @@ resource "docker_container" "logger_dac" {
   }
 
   # DNS config and dependencies
-  /*
   depends_on    = [
     docker_container.dns_dac
   ]
-  dns           = ["172.17.0.1"]
-  */
+  dns           = [docker_container.dns_dac.ip_address]
 
   # Secure it
   restart       = "always"
@@ -123,6 +118,7 @@ resource "docker_container" "logger_dac" {
   capabilities {
     drop        = ["ALL"]
   }
+  user          = "root"
 }
 
 
@@ -130,20 +126,19 @@ resource "docker_container" "logger_nig" {
   provider      = docker.nightingale
   name          = "logger"
   image         = docker_image.logger_nig.latest
-  hostname      = "log.nightingale.container"
+  hostname      = "logger.nightingale.container"
 
-  network_mode  = "bridge"
-  user          = "root"
+  network_mode  = docker_network.nig_bridge.name
+
+  labels        = {
+    "co.elastic.logs/enabled": false,
+  }
 
   env           = [
     "ELASTICSEARCH_HOSTS=[\"${local.nuc_ip}:9200\"]",
     "KIBANA_HOST=${local.nuc_ip}:5601",
     "MODULES=coredns system",
   ]
-
-  labels        = {
-    "co.elastic.logs/enabled": false,
-  }
 
   mounts {
     target      = "/var/lib/docker/containers"
@@ -174,12 +169,10 @@ resource "docker_container" "logger_nig" {
   }
 
   # DNS config and dependencies
-  /*
   depends_on    = [
     docker_container.dns_nig
   ]
-  dns           = ["172.17.0.1"]
-  */
+  dns           = [docker_container.dns_nig.ip_address]
 
   # Secure it
   restart       = "always"
@@ -187,7 +180,11 @@ resource "docker_container" "logger_nig" {
   capabilities {
     drop        = ["ALL"]
   }
+  user          = "root"
 }
+
+
+
 
 
 

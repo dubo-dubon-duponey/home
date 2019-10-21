@@ -10,6 +10,7 @@ resource "docker_container" "dns_nuc" {
     "UPSTREAM_SERVER_1=${local.dns_upstream_address_1}",
     "UPSTREAM_SERVER_2=${local.dns_upstream_address_2}",
     "UPSTREAM_NAME=${var.dns_upstream_name}",
+    "DNS_PORT=53",
   ]
 
   labels = {
@@ -18,13 +19,9 @@ resource "docker_container" "dns_nuc" {
     "co.elastic.logs/fileset": "log",
   }
 
-  # Not working as expected... this still requires user root, which is annoying as fuck
-  # add   = ["NET_BIND_SERVICE"]
-  # "DNS_PORT=53",
-
   # Regular DNS service
   ports {
-    internal    = 1053
+    internal    = 53
     external    = 53
     protocol    = "udp"
   }
@@ -34,7 +31,9 @@ resource "docker_container" "dns_nuc" {
   read_only     = true
   capabilities {
     drop  = ["ALL"]
+    add   = ["NET_BIND_SERVICE"]
   }
+  user          = "root"
 }
 
 resource "docker_container" "dns_dac" {
@@ -49,6 +48,7 @@ resource "docker_container" "dns_dac" {
     "UPSTREAM_SERVER_1=${local.dns_upstream_address_1}",
     "UPSTREAM_SERVER_2=${local.dns_upstream_address_2}",
     "UPSTREAM_NAME=${var.dns_upstream_name}",
+    "DNS_PORT=53",
   ]
 
   labels = {
@@ -59,7 +59,7 @@ resource "docker_container" "dns_dac" {
 
   # Regular DNS service
   ports {
-    internal    = 1053
+    internal    = 53
     external    = 53
     protocol    = "udp"
   }
@@ -69,7 +69,9 @@ resource "docker_container" "dns_dac" {
   read_only     = true
   capabilities {
     drop  = ["ALL"]
+    add   = ["NET_BIND_SERVICE"]
   }
+  user          = "root"
 }
 
 resource "docker_container" "dns_nig" {
@@ -84,6 +86,7 @@ resource "docker_container" "dns_nig" {
     "UPSTREAM_SERVER_1=${local.dns_upstream_address_1}",
     "UPSTREAM_SERVER_2=${local.dns_upstream_address_2}",
     "UPSTREAM_NAME=${var.dns_upstream_name}",
+    "DNS_PORT=53",
   ]
 
   labels = {
@@ -93,23 +96,18 @@ resource "docker_container" "dns_nig" {
   }
 
   # Regular DNS service
-  ports {
-    internal    = 1053
-    external    = 53
-    protocol    = "udp"
-  }
-
-/*  mounts {
-    target      = "/config"
-    source      = "${var.docker_config}/config/dns"
-    read_only   = false
-    type        = "bind"
-  }*/
+  #ports {
+  #  internal    = 1053
+  #  external    = 53
+  #  protocol    = "udp"
+  #}
 
   # Secure it
   restart       = "always"
   read_only     = true
   capabilities {
     drop  = ["ALL"]
+    add   = ["NET_BIND_SERVICE"]
   }
+  user          = "root"
 }

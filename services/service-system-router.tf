@@ -1,9 +1,14 @@
-resource "docker_container" "system-router" {
+resource "docker_container" "system_router" {
   provider      = docker.nucomedon
   name          = "router"
   image         = docker_image.router.latest
+  hostname      = "router.nucomedon.container"
 
   network_mode  = docker_network.nuc_bridge.name
+
+  labels        = {
+    "co.elastic.logs/enabled": true,
+  }
 
   env = [
     "DOMAIN=https://router.farcloser.world",
@@ -42,19 +47,15 @@ resource "docker_container" "system-router" {
     read_only   = true
     type        = "bind"
   }
-*/
-  # DNS config and dependencies
-  # https://github.com/moby/moby/issues/11998#issuecomment-108978708
-  # XXX goddamn it @Madhu!
-  /*
+  */
+
   depends_on    = [
     docker_container.dns_nuc
   ]
-  dns           = [docker_network.nuc_bridge]
-  */
+  dns           = [docker_container.dns_nuc.ip_address]
 
   # Secure it
-  # restart       = "always"
+  restart       = "always"
   read_only     = true
   capabilities {
     drop        = ["ALL"]

@@ -1,40 +1,4 @@
 # Images
-resource "docker_image" "airport-nucomedon" {
-  provider      = docker.nucomedon
-  name          = data.docker_registry_image.audio-airport.name
-  pull_triggers = [data.docker_registry_image.audio-airport.sha256_digest]
-}
-
-resource "docker_image" "airport-croquette" {
-  provider      = docker.dacodac
-  name          = data.docker_registry_image.audio-airport.name
-  pull_triggers = [data.docker_registry_image.audio-airport.sha256_digest]
-}
-
-resource "docker_image" "airport-nightingale" {
-  provider      = docker.nightingale
-  name          = data.docker_registry_image.audio-airport.name
-  pull_triggers = [data.docker_registry_image.audio-airport.sha256_digest]
-}
-
-resource "docker_image" "roon" {
-  provider      = docker.nucomedon
-  name          = data.docker_registry_image.audio-roon.name
-  pull_triggers = [data.docker_registry_image.audio-roon.sha256_digest]
-}
-
-resource "docker_image" "raat-dacodac" {
-  provider      = docker.dacodac
-  name          = data.docker_registry_image.audio-raat.name
-  pull_triggers = [data.docker_registry_image.audio-raat.sha256_digest]
-}
-
-resource "docker_image" "raat-nightingale" {
-  provider      = docker.nightingale
-  name          = data.docker_registry_image.audio-raat.name
-  pull_triggers = [data.docker_registry_image.audio-raat.sha256_digest]
-}
-
 resource "docker_container" "airport-croquette" {
   provider      = docker.dacodac
   name          = "airport"
