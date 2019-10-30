@@ -27,18 +27,18 @@ variable "afp_user" {
   default     = "dmp"
 }
 
-variable "airport_dac_server_name" {
-  description = "Name advertised by the dac airport server"
+variable "airport_dac_name" {
+  description = "Name advertised by the Dacodac airport server"
   default     = "Totale Croquette"
 }
 
-variable "airport_nuc_server_name" {
-  description = "Name advertised by the nuc airport server"
+variable "airport_nuc_name" {
+  description = "Name advertised by the Nucomedon airport server"
   default     = "Nucomedon"
 }
 
-variable "airport_nig_server_name" {
-  description = "Name advertised by the nig airport server"
+variable "airport_nig_name" {
+  description = "Name advertised by the Nightingale airport server"
   default     = "Nightingale"
 }
 
@@ -68,19 +68,20 @@ locals {
 
   dac_ip          = "192.168.1.7"
   dac_fact_iface  = "eth0"
-  dac_range       = "192.168.1.20/28"
+  dac_range       = "192.168.1.16/28"
   dac_host        = "dacodac"
   dac_fact_user   = "pi"
 
+  nuc_ip          = "192.168.1.8"
+  nuc_fact_iface  = "eno1"
+  nuc_range       = "192.168.1.48/28"
+  nuc_host        = "nucomedon"
+  nuc_fact_user   = "dmp"
+
   nig_ip          = "192.168.1.9"
-  nig_fact_iface  = "wlan0.1"
-  nig_range       = "192.168.1.60/28"
+  nig_fact_iface  = "wlan0"
+  nig_range       = "192.168.1.80/28"
   nig_host        = "nightingale"
   nig_fact_user   = "pi"
 
-  nuc_ip          = "192.168.1.8"
-  nuc_fact_iface  = "eno1"
-  nuc_range       = "192.168.1.40/28"
-  nuc_host        = "nucomedon"
-  nuc_fact_user   = "dmp"
 }

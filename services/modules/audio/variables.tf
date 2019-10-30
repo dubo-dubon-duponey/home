@@ -36,8 +36,17 @@ variable "airport_cmd" {
   ]
 }
 
+variable "alsa_device" {
+  description = "Alsa device"
+  type        = string
+  default     = ""
+}
+
 locals {
   host_airport          = "airport"
+  host_raat             = "raat"
+  host_volume           = "volume"
   image_volume_control  = "dubodubonduponey/homekit-alsa:v1"
   image_airport_server  = "dubodubonduponey/shairport-sync:v1"
+  image_raat_server     = "dubodubonduponey/roon-bridge:v1"
 }

@@ -1,70 +1,4 @@
 ######################################################
-# DNS
-######################################################
-resource "docker_image" "dns_nuc" {
-  provider      = docker.nucomedon
-  name          = data.docker_registry_image.dns.name
-  pull_triggers = [data.docker_registry_image.dns.sha256_digest]
-}
-
-resource "docker_image" "dns_dac" {
-  provider      = docker.dacodac
-  name          = data.docker_registry_image.dns.name
-  pull_triggers = [data.docker_registry_image.dns.sha256_digest]
-}
-
-resource "docker_image" "dns_nig" {
-  provider      = docker.nightingale
-  name          = data.docker_registry_image.dns.name
-  pull_triggers = [data.docker_registry_image.dns.sha256_digest]
-}
-
-######################################################
-# Logger
-######################################################
-resource "docker_image" "logger_nuc" {
-  provider      = docker.nucomedon
-  name          = data.docker_registry_image.logger.name
-  pull_triggers = [data.docker_registry_image.logger.sha256_digest]
-}
-
-resource "docker_image" "logger_dac" {
-  provider      = docker.dacodac
-  name          = data.docker_registry_image.logger.name
-  pull_triggers = [data.docker_registry_image.logger.sha256_digest]
-}
-
-resource "docker_image" "logger_nig" {
-  provider      = docker.nightingale
-  name          = data.docker_registry_image.logger.name
-  pull_triggers = [data.docker_registry_image.logger.sha256_digest]
-}
-
-######################################################
-# HomeKit volume control
-######################################################
-resource "docker_image" "homekit-alsa-dac" {
-  provider = docker.dacodac
-  name = data.docker_registry_image.homekit-alsa.name
-  pull_triggers = [
-    data.docker_registry_image.homekit-alsa.sha256_digest]
-}
-
-resource "docker_image" "homekit-alsa-nuc" {
-  provider = docker.nucomedon
-  name = data.docker_registry_image.homekit-alsa.name
-  pull_triggers = [
-    data.docker_registry_image.homekit-alsa.sha256_digest]
-}
-
-resource "docker_image" "homekit-alsa-nig" {
-  provider = docker.nightingale
-  name = data.docker_registry_image.homekit-alsa.name
-  pull_triggers = [
-    data.docker_registry_image.homekit-alsa.sha256_digest]
-}
-
-######################################################
 # Homebridge (legacy for dyson)
 ######################################################
 resource "docker_image" "homebridge-dac" {
@@ -120,42 +54,9 @@ resource "docker_image" "home-share" {
   pull_triggers = [data.docker_registry_image.home-share.sha256_digest]
 }
 
-######################################################
-# Audio
-######################################################
-resource "docker_image" "airport-nucomedon" {
-  provider      = docker.nucomedon
-  name          = data.docker_registry_image.audio-airport.name
-  pull_triggers = [data.docker_registry_image.audio-airport.sha256_digest]
-}
-
-resource "docker_image" "airport-croquette" {
-  provider      = docker.dacodac
-  name          = data.docker_registry_image.audio-airport.name
-  pull_triggers = [data.docker_registry_image.audio-airport.sha256_digest]
-}
-
-resource "docker_image" "airport-nightingale" {
-  provider      = docker.nightingale
-  name          = data.docker_registry_image.audio-airport.name
-  pull_triggers = [data.docker_registry_image.audio-airport.sha256_digest]
-}
-
 resource "docker_image" "roon" {
   provider      = docker.nucomedon
   name          = data.docker_registry_image.audio-roon.name
   pull_triggers = [data.docker_registry_image.audio-roon.sha256_digest]
-}
-
-resource "docker_image" "raat-dacodac" {
-  provider      = docker.dacodac
-  name          = data.docker_registry_image.audio-raat.name
-  pull_triggers = [data.docker_registry_image.audio-raat.sha256_digest]
-}
-
-resource "docker_image" "raat-nightingale" {
-  provider      = docker.nightingale
-  name          = data.docker_registry_image.audio-raat.name
-  pull_triggers = [data.docker_registry_image.audio-raat.sha256_digest]
 }
 

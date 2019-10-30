@@ -1,15 +1,5 @@
 # Airport station
-data "docker_registry_image" "audio-airport" {
-  name = local.image_airport_server
-}
-
-resource "docker_image" "airport" {
-  provider      = docker
-  name          = data.docker_registry_image.audio-airport.name
-  pull_triggers = [data.docker_registry_image.audio-airport.sha256_digest]
-}
-
-resource "docker_container" "airport-croquette" {
+resource "docker_container" "airport" {
   provider      = docker
   name          = local.host_airport
   image         = docker_image.airport.latest
@@ -21,7 +11,9 @@ resource "docker_container" "airport-croquette" {
     "co.elastic.logs/enabled": true,
   }
 
-  env           = ["NAME=${var.airport_name}"]
+  env           = [
+    "NAME=${var.airport_name}"
+  ]
 
   devices {
     host_path = "/dev/snd"
@@ -46,14 +38,81 @@ resource "docker_container" "airport-croquette" {
 }
 
 # Homekit volume control
-data "docker_registry_image" "homekit-alsa" {
-  name = local.image_volume_control
+resource "docker_container" "homekit-alsa" {
+  provider      = docker
+  name          = local.host_volume
+  image         = docker_image.homekit-alsa.latest
+  hostname      = "${local.host_volume}.${var.hostname}"
+
+  network_mode  = var.network
+
+  labels        = {
+    "co.elastic.logs/enabled": true,
+  }
+
+  env = [
+    "HOMEKIT_NAME=${var.airport_name}",
+    "HOMEKIT_PIN=14041976",
+    "ALSA_DEVICE=${var.alsa_device}",
+  ]
+
+  # Required by the volume controller
+  devices {
+    host_path = "/dev/snd"
+  }
+
+  group_add = [
+    "audio"
+  ]
+
+  dns           = var.dns
+
+  restart       = "always"
+  read_only     = true
+
+  capabilities {
+    drop = [
+      "ALL"
+    ]
+  }
 }
 
-resource "docker_image" "homekit-alsa" {
-  provider = docker
-  name = data.docker_registry_image.homekit-alsa.name
-  pull_triggers = [
-    data.docker_registry_image.homekit-alsa.sha256_digest]
-}
+# RAAT receiver
+resource "docker_container" "raat" {
+  provider      = docker
+  name          = local.host_raat
+  image         = docker_image.raat.latest
+  hostname      = "${local.host_raat}.${var.hostname}"
 
+  network_mode  = var.network
+
+  labels        = {
+    "co.elastic.logs/enabled": true,
+  }
+
+  devices {
+    host_path = "/dev/snd"
+  }
+
+  group_add = [
+    "audio"
+  ]
+
+  dns           = var.dns
+
+  restart       = "always"
+  read_only     = true
+
+  capabilities {
+    drop = [
+      "ALL"
+    ]
+  }
+
+/*  mounts {
+    target  = "/var/roon"
+    source  = "/home/data/config/roon"
+    read_only = false
+    type    = "bind"
+  }*/
+}

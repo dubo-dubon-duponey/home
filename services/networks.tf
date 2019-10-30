@@ -1,70 +1,38 @@
-# macVLAN for containers that need to broadcast (everything with mDNS: airport, afp, homebridge)
-resource "docker_network" "dac_hackvlan" {
-  name      = "hackvlan"
-  provider  = docker.dacodac
+module "network-nuc" {
+  source              = "./modules/network"
+  providers           = {
+    docker  = docker.nucomedon
+  }
 
-  driver = "macvlan"
-  options = {
-    parent: local.dac_fact_iface,
-  }
-  ipam_config {
-    subnet = local.subnet
-    gateway = local.gateway
-    ip_range = local.dac_range
-  }
+  driver    = "macvlan"
+  subnet    = local.subnet
+  gateway   = local.gateway
+  range     = local.nuc_range
+  interface = local.nuc_fact_iface
 }
 
-resource "docker_network" "nuc_hackvlan" {
-  name      = "hackvlan"
-  provider  = docker.nucomedon
-
-  driver = "macvlan"
-  options = {
-    parent: local.nuc_fact_iface,
+module "network-dac" {
+  source              = "./modules/network"
+  providers           = {
+    docker  = docker.dacodac
   }
-  ipam_config {
-    subnet = local.subnet
-    gateway = local.gateway
-    ip_range = local.nuc_range
+
+  driver    = "macvlan"
+  subnet    = local.subnet
+  gateway   = local.gateway
+  range     = local.dac_range
+  interface = local.dac_fact_iface
+}
+
+module "network-nig" {
+  source              = "./modules/network"
+  providers           = {
+    docker  = docker.nightingale
   }
+
+  driver    = "ipvlan"
+  subnet    = local.subnet
+  gateway   = local.gateway
+  range     = local.nig_range
+  interface = local.nig_fact_iface
 }
-
-# XXX macvlan will not work over wifi - short of setting-up trunk networking + ipvlan... fuck it
-resource "docker_network" "nig_hackvlan" {
-  name      = "hackvlan"
-  provider  = docker.nightingale
-
-  driver = "macvlan"
-  options = {
-    parent: local.nig_fact_iface,
-    ipvlan_mode: "l2",
-  }
-  ipam_config {
-    subnet = local.subnet
-    gateway = local.gateway
-    ip_range = local.nig_range
-  }
-}
-
-# Bridges networks (for all unprivileged containers)
-resource "docker_network" "nuc_bridge" {
-  name      = "hackbridge"
-  provider  = docker.nucomedon
-
-  driver = "bridge"
-}
-
-resource "docker_network" "dac_bridge" {
-  name      = "hackbridge"
-  provider  = docker.dacodac
-
-  driver = "bridge"
-}
-
-resource "docker_network" "nig_bridge" {
-  name      = "hackbridge"
-  provider  = docker.nightingale
-
-  driver = "bridge"
-}
-
