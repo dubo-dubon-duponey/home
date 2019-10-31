@@ -1,3 +1,6 @@
+###########################
+# Audio nodules
+###########################
 module "audio-dac" {
   source            = "./modules/audio"
   providers         = {
@@ -58,6 +61,9 @@ module "audio-nig" {
   alsa_device       = "PCM"
 }
 
+###########################
+# Roon server
+###########################
 module "audio-roon" {
   source            = "./modules/roon"
   providers         = {

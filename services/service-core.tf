@@ -1,3 +1,6 @@
+###########################
+# DNS
+###########################
 module "dns-nuc" {
   source        = "./modules/dns"
   providers     = {
@@ -34,6 +37,9 @@ module "dns-nig" {
   upstream_ips  = var.dns_upstream_ips
 }
 
+###########################
+# Logger
+###########################
 module "logger-nuc" {
   source        = "./modules/logger"
   providers     = {
@@ -78,6 +84,21 @@ module "logger-nig" {
 
 
 
+
+module "elastic-nuc" {
+  source        = "./modules/elk"
+  providers     = {
+    docker        = docker.nucomedon
+  }
+
+  network       = module.network-nuc.vlan
+  hostname      = local.nuc_hostname
+  dns           = [module.dns-nuc.ip]
+
+  xxx_elastic   = docker_container.logs-central.ip_address
+#  elastic       = "${docker_container.logs-central.ip_address}:9200"
+#  kibana        = "${docker_container.logs-central.ip_address}:5601"
+}
 
 
 
