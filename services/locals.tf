@@ -11,14 +11,17 @@ locals {
   dac_range       = "192.168.1.16/28"
   dac_fact_user   = "pi"
   dac_ip          = "192.168.1.7"
+  dac_hostname    = "dacodac.container"
 
   nuc_fact_iface  = "eno1"
   nuc_range       = "192.168.1.48/28"
   nuc_fact_user   = "dmp"
   nuc_ip          = "192.168.1.8"
+  nuc_hostname    = "nucomedon.container"
 
   nig_fact_iface  = "wlan0"
   nig_range       = "192.168.1.80/28"
   nig_fact_user   = "pi"
   nig_ip          = "192.168.1.9"
+  nig_hostname    = "nightingale.container"
 }

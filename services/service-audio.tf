@@ -6,7 +6,7 @@ module "audio-dac" {
 
   network           = module.network-dac.vlan
   hostname          = "dacodac.container"
-  dns               = [module.core-dac.dns_server_ip]
+  dns               = [module.dns-dac.ip]
 
   airport_name      = var.dac_audio_name
   airport_cmd       = [
@@ -24,7 +24,7 @@ module "audio-nuc" {
 
   network           = module.network-nuc.vlan
   hostname          = "nucomedon.container"
-  dns               = [module.core-nuc.dns_server_ip]
+  dns               = [module.dns-nuc.ip]
 
   airport_name      = var.nuc_audio_name
   airport_cmd       = [
@@ -45,7 +45,7 @@ module "audio-nig" {
 
   network           = module.network-nig.vlan
   hostname          = "nightingale.container"
-  dns               = [module.core-nig.dns_server_ip]
+  dns               = [module.dns-nig.ip]
 
   airport_name      = var.nig_audio_name
   airport_cmd       = [
@@ -66,9 +66,8 @@ module "audio-roon" {
 
   network           = module.network-nuc.vlan
   hostname          = "nucomedon.container"
-  dns               = [module.core-nuc.dns_server_ip]
+  dns               = [module.dns-nuc.ip]
 
   data_path         = "/home/container/data/roon"
   music_path        = "/home/data/audio"
 }
-

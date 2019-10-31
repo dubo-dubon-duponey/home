@@ -6,6 +6,9 @@ current=$(pwd)
 cd "$project" || exit 1
 
 case "$2" in
+  "plan")
+    terraform plan -var-file="$current/config/$project.tfvars" .
+  ;;
   "destroy")
     terraform destroy -auto-approve -var-file="$current/config/$project.tfvars" .
   ;;

@@ -1,3 +1,3 @@
-output "dns_server_ip" {
+output "ip" {
   value = docker_container.dns.ip_address
 }
