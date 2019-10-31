@@ -56,7 +56,11 @@ resource "docker_container" "homekit-alsa" {
     "ALSA_DEVICE=${var.alsa_device}",
   ]
 
-  # Required by the volume controller
+  volumes {
+    volume_name = docker_volume.homekit_alsa.name
+    container_path = "/data"
+  }
+
   devices {
     host_path = "/dev/snd"
   }
@@ -90,6 +94,11 @@ resource "docker_container" "raat" {
     "co.elastic.logs/enabled": true,
   }
 
+  volumes {
+    volume_name = docker_volume.raat.name
+    container_path = "/data"
+  }
+
   devices {
     host_path = "/dev/snd"
   }
@@ -108,11 +117,4 @@ resource "docker_container" "raat" {
       "ALL"
     ]
   }
-
-/*  mounts {
-    target  = "/var/roon"
-    source  = "/home/data/config/roon"
-    read_only = false
-    type    = "bind"
-  }*/
 }

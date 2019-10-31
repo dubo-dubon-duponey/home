@@ -1,3 +1,18 @@
+variable "dac_audio_name" {
+  description = "Name advertised by the Dacodac airport server"
+  default     = "Totale Croquette"
+}
+
+variable "nuc_audio_name" {
+  description = "Name advertised by the Nucomedon airport server"
+  default     = "Nucomedon"
+}
+
+variable "nig_audio_name" {
+  description = "Name advertised by the Nightingale airport server"
+  default     = "Nightingale"
+}
+
 variable "dns_upstream_name" {
   description = "Upstream DNS server name"
   type        = string
@@ -13,13 +28,14 @@ variable "dns_upstream_ips" {
   ]
 }
 
-variable "docker_config" {
-  description = "Local path for local docker containers configuration"
-  type        = string
-  default     = "/home/container"
+
+# XXX
+variable "afp_server_name" {
+  description = "Name advertised by the AFP server"
+  default     = "Distributed Potatoid"
 }
 
-locals {
-  dns_upstream_address_1 = "tls://${var.dns_upstream_ips[0]}"
-  dns_upstream_address_2 = "tls://${var.dns_upstream_ips[1]}"
+variable "afp_user" {
+  description = "Users for afp"
+  default     = "dmp"
 }

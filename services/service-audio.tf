@@ -1,14 +1,14 @@
 module "audio-dac" {
-  source              = "./modules/audio"
-  providers           = {
+  source            = "./modules/audio"
+  providers         = {
     docker  = docker.dacodac
   }
 
   network           = module.network-dac.vlan
   hostname          = "dacodac.container"
-  dns               = [module.core-nuc.dns_server_ip]
+  dns               = [module.core-dac.dns_server_ip]
 
-  airport_name      = var.airport_dac_name
+  airport_name      = var.dac_audio_name
   airport_cmd       = [
     "-vv",
     "--statistics",
@@ -17,16 +17,16 @@ module "audio-dac" {
 }
 
 module "audio-nuc" {
-  source              = "./modules/audio"
-  providers           = {
+  source            = "./modules/audio"
+  providers         = {
     docker  = docker.nucomedon
   }
 
   network           = module.network-nuc.vlan
   hostname          = "nucomedon.container"
-  dns               = [module.core-dac.dns_server_ip]
+  dns               = [module.core-nuc.dns_server_ip]
 
-  airport_name      = var.airport_nuc_name
+  airport_name      = var.nuc_audio_name
   airport_cmd       = [
     "-vv",
     "--statistics",
@@ -38,16 +38,16 @@ module "audio-nuc" {
 }
 
 module "audio-nig" {
-  source              = "./modules/audio"
-  providers           = {
+  source            = "./modules/audio"
+  providers         = {
     docker  = docker.nightingale
   }
 
   network           = module.network-nig.vlan
   hostname          = "nightingale.container"
-  dns               = [module.core-nuc.dns_server_ip]
+  dns               = [module.core-nig.dns_server_ip]
 
-  airport_name      = var.airport_nig_name
+  airport_name      = var.nig_audio_name
   airport_cmd       = [
     "-vv",
     "--statistics",
@@ -57,3 +57,18 @@ module "audio-nig" {
   ]
   alsa_device       = "PCM"
 }
+
+module "audio-roon" {
+  source            = "./modules/roon"
+  providers         = {
+    docker  = docker.nucomedon
+  }
+
+  network           = module.network-nuc.vlan
+  hostname          = "nucomedon.container"
+  dns               = [module.core-nuc.dns_server_ip]
+
+  data_path         = "/home/container/data/roon"
+  music_path        = "/home/data/audio"
+}
+

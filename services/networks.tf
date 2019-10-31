@@ -1,6 +1,6 @@
 module "network-nuc" {
-  source              = "./modules/network"
-  providers           = {
+  source    = "./modules/network"
+  providers = {
     docker  = docker.nucomedon
   }
 
@@ -12,8 +12,8 @@ module "network-nuc" {
 }
 
 module "network-dac" {
-  source              = "./modules/network"
-  providers           = {
+  source    = "./modules/network"
+  providers = {
     docker  = docker.dacodac
   }
 
@@ -25,8 +25,8 @@ module "network-dac" {
 }
 
 module "network-nig" {
-  source              = "./modules/network"
-  providers           = {
+  source    = "./modules/network"
+  providers = {
     docker  = docker.nightingale
   }
 

@@ -4,7 +4,7 @@ module "core-nuc" {
     docker  = docker.nucomedon
   }
 
-  network           = module.network-nuc.bridge
+  network           = module.network-nuc.vlan
   hostname          = "nucomedon.container"
   dns_upstream_name = var.dns_upstream_name
   dns_upstream_ips  = var.dns_upstream_ips
@@ -18,7 +18,7 @@ module "core-dac" {
     docker  = docker.dacodac
   }
 
-  network           = module.network-dac.bridge
+  network           = module.network-dac.vlan
   hostname          = "dacodac.container"
   dns_upstream_name = var.dns_upstream_name
   dns_upstream_ips  = var.dns_upstream_ips
@@ -32,7 +32,7 @@ module "core-nig" {
     docker  = docker.nightingale
   }
 
-  network           = module.network-nig.bridge
+  network           = module.network-nig.vlan
   hostname          = "nightingale.container"
   dns_upstream_name = var.dns_upstream_name
   dns_upstream_ips  = var.dns_upstream_ips
