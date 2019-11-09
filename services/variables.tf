@@ -1,15 +1,15 @@
 variable "dac_audio_name" {
-  description = "Name advertised by the Dacodac airport server"
+  description = "Name advertised by the Dacodac audio server"
   default     = "Totale Croquette"
 }
 
 variable "nuc_audio_name" {
-  description = "Name advertised by the Nucomedon airport server"
+  description = "Name advertised by the Nucomedon audio server"
   default     = "Nucomedon"
 }
 
 variable "nig_audio_name" {
-  description = "Name advertised by the Nightingale airport server"
+  description = "Name advertised by the Nightingale audio server"
   default     = "Nightingale"
 }
 
@@ -27,6 +27,9 @@ variable "dns_upstream_ips" {
     "5.6.7.8",
   ]
 }
+
+
+
 
 
 # XXX

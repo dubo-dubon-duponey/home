@@ -27,3 +27,22 @@ variable "interface" {
   type        = string
   default     = "eth0"
 }
+
+variable "subnetv6" {
+  description = "Subnet for ip/mac vlan"
+  type        = string
+  default     = "2001:3200:3200::/64"
+}
+
+variable "gatewayv6" {
+  description = "Network gateway for ip/mac vlan"
+  type        = string
+  default     = "2001:3200:3200::1"
+}
+/*
+variable "rangev6" {
+  description = "Range for ip/mac vlan"
+  type        = string
+  default     = "2001:3200:3200::10/60"
+}
+*/

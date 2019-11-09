@@ -15,6 +15,8 @@ resource "docker_network" "dubo-vlan" {
 
   driver      = var.driver
 
+  ipv6        = true
+
   options     = {
     parent:     var.interface,
     ipvlan_mode:  "l2",
@@ -24,5 +26,11 @@ resource "docker_network" "dubo-vlan" {
     subnet    = var.subnet
     gateway   = var.gateway
     ip_range  = var.range
+  }
+
+  ipam_config {
+    subnet    = var.subnetv6
+    gateway   = var.gatewayv6
+//    ip_range  = var.rangev6
   }
 }

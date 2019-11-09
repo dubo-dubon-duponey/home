@@ -118,3 +118,48 @@ resource "docker_container" "raat" {
     ]
   }
 }
+
+# Spotify receiver
+resource "docker_container" "spot" {
+  provider      = docker
+  name          = local.host_spot
+  image         = docker_image.spot.latest
+  hostname      = "${local.host_spot}.${var.hostname}"
+
+  network_mode  = var.network
+
+  labels        = {
+    "co.elastic.logs/enabled": true,
+  }
+
+  env           = [
+    "NAME=${var.spot_name}",
+    "PORT=10042",
+  ]
+
+  volumes {
+    volume_name = docker_volume.spot.name
+    container_path = "/data"
+  }
+
+  devices {
+    host_path = "/dev/snd"
+  }
+
+  group_add = [
+    "audio"
+  ]
+
+  command       = var.spot_cmd
+
+  dns           = var.dns
+
+  restart       = "always"
+  read_only     = true
+
+  capabilities {
+    drop = [
+      "ALL"
+    ]
+  }
+}

@@ -11,7 +11,16 @@ module "audio-dac" {
   hostname          = "dacodac.container"
   dns               = [module.dns-dac.ip]
 
-  airport_name      = var.dac_audio_name
+  spot_name         = "${var.dac_audio_name}, Spot"
+  spot_cmd          = [
+    "--mixer-name", "Digital",
+    "--mixer-card", "hw:0",
+    "--enable-volume-normalisation",
+    "--initial-volume", "100",
+    "-v",
+  ]
+
+  airport_name      = "${var.dac_audio_name}, Air"
   airport_cmd       = [
     "-vv",
     "--statistics",
@@ -29,7 +38,17 @@ module "audio-nuc" {
   hostname          = "nucomedon.container"
   dns               = [module.dns-nuc.ip]
 
-  airport_name      = var.nuc_audio_name
+  spot_name         = "${var.nuc_audio_name}, Spot"
+  spot_cmd          = [
+    "--device", "default:CARD=Mojo",
+    "--mixer-name", "PCM",
+    "--mixer-card", "hw:1",
+#    "--enable-volume-normalisation",
+#    "--initial-volume", "75",
+    "-v",
+  ]
+
+  airport_name      = "${var.nuc_audio_name}, Air"
   airport_cmd       = [
     "-vv",
     "--statistics",
@@ -50,7 +69,17 @@ module "audio-nig" {
   hostname          = "nightingale.container"
   dns               = [module.dns-nig.ip]
 
-  airport_name      = var.nig_audio_name
+  spot_name         = "${var.nig_audio_name}, Spot"
+  spot_cmd          = [
+    "--device", "hw:CARD=DACE17,DEV=1",
+    "--mixer-name", "PCM",
+    "--mixer-card", "hw:1",
+    "--enable-volume-normalisation",
+    "--initial-volume", "50",
+    "-v",
+  ]
+
+  airport_name      = "${var.nig_audio_name}, Air"
   airport_cmd       = [
     "-vv",
     "--statistics",

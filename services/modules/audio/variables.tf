@@ -36,6 +36,24 @@ variable "airport_cmd" {
   ]
 }
 
+variable "spot_name" {
+  description = "Spotify station name"
+  type        = string
+  default     = "Spotty Croquette"
+}
+
+variable "spot_cmd" {
+  description = "Extra command line arguments"
+  type        = list(string)
+  default     = [
+    "--mixer-name=PCM",
+    "--mixer-card=hw:0",
+    "--enable-volume-normalisation",
+    "--initial-volume",
+    "75",
+  ]
+}
+
 variable "alsa_device" {
   description = "Alsa device"
   type        = string
@@ -46,7 +64,9 @@ locals {
   host_airport          = "airport"
   host_raat             = "raat"
   host_volume           = "volume"
+  host_spot             = "spot"
   image_volume_control  = "dubodubonduponey/homekit-alsa:v1"
   image_airport_server  = "dubodubonduponey/shairport-sync:v1"
   image_raat_server     = "dubodubonduponey/roon-bridge:v1"
+  image_spot_server     = "dubodubonduponey/librespot:v1"
 }
