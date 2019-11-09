@@ -1,3 +1,7 @@
+data "docker_registry_image" "roon" {
+  name = local.image_roon
+}
+
 resource "docker_image" "roon" {
   provider      = docker
   name          = data.docker_registry_image.roon.name
