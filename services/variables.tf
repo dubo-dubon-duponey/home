@@ -28,17 +28,7 @@ variable "dns_upstream_ips" {
   ]
 }
 
-
-
-
-
-# XXX
 variable "afp_server_name" {
   description = "Name advertised by the AFP server"
   default     = "Distributed Potatoid"
-}
-
-variable "afp_user" {
-  description = "Users for afp"
-  default     = "dmp"
 }
