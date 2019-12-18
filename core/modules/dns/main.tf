@@ -45,9 +45,9 @@ resource "docker_container" "container" {
   ]
 
   # Regular DNS service
-  # ports {
-  #   internal    = 53
-  #  external    = 53
-  #   protocol    = "udp"
-  # }
+  ports {
+    internal    = local.dns_port
+    external    = 53
+    protocol    = "udp"
+  }
 }

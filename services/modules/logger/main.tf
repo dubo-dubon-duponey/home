@@ -1,21 +1,42 @@
-resource "docker_container" "logger" {
+resource "docker_container" "container" {
   provider      = docker
-  name          = local.host
-  image         = docker_image.logger.latest
-  hostname      = "${local.host}.${var.hostname}"
+  image         = docker_image.image.latest
 
-  network_mode  = var.network
+  name          = local.container_name
+  hostname      = local.container_hostname
+  network_mode  = local.container_network
+  dns           = local.container_dns
+  user          = local.container_user
+
+  restart       = "always"
+  read_only     = true
+
+  capabilities {
+    drop  = ["ALL"]
+  }
 
   labels        = {
-    "co.elastic.logs/enabled": false,
+    "co.elastic.logs/enabled": local.log,
   }
 
   env           = [
-    "ELASTICSEARCH_HOSTS=[\"${var.elastic}\"]",
-    "KIBANA_HOST=${var.kibana}",
-    "HEALTHCHECK_URL=http://${var.elastic}",
-    "MODULES=coredns system",
+    "KIBANA_HOST=${local.service_kibana}",
+    "ELASTICSEARCH_HOSTS=[\"${local.service_elastic}\"]",
+    "ELASTICSEARCH_USERNAME=",
+    "ELASTICSEARCH_PASSWORD=",
+    "MODULES=system coredns",
+    "HEALTHCHECK_URL=${local.healthcheck_url}",
   ]
+
+  volumes {
+    volume_name = docker_volume.data.name
+    container_path = "/data"
+  }
+
+  volumes {
+    volume_name = docker_volume.certs.name
+    container_path = "/certs"
+  }
 
   mounts {
     target      = "/var/lib/docker/containers"
@@ -45,13 +66,4 @@ resource "docker_container" "logger" {
     type        = "bind"
   }
 
-  dns           = var.dns
-
-  # Secure it
-  restart       = "always"
-  read_only     = true
-  capabilities {
-    drop        = ["ALL"]
-  }
-  user          = "root"
 }

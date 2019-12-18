@@ -1,7 +1,7 @@
 variable "image" {
   description = "Image reference"
   type        = string
-  default     = "dubodubonduponey/roon-server:v1"
+  default     = "dubodubonduponey/homekit-alsa:v1"
 }
 
 variable "nickname" {
@@ -48,25 +48,28 @@ variable "dns" {
   ]
 }
 
-# Service specific configuration
-variable "data_path" {
-  description = "Host path for persistent config"
+# Service settings
+variable "station" {
+  description = "HomeKit device name"
   type        = string
-  default     = "/home/container/data/roon"
+  default     = "Croquettas Ballas"
 }
 
-variable "music_path" {
-  description = "Host path for mounted music collection folder"
+variable "device" {
+  description = "Alsa device"
   type        = string
-  default     = "/home/data/audio"
+  default     = "PCM"
 }
 
-# Local indirection
+variable "card" {
+  description = "Alsa card"
+  type        = string
+  default     = "0"
+}
+
 locals {
-  # Image config
   image_reference         = var.image
 
-  # Container config
   container_name          = var.nickname
   container_hostname      = "${var.nickname}.${var.hostname}"
   container_network       = var.network
@@ -76,7 +79,8 @@ locals {
   # Logger
   log                     = var.log
 
-  # Service config
-  mount_data              = var.data_path
-  mount_music             = var.music_path
+  # Service
+  station                 = var.station
+  device                  = var.device
+  card                    = var.card
 }

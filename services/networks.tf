@@ -24,6 +24,7 @@ module "network-dac" {
   interface = local.dac_fact_iface
 }
 
+/*
 module "network-nig" {
   source    = "./modules/network"
   providers = {
@@ -37,3 +38,4 @@ module "network-nig" {
   range     = local.nig_range
   interface = local.nig_fact_iface
 }
+*/

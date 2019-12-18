@@ -7,8 +7,12 @@ module "dns-nuc" {
     docker        = docker.nucomedon
   }
 
-  network       = module.network-nuc.vlan
+  nickname      = "dns-con"
   hostname      = local.nuc_hostname
+  privileged    = true
+  log           = true
+  network       = module.network-nuc.vlan
+
   upstream_name = var.dns_upstream_name
   upstream_ips  = var.dns_upstream_ips
 }
@@ -19,23 +23,33 @@ module "dns-dac" {
     docker        = docker.dacodac
   }
 
-  network       = module.network-dac.vlan
-  hostname      = local.dac_hostname
+  nickname      = "dns-con"
+  hostname      = local.nuc_hostname
+  privileged    = true
+  log           = true
+  network       = module.network-nuc.vlan
+
   upstream_name = var.dns_upstream_name
   upstream_ips  = var.dns_upstream_ips
 }
 
+/*
 module "dns-nig" {
   source        = "./modules/dns"
   providers     = {
     docker  = docker.nightingale
   }
 
-  network       = module.network-nig.vlan
-  hostname      = local.nig_hostname
+  nickname      = "dns-con"
+  hostname      = local.nuc_hostname
+  privileged    = true
+  network       = module.network-nuc.vlan
+  log           = true
+
   upstream_name = var.dns_upstream_name
   upstream_ips  = var.dns_upstream_ips
 }
+*/
 
 ###########################
 # Logger
@@ -46,12 +60,15 @@ module "logger-nuc" {
     docker        = docker.nucomedon
   }
 
-  network       = module.network-nuc.vlan
+  nickname      = "logger"
   hostname      = local.nuc_hostname
+  privileged    = true
+  log           = false
+  network       = module.network-nuc.vlan
   dns           = [module.dns-nuc.ip]
 
-  elastic       = "${docker_container.logs-central.ip_address}:9200"
-  kibana        = "${docker_container.logs-central.ip_address}:5601"
+  elastic       = module.elk.elastic
+  kibana        = module.elk.kibana
 }
 
 module "logger-dac" {
@@ -60,51 +77,57 @@ module "logger-dac" {
     docker        = docker.dacodac
   }
 
-  network       = module.network-dac.vlan
+  nickname      = "logger"
   hostname      = local.dac_hostname
+  privileged    = true
+  log           = false
+  network       = module.network-dac.vlan
   dns           = [module.dns-dac.ip]
 
-  elastic       = "${docker_container.logs-central.ip_address}:9200"
-  kibana        = "${docker_container.logs-central.ip_address}:5601"
+  elastic       = module.elk.elastic
+  kibana        = module.elk.kibana
 }
-
+/*
 module "logger-nig" {
   source        = "./modules/logger"
   providers     = {
     docker        = docker.nightingale
   }
 
-  network       = module.network-nig.vlan
+  nickname      = "logger"
   hostname      = local.nig_hostname
+  privileged    = true
+  network       = module.network-nig.vlan
+  log           = true
   dns           = [module.dns-nig.ip]
 
-  elastic       = "${docker_container.logs-central.ip_address}:9200"
-  kibana        = "${docker_container.logs-central.ip_address}:5601"
+  elastic       = module.elk.elastic
+  kibana        = module.elk.kibana
+#  elastic       = "${docker_container.logs-central.ip_address}:9200"
+#  kibana        = "${docker_container.logs-central.ip_address}:5601"
 }
+*/
 
-
-
-
-module "elastic-nuc" {
+###########################
+# ELK
+###########################
+module "elk" {
   source        = "./modules/elk"
   providers     = {
     docker        = docker.nucomedon
   }
 
-  network       = module.network-nuc.vlan
+  # nickname      = "logger"
   hostname      = local.nuc_hostname
+  privileged    = false
+  log           = true
+  network       = module.network-nuc.vlan
   dns           = [module.dns-nuc.ip]
-
-  xxx_elastic   = docker_container.logs-central.ip_address
-#  elastic       = "${docker_container.logs-central.ip_address}:9200"
-#  kibana        = "${docker_container.logs-central.ip_address}:5601"
 }
 
 
-
-
-
 ####################################################
+/*
 data "docker_registry_image" "logs-central" {
   name = "sebp/elk:740"
 }
@@ -132,3 +155,4 @@ resource "docker_container" "logs-central" {
     "co.elastic.logs/enabled": false,
   }
 }
+*/

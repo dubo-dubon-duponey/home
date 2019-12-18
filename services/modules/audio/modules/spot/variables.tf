@@ -1,7 +1,7 @@
 variable "image" {
   description = "Image reference"
   type        = string
-  default     = "dubodubonduponey/roon-server:v1"
+  default     = "dubodubonduponey/librespot:v1"
 }
 
 variable "nickname" {
@@ -49,24 +49,28 @@ variable "dns" {
 }
 
 # Service specific configuration
-variable "data_path" {
-  description = "Host path for persistent config"
+variable "station" {
+  description = "Spotify station name"
   type        = string
-  default     = "/home/container/data/roon"
+  default     = "Spotty Croquette"
 }
 
-variable "music_path" {
-  description = "Host path for mounted music collection folder"
-  type        = string
-  default     = "/home/data/audio"
+variable "command" {
+  description = "Extra command line arguments"
+  type        = list(string)
+  default     = [
+    "--device", "default", # as seen with librespot --name foo --device ?
+    "--mixer-name", "PCM", # defaults to PCM
+    "--mixer-card", "hw:0", # (from aplay -l - defaults to default)
+    "--initial-volume", "75",
+    "--enable-volume-normalisation",
+    "-v",
+  ]
 }
 
-# Local indirection
 locals {
-  # Image config
   image_reference         = var.image
 
-  # Container config
   container_name          = var.nickname
   container_hostname      = "${var.nickname}.${var.hostname}"
   container_network       = var.network
@@ -76,7 +80,7 @@ locals {
   # Logger
   log                     = var.log
 
-  # Service config
-  mount_data              = var.data_path
-  mount_music             = var.music_path
+  # Service
+  command                 = var.command
+  station                 = var.station
 }

@@ -1,7 +1,7 @@
-output "ip_kibana" {
-  value = docker_container.kibana.ip_address
+output "kibana" {
+  value = "${docker_container.kibana.ip_address}:5601"
 }
 
-output "ip_elastic" {
-  value = docker_container.elastic.ip_address
+output "elastic" {
+  value = "${docker_container.elastic.ip_address}:9200"
 }

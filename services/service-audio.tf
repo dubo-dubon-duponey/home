@@ -2,107 +2,77 @@
 # Audio nodules
 ###########################
 module "audio-dac" {
-  source            = "./modules/audio"
-  providers         = {
+  source        = "./modules/audio"
+  providers     = {
     docker  = docker.dacodac
   }
 
-  network           = module.network-dac.vlan
-  hostname          = "dacodac.container"
-  dns               = [module.dns-dac.ip]
+  hostname      = local.dac_hostname
+  network       = module.network-dac.vlan
+  dns           = [module.dns-dac.ip]
+  log           = true
 
-  spot_name         = "${var.dac_audio_name}, Spot"
-  spot_cmd          = [
-    "--mixer-name", "Digital",
-    "--mixer-card", "hw:0",
-    "--enable-volume-normalisation",
-    "--initial-volume", "100",
-    "-v",
-  ]
-
-  airport_name      = "${var.dac_audio_name}, Air"
-  airport_cmd       = [
-    "-vv",
-    "--statistics",
-  ]
-  alsa_device       = "Digital"
+  station       = var.dac_audio_name
+  hw_index      = 0
+  mixer_name    = "Digital"
+  card_name     = "sndrpihifiberry"
+  volume        = 100
 }
 
 module "audio-nuc" {
-  source            = "./modules/audio"
-  providers         = {
+  source        = "./modules/audio"
+  providers     = {
     docker  = docker.nucomedon
   }
 
-  network           = module.network-nuc.vlan
-  hostname          = "nucomedon.container"
-  dns               = [module.dns-nuc.ip]
+  hostname      = local.nuc_hostname
+  network       = module.network-nuc.vlan
+  dns           = [module.dns-nuc.ip]
+  log           = true
 
-  spot_name         = "${var.nuc_audio_name}, Spot"
-  spot_cmd          = [
-    "--device", "default:CARD=Mojo",
-    "--mixer-name", "PCM",
-    "--mixer-card", "hw:1",
-#    "--enable-volume-normalisation",
-#    "--initial-volume", "75",
-    "-v",
-  ]
-
-  airport_name      = "${var.nuc_audio_name}, Air"
-  airport_cmd       = [
-    "-vv",
-    "--statistics",
-    "--",
-    "-d",
-    "hw:1",
-  ]
-  alsa_device       = "PCM"
+  station       = var.nuc_audio_name
+  hw_index      = 1
+  mixer_name    = "PCM"
+  card_name     = "Mojo"
+  volume        = 100
 }
 
+/*
 module "audio-nig" {
-  source            = "./modules/audio"
-  providers         = {
+  source        = "./modules/audio"
+  providers     = {
     docker  = docker.nightingale
   }
 
-  network           = module.network-nig.vlan
-  hostname          = "nightingale.container"
-  dns               = [module.dns-nig.ip]
+  hostname      = local.nig_hostname
+  network       = module.network-nig.vlan
+  dns           = [module.dns-nig.ip]
+  log           = true
 
-  spot_name         = "${var.nig_audio_name}, Spot"
-  spot_cmd          = [
-    "--device", "hw:CARD=DACE17,DEV=1",
-    "--mixer-name", "PCM",
-    "--mixer-card", "hw:1",
-    "--enable-volume-normalisation",
-    "--initial-volume", "50",
-    "-v",
-  ]
-
-  airport_name      = "${var.nig_audio_name}, Air"
-  airport_cmd       = [
-    "-vv",
-    "--statistics",
-    "--",
-    "-d",
-    "hw:1",
-  ]
-  alsa_device       = "PCM"
+  station       = var.nig_audio_name
+  hw_index      = 1
+  mixer_name    = "PCM"
+  card_name     = "DACE17,DEV=1"
+  volume        = 100
 }
+*/
 
 ###########################
 # Roon server
 ###########################
 module "audio-roon" {
-  source            = "./modules/roon"
-  providers         = {
+  source        = "./modules/roon"
+  providers     = {
     docker  = docker.nucomedon
   }
 
-  network           = module.network-nuc.vlan
-  hostname          = "nucomedon.container"
-  dns               = [module.dns-nuc.ip]
+  nickname      = "roon"
+  hostname      = local.nuc_hostname
+  network       = module.network-nuc.vlan
+  dns           = [module.dns-nuc.ip]
+  log           = true
+  user          = "1000:1000"
 
-  data_path         = "/home/container/data/roon"
-  music_path        = "/home/data/audio"
+  data_path     = "/home/container/data/roon"
+  music_path    = "/home/data/audio"
 }
