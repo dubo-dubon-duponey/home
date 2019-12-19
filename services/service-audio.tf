@@ -71,8 +71,7 @@ module "audio-roon" {
   network       = module.network-nuc.vlan
   dns           = [module.dns-nuc.ip]
   log           = true
-  user          = "1000:1000"
 
-  data_path     = "/home/container/data/roon"
+  data_path     = "${var.volumes_root}/data/roon"
   music_path    = "/home/data/audio"
 }
