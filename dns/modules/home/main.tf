@@ -99,3 +99,51 @@ resource "gandi_zonerecord" "sub-router" {
     gandi_zonerecord.host-home.name
   ]
 }
+
+resource "gandi_zonerecord" "sub-printer" {
+  provider    = gandi
+
+  zone        = var.zone
+  name        = "printer"
+  type        = "CNAME"
+  ttl         = 300
+  values      = [
+    gandi_zonerecord.host-home.name
+  ]
+}
+
+resource "gandi_zonerecord" "sub-monitor" {
+  provider    = gandi
+
+  zone        = var.zone
+  name        = "monitor"
+  type        = "CNAME"
+  ttl         = 300
+  values      = [
+    gandi_zonerecord.host-home.name
+  ]
+}
+
+resource "gandi_zonerecord" "sub-lights" {
+  provider    = gandi
+
+  zone        = var.zone
+  name        = "lights"
+  type        = "CNAME"
+  ttl         = 300
+  values      = [
+    gandi_zonerecord.host-home.name
+  ]
+}
+
+resource "gandi_zonerecord" "top-home" {
+  provider    = gandi
+
+  zone        = var.zone
+  name        = "home"
+  type        = "CNAME"
+  ttl         = 300
+  values      = [
+    gandi_zonerecord.host-home.name
+  ]
+}

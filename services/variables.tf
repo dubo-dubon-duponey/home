@@ -32,3 +32,13 @@ variable "afp_server_name" {
   description = "Name advertised by the AFP server"
   default     = "Distributed Potatoid"
 }
+
+variable "restricted_user" {
+  description = "User"
+  default     = "dmp"
+}
+
+variable "restricted_pwd" {
+  description = "Password"
+  default     = "nhehehehe"
+}

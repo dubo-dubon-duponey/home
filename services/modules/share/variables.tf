@@ -1,7 +1,7 @@
 variable "image" {
   description = "Image reference"
   type        = string
-  default     = "dubodubonduponey/caddy:v1"
+  default     = "dubodubonduponey/netatalk:v1"
 }
 
 variable "nickname" {
@@ -47,40 +47,22 @@ variable "dns" {
 }
 
 # Service specific configuration
-variable "domain" {
-  description = "Main domain name to serve"
+variable "station" {
+  description = "Name advertised by the service"
   type        = string
-  default     = "dev-null.farcloser.world"
+  default     = "Time Machine"
 }
 
-variable "email" {
-  description = "Email to use by letsencrypt registration"
-  type        = string
-  default     = "you@something.com"
+variable "users" {
+  description = "List of user accounts"
+  type        = list(string)
+  default     = ["dmp"]
 }
 
-variable "staging" {
-  description = "Staging for letsencrypt"
-  type        = bool
-  default     = true
-}
-
-variable "kibana" {
-  description = "ip/port of the kibana server"
-  type        = string
-  default     = "kibana_host_port"
-}
-
-variable "username" {
-  description = "Restricted access to username"
-  type        = string
-  default     = "dmp"
-}
-
-variable "password" {
-  description = "Restricted access password"
-  type        = string
-  default     = "nhehehehe"
+variable "passwords" {
+  description = "List of user passwords"
+  type        = list(string)
+  default     = ["nhehehehe"]
 }
 
 # Local indirection
@@ -92,21 +74,33 @@ locals {
   container_name          = var.nickname
   container_hostname      = "${var.nickname}.${var.hostname}"
   container_network       = var.network
-  container_capabilities  = var.privileged ? ["NET_BIND_SERVICE"] : []
+  container_capabilities  = var.privileged ? [
+    # Required to bind on 548
+    "NET_BIND_SERVICE",
+    # Required by useradd to write to shadow
+    "CHOWN",
+    # Sed can't read /data/avahi-daemon.conf and can't write file with preserved perms
+    "FOWNER",
+    # Daemon timeout without returning if it can't drop
+    "SETUID", "SETGID",
+    # On restart, removing avahi pid file that does not belong to root
+    "DAC_OVERRIDE",
+    # Given afp needs to drop privileges to the connected user, we can't chroot it...
+    #    "SYS_CHROOT",
+  ] : []
+  # Default Docker caps:
+  # "CHOWN", "DAC_OVERRIDE", "FSETID", "FOWNER", "MKNOD", "NET_RAW", "SETGID", "SETUID", "SETFCAP", "SETPCAP", "NET_BIND_SERVICE", "SYS_CHROOT", "KILL", "AUDIT_WRITE"
+
   container_user          = var.privileged ? "root" : var.user
   container_dns           = var.dns
-
-  # Healthcheck config
-  healthcheck_question    = "dev.farcloser.world"
 
   # Logger
   log                     = var.log
 
   # Service config
-  domain                  = var.domain
-  email                   = var.email
-  staging                 = var.staging ? "true" : ""
-  kibana                  = var.kibana
-  user                    = var.username
-  password                = var.password
+  # Service config
+  station                 = var.station
+  users                   = join(" ", var.users)
+  passwords               = join(" ", var.passwords)
+
 }

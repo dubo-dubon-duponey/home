@@ -39,4 +39,6 @@ module "router" {
   email         = "o@farcloser.world"
   staging       = false
   kibana        = module.elk.kibana
+  username      = var.restricted_user
+  password      = var.restricted_pwd
 }
