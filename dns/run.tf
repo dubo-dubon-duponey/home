@@ -98,3 +98,14 @@ module "home-farcloser-world" {
   static_ip         = var.static-ip
   dyn_name          = var.dyn-name
 }
+
+module "home-loop-dev-com" {
+  source            = "./modules/business"
+  providers         = {
+    gandi  = gandi
+  }
+
+  zone              = gandi_zone.loop-dev-com.id
+  static_ip         = var.static-ip
+  dyn_name          = var.dyn-name
+}

@@ -76,6 +76,18 @@ resource "gandi_zonerecord" "sub-sinema" {
   ]
 }
 
+resource "gandi_zonerecord" "sub-roon" {
+  provider    = gandi
+
+  zone        = var.zone
+  name        = "roon"
+  type        = "CNAME"
+  ttl         = 300
+  values      = [
+    gandi_zonerecord.host-home.name
+  ]
+}
+
 resource "gandi_zonerecord" "sub-vpn" {
   provider    = gandi
 

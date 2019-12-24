@@ -9,7 +9,7 @@ module "video-plex" {
   log           = true
   # network       = module.network-nuc.vlan
   network       = module.network-nuc.bridge
-  dns           = [module.dns-nuc.ip]
+  dns           = [module.dns-dac.ip]
 
   data_path     = "${var.volumes_root}/data/plex"
   movie_path    = "/home/big/The Very End/"
