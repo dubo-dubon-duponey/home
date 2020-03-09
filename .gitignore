@@ -4,3 +4,4 @@
 terraform.tfstate*
 */flash-raspberry/cache
 *.tfvars
+*/settings.cue

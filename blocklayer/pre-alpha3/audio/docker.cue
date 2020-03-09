@@ -1,25 +1,36 @@
 Docker:: {
+	// Defines an "endpoint", eg: an host / user / ssh key referencing a running Docker daemon
 	Endpoint :: {
-		key: string
+		// Private ssh key
+		privatekey: string
+
+		// Private ssh key passphrase
 		passphrase: string
+
+		// User
+		user: BlockLayer.URI.User | *"docker"
+		// Hostname or ip for the Docker daemon
+		host: BlockLayer.URI.DomainOrIp
+		// Docker-over-ssh port
+		port: BlockLayer.URI.Port | * 22
+
+		// Optional SSH fingerprint to trust the host for
 		finger?: string
-		user: string | *"docker"
-		port: int | * 22
-		// XXX replace with validating regexp user@domain_or_ip:port
-		// XXX need to crank up some RFC grammar
-		host: string
+		// If no fingerprint is provided, whether to blindly trust it or not
+		trust: bool | *false
 	}
 
-	Controller :: Block & {
+	// A generic controller, instantiated from an endpoint, able to run arbitrary shell commands, specifically any of the docker::XXX helpers targetted at the remote host
+	privateController :: Block & {
 		input: false
 		output: false
 
 		settings: {
+			debug: bool | *false
+
 			endpoint: Endpoint
 
 			action: string
-
-			debug: bool | *false
 
 			_shelldebug: string | *"+x"
 			if debug {
@@ -44,6 +55,7 @@ Docker:: {
 			language: "bash"
 			// dir:      "./docker_provider.code"
 			// onChange: "onChange.sh"
+			// onDestroy: "onDestroy.sh"
 
 			script: """
 			\(settings._header)
@@ -55,21 +67,31 @@ Docker:: {
 
 			# Main code
 			endpoint="$(settings get endpoint)"
-			key="$(printf "%s" "$endpoint" | jq -rc .key)"
+			key="$(printf "%s" "$endpoint" | jq -rc .privatekey)"
 			passphrase="$(printf "%s" "$endpoint" | jq -rc .passphrase)"
 			user="$(printf "%s" "$endpoint" | jq -rc .user)"
 			host="$(printf "%s" "$endpoint" | jq -rc .host)"
 			port="$(printf "%s" "$endpoint" | jq -rc .port)"
-			finger="$(printf "%s" "$endpoint" | jq -rc 'select(.finger !=null)')"
+			trust="$(printf "%s" "$endpoint" | jq -rc .trust)"
+			finger="$(printf "%s" "$endpoint" | jq -rc '.finger | select(. != null)')"
 
 			logger::info "Starting ssh-agent"
 			ssh::boot
 
 			logger::info "Adding identity from private key and passphrase"
-			ssh::add::identity "$key" "$passphrase"
+			ssh::identity::add "$key" "$passphrase"
 
 			logger::info "Adding host fingerprint"
-			ssh::add::fingerprint "$finger" "$host" "$port"
+			if [ "$finger" ]; then
+				logger::info "Adding provided fingerprint"
+				ssh::fingerprint::add "$finger"
+			elif [ "$trust" == true ]; then
+				logger::warning "Blindly trusting host. You do know what you are doing, Joe, right?"
+				ssh::fingerprint::trust "$host" "$port"
+			else
+				logger::warning "You did not provide a fingerprint, and you do not blindly trust the remote host (good) - let me fail for you, right now, so you don't have to wait."
+				exit 1
+			fi
 
 			logger::info "Setting the docker host"
 			docker::host "$user" "$host" "$port"
@@ -84,14 +106,20 @@ Docker:: {
 		}
 	}
 
-	Daemon :: Controller & {
+	Block :: privateController & {
+		settings: controller: privateController
+		settings: endpoint: settings.controller.settings.endpoint
+	}
+
+	Daemon :: privateController & {
 		settings: {
 			action: "logger::info \"All set. Docker Daemon happily awaiting orders on $DOCKER_HOST.\""
 		}
 	}
 
-	Network :: Controller & {
+	Network :: boundController & {
 		settings: {
+			controller: privateController
 			name: string | *"hackvlan"
 
 			driver: string | *"macvlan"
@@ -105,9 +133,7 @@ Docker:: {
   	  ipvlan_mode?: string | * "l2"
 
 			action: """
-			logger::warning "XXX NOT IMPLEMENTED. This will only work if the network already exists"
-
-			exit
+			logger::warning "HALF_ASS IMPLEMENTATION. This will just create the network and return silently if it already exist"
 
 			name="$(settings get name)"
 			driver="$(settings get driver)"
@@ -121,6 +147,7 @@ Docker:: {
 			existing="$(docker network ls --filter "name=$name" -q)"
 			if [ "$existing" ]; then
 				logger::warning "We already have a network by that name. Smart change is not implemented... going to just destroy it."
+				exit
 				existing_specs="$(docker network inspect "$existing")"
 				# XXX implement verification that the network matches the specs
 				# [ "$ipvlan_mode" == $(printf "%s" "$existing_specs" | jq -rc .[0].Options.ipvlan_mode)" ]
@@ -132,12 +159,11 @@ Docker:: {
 			fi
 
 			docker network create --driver "$driver" --subnet="$subnet" --ip-range="$ip_range" --gateway="$gateway" --opt ipvlan_mode="$ipvlan_mode" --opt parent="$parent" "$name"
-			exit 1
 			"""
 		}
 	}
 
-	Volume :: Controller & {
+	Volume :: boundController & {
 		settings: {
 			name: string | *"hackvlan"
 			action: """
@@ -148,7 +174,7 @@ Docker:: {
 	}
 
 	// A Docker Image to be pulled and used on a certain Docker Daemon
-	Image :: Controller & {
+	Image :: boundController & {
 		settings: {
 			registry: string | *"index.docker.io"
 			name: string
@@ -180,7 +206,7 @@ Docker:: {
 	}
 
 	// A Docker Container
-	Container :: Controller & {
+	Container :: boundController & {
 		settings: {
 			network: Docker.Network
 			image: Docker.Image
@@ -205,6 +231,7 @@ Docker:: {
 			}
 
 			action: """
+			logger::warning "HALF_ASS IMPLEMENTATION. This will just run the container and FAIL silently if it already exists"
 
 			nickname="$(settings get "nickname")"
 			imagename="$(settings get "image.settings.name")"
