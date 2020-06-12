@@ -22,3 +22,7 @@ trim_trailing_whitespace = false
 [Makefile]
 indent_style = tab
 indent_size = 4
+
+[*.cue]
+indent_style = tab
+indent_size = 2

@@ -4,24 +4,85 @@
 # default = "raspberry.local"
 
 locals {
-  gateway         = "192.168.1.1"
-  subnet          = "192.168.1.0/24"
+  gateway         = "10.0.4.1"
+  subnet          = "10.0.4.1/24"
 
-  dac_fact_iface  = "eth0"
-  dac_range       = "192.168.1.16/28"
-  dac_fact_user   = "pi"
-  dac_ip          = "192.168.1.7"
-  dac_hostname    = "dacodac.container"
+  mac             = {
+    hostname = "macarena.container"
+    dns_ip = "172.17.0.1"
+  }
 
-  nuc_fact_iface  = "eno1"
-  nuc_range       = "192.168.1.48/28"
-  nuc_fact_user   = "dmp"
-  nuc_ip          = "192.168.1.8"
-  nuc_hostname    = "nucomedon.container"
+  cor             = {
+    iface = "eth0"
+    range = "10.0.4.20/28"
+    user = "pi"
+    ip = "10.0.4.2"
+    hostname = "corpisone.container"
 
-  nig_fact_iface  = "wlan0"
-  nig_range       = "192.168.1.80/28"
-  nig_fact_user   = "pi"
-  nig_ip          = "192.168.1.9"
-  nig_hostname    = "nightingale.container"
+    dns_ip = "10.0.4.10"
+
+    audio_name    = var.cor_audio_name
+    hw_index      = 1
+    mixer_name    = "PCM"
+    card_name     = "Mojo"
+    volume        = 100
+  }
+
+  nuc             = {
+    iface = "eno1"
+    range = "10.0.4.52/28"
+    user = "dmp"
+    ip = "10.0.4.3"
+    hostname = "nucomedon.container"
+
+    dns_ip = "10.0.4.11"
+    router_ip = "10.0.4.14"
+  }
+
+  nig             = {
+    iface = "wlan0"
+    range = "10.0.4.116/28"
+    user = "pi"
+    ip = "10.0.4.4"
+    hostname = "nightingale.container"
+
+    dns_ip = "10.0.4.13"
+
+    audio_name    = var.nig_audio_name
+    hw_index      = 0
+    mixer_name    = "Digital"
+    card_name     = "sndrpihifiberry"
+    volume        = 50
+
+    /*
+    hw_index      = 1
+    mixer_name    = "PCM"
+    card_name     = "DACE17,DEV=1"
+    volume        = 100
+    */
+  }
+
+  dac             = {
+    iface = "wlan0"
+    range = "10.0.4.84/28"
+    user = "pi"
+    ip = "10.0.4.8"
+    hostname = "dacodac.container"
+
+    dns_ip = "10.0.4.12"
+
+    audio_name    = var.dac_audio_name
+    #hw_index      = 0
+    #mixer_name    = "Digital"
+    #card_name     = "sndrpihifiberry"
+    hw_index      = 1
+    mixer_name    = "PCM"
+    card_name     = "Qutest"
+    volume        = 100
+  }
+
+  dns             = {
+    upstream_name = var.dns_upstream_name
+    upstream_ips = var.dns_upstream_ips
+  }
 }

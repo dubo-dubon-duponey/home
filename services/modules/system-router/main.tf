@@ -20,8 +20,9 @@ resource "docker_container" "container" {
   dns           = local.container_dns
   user          = local.container_user
 
-  restart       = "always"
-  read_only     = false # XXX right now, we have to have this, because of user creation
+#  restart       = "always"
+  restart       = "no"
+  read_only     = true
 
   capabilities {
     drop  = ["ALL"]
@@ -87,9 +88,4 @@ resource "docker_container" "container" {
   labels = merge({
     "co.elastic.logs/enabled": local.log,
   }, local.labels)
-
-  # XXX is this really a necessity?
-  provisioner "local-exec" {
-    command = "echo 'Users haven been configured for netatalk: ${local.users} (${local.passwords}). This will never be displayed ever again.'"
-  }
 }
