@@ -18,6 +18,8 @@ module "airport" {
     "-d",
     "hw:${var.hw_index}",
   ]
+
+  registry = var.registry
 }
 
 module "spot" {
@@ -44,6 +46,8 @@ module "spot" {
     var.volume,
     "--enable-volume-normalisation",
   ]
+
+  registry = var.registry
 }
 
 module "raat" {
@@ -57,6 +61,8 @@ module "raat" {
   networks = var.networks
   dns = var.dns
   user = var.user
+
+  registry = var.registry
 }
 
 module "volume" {
@@ -74,4 +80,6 @@ module "volume" {
   station = var.station
   device = var.mixer_name
   card = var.hw_index
+
+  registry = var.registry
 }

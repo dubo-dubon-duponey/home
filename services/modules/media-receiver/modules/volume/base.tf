@@ -39,6 +39,12 @@ variable "networks" {
   default     = {}
 }
 
+variable "registry" {
+  description = "Base registry for images"
+  type        = string
+  default     = "registry-1.docker.io"
+}
+
 locals {
   # Image to use
   image_reference         = length(var.image) != 0 ? var.image : local.defaults.image

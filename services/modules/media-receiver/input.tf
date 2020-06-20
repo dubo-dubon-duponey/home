@@ -57,3 +57,9 @@ variable "volume" {
   type        = number
   default     = 100
 }
+
+variable "registry" {
+  description = "Base registry for images"
+  type        = string
+  default     = "registry-1.docker.io"
+}

@@ -1,30 +1,32 @@
 # Local indirection
 locals {
-  capabilities  = var.user == "root" ? ["NET_BIND_SERVICE"] : []
+  capabilities  = []
   command       = []
   devices       = []
   env           = [
+    "HOMEKIT_NAME=${var.station}",
+    "HOMEKIT_PIN=14041976",
+    "IPS=10.0.4.207 10.0.4.208",
   ]
-  expose        = var.expose ? {
-    3142: 3142
-  } : {}
+  expose        = {}
   expose_type   = "tcp"
   group_add     = []
   labels        = {}
   mounts        = {}
   mountsrw      = {}
   volumes       = {
-    "/data": docker_volume.data.name,
+    "/data": docker_volume.data.name
   }
 }
 
 # Service settings
-variable "expose" {
-  description = "Whether to expose ports (only applicable to bridge networking)"
-  type        = bool
-  default     = false
+variable "station" {
+  description = "HomeKit Bridge name"
+  type        = string
+  default     = "Wiz Bang"
 }
 
+# Volumes
 resource "docker_volume" "data" {
   provider      = docker
   name          = "data-${local.container_name}"

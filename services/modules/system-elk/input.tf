@@ -18,7 +18,7 @@ variable "networks" {
 variable "log" {
   description = "Whether to flag for filebeat log collection or not"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "user" {
@@ -31,4 +31,10 @@ variable "expose" {
   description = "Whether to expose ports (only applicable to bridge networking)"
   type        = bool
   default     = true
+}
+
+variable "registry" {
+  description = "Base registry for images"
+  type        = string
+  default     = "registry-1.docker.io"
 }

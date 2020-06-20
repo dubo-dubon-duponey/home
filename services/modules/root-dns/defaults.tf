@@ -2,7 +2,7 @@ locals {
   defaults = {
     // Defaults to apply if no variable is passed for these
     nickname = "dns"
-    image = "dubodubonduponey/coredns:v1"
+    image = "${var.registry}/dubodubonduponey/coredns:v1"
     // Custom for this image
     // Upstream DNS to use
     upstream_name = "cloudflare-dns.com"

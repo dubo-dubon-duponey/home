@@ -5,13 +5,12 @@ variable "volumes_root" {
 }
 
 variable "email" {
-  description = "Your email"
+  description = "Your email (mainly used for letsencrypt validation)"
 }
 
 variable "domain" {
   description = "Your top level routing domain"
 }
-
 
 # DNS module
 variable "dns_upstream_name" {

@@ -27,7 +27,7 @@ locals {
 
 # Service specific configuration
 variable "data_path" {
-  description = "Host path for persistent config"
+  description = "Host path for persistent data & config"
   type        = string
 }
 

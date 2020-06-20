@@ -69,7 +69,7 @@ variable "expose" {
 variable "healthcheck" {
   description = "Domain name to resolve for the healthchecked"
   type        = string
-  default     = "healthcheck-dns.farcloser.world"
+  default     = "dns.healthcheck.jsboot.space"
 }
 
 resource "docker_volume" "certs" {

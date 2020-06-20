@@ -15,6 +15,8 @@ module "elastic" {
   dns = var.dns
   user = var.user
   expose = var.expose
+
+  registry = var.registry
 }
 
 module "kibana" {
@@ -31,4 +33,6 @@ module "kibana" {
   expose = var.expose
 
   elastic_container = "http://${module.elastic.name}:9200"
+
+  registry = var.registry
 }

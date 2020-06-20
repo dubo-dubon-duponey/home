@@ -4,11 +4,9 @@ locals {
   command       = []
   devices       = []
   env           = [
-    "REGISTRY_HTTP_ADDR=:${local.port}",
-    "REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/data",
   ]
   expose        = var.expose ? {
-    (var.port): local.port,
+    3142: 3142
   } : {}
   expose_type   = "tcp"
   group_add     = []
@@ -18,11 +16,7 @@ locals {
   volumes       = {
     "/data": docker_volume.data.name,
   }
-
-  port          = (var.user == "root" ? var.port : 5000)
 }
-
-
 
 # Service settings
 variable "expose" {
@@ -37,7 +31,7 @@ resource "docker_volume" "data" {
 }
 
 variable "port" {
-  description = "Main port to expose"
+  description = "Main port to expose - XXX NOT WIRED IN - DO NOT USE"
   type        = string
-  default     = "5000"
+  default     = "3142"
 }

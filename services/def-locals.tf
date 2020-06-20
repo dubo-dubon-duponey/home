@@ -7,16 +7,31 @@ locals {
   gateway         = "10.0.4.1"
   subnet          = "10.0.4.1/24"
 
+  # This is not ready to fly - we need a dependency on core services (dns & registry) as a preflight for any of this to work
+  # Alternatively, a registry proxy cache for hub would be nice
+#  registry        = "registry.dev.jsboot.space"
+  registry        = {
+    address: "registry.dev.jsboot.space",
+    username: "dubodubonduponey",
+    password: "aFBZBVJ6EjcFXyktok3osCeV6pc",
+  }
+
+  dns             = {
+    upstream_name = var.dns_upstream_name
+    upstream_ips = var.dns_upstream_ips
+  }
+
   mac             = {
     hostname = "macarena.container"
+
     dns_ip = "172.17.0.1"
   }
 
   cor             = {
     iface = "eth0"
-    range = "10.0.4.20/28"
     user = "pi"
     ip = "10.0.4.2"
+    range = "10.0.4.20/28"
     hostname = "corpisone.container"
 
     dns_ip = "10.0.4.10"
@@ -30,9 +45,9 @@ locals {
 
   nuc             = {
     iface = "eno1"
-    range = "10.0.4.52/28"
     user = "dmp"
     ip = "10.0.4.3"
+    range = "10.0.4.52/28"
     hostname = "nucomedon.container"
 
     dns_ip = "10.0.4.11"
@@ -41,9 +56,9 @@ locals {
 
   nig             = {
     iface = "wlan0"
-    range = "10.0.4.116/28"
     user = "pi"
     ip = "10.0.4.4"
+    range = "10.0.4.116/28"
     hostname = "nightingale.container"
 
     dns_ip = "10.0.4.13"
@@ -64,9 +79,9 @@ locals {
 
   dac             = {
     iface = "wlan0"
-    range = "10.0.4.84/28"
     user = "pi"
     ip = "10.0.4.8"
+    range = "10.0.4.84/28"
     hostname = "dacodac.container"
 
     dns_ip = "10.0.4.12"
@@ -79,10 +94,5 @@ locals {
     mixer_name    = "PCM"
     card_name     = "Qutest"
     volume        = 100
-  }
-
-  dns             = {
-    upstream_name = var.dns_upstream_name
-    upstream_ips = var.dns_upstream_ips
   }
 }

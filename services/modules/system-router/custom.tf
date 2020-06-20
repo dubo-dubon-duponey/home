@@ -38,14 +38,10 @@ locals {
   # XXX hook and redo the port config management
   # Service config
   staging                 = var.staging ? "true" : ""
-  domain                  = var.domain
   httpport                = (var.user == "root" ? var.httpport : 1080)
   proxyport               = (var.user == "root" ? var.proxyport : 1081)
   httpsport               = (var.user == "root" ? var.httpsport : 1443)
   metricsport             = (var.user == "root" ? var.metricsport : 9180)
-  email                   = var.email
-  user                    = var.username
-  password                = var.password
 
   /*
   volumes {
