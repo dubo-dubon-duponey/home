@@ -1,10 +1,13 @@
 # Local indirection
 locals {
   capabilities  = []
-  command       = []
+  # Because our image does not wire these yet
+  command = []
   devices       = []
   env           = [
     "KIBANA_HOST=${var.kibana}",
+    "KIBANA_USERNAME=${var.kibanaUser}",
+    "KIBANA_PASSWORD=${var.kibanaPassword}",
     "ELASTICSEARCH_HOSTS=[\"${var.elastic}\"]",
     "ELASTICSEARCH_USERNAME=",
     "ELASTICSEARCH_PASSWORD=",
@@ -51,5 +54,15 @@ variable "elastic" {
 
 variable "kibana" {
   description = "Kibana endpoint"
+  type        = string
+}
+
+variable "kibanaUser" {
+  description = "Kibana username"
+  type        = string
+}
+
+variable "kibanaPassword" {
+  description = "Kibana password"
   type        = string
 }

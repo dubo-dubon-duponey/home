@@ -7,6 +7,7 @@ cd "$project" || exit 1
 
 case "$2" in
   "plan")
+    terraform init .
     terraform plan -var-file="$current/config/$project.tfvars" .
   ;;
   "destroy")

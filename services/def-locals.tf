@@ -28,7 +28,7 @@ locals {
   }
 
   cor             = {
-    iface = "eth0"
+    iface = "wlan0"
     user = "pi"
     ip = "10.0.4.2"
     range = "10.0.4.20/28"
@@ -80,7 +80,7 @@ locals {
   dac             = {
     iface = "wlan0"
     user = "pi"
-    ip = "10.0.4.8"
+    ip = "10.0.4.5"
     range = "10.0.4.84/28"
     hostname = "dacodac.container"
 

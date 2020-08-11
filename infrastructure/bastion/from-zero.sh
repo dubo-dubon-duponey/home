@@ -27,7 +27,9 @@ init::limits(){
   grep -q 'net.core.wmem_max = 16777216'          /etc/sysctl.conf || printf "net.core.wmem_max = 16777216\n" | sudo tee -a /etc/sysctl.conf
   # Useful with docker + roon for eg
   grep -q 'fs.inotify.max_user_watches = 1048576' /etc/sysctl.conf || printf "fs.inotify.max_user_watches = 1048576\n" | sudo tee -a /etc/sysctl.conf
-  sysctl -p
+  # Elastic search for eg need this bumped
+  grep -q 'vm.max_map_count = 262144' /etc/sysctl.conf || printf "vm.max_map_count = 262144\n" | sudo tee -a /etc/sysctl.conf
+  sudo sysctl -p
 }
 
 

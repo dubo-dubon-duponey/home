@@ -41,7 +41,9 @@ module "logger-dac" {
   log           = false
 
   elastic       = module.elk.elastic_ip
-  kibana        = module.elk.kibana_ip
+  kibana        = "https://${local.log.address}"
+  kibanaUser    = local.log.username
+  kibanaPassword= local.log.password
 
   registry      = local.registry.address
 }

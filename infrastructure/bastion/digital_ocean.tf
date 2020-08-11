@@ -72,7 +72,7 @@ resource "digitalocean_firewall" "bastion" {
   name        = "bastion"
 
 /*  depends_on = [
-    docker_container.system-dns-bastion
+    docker_container.dns
   ]
 
   provisioner "local-exec" {
@@ -110,13 +110,13 @@ resource "digitalocean_firewall" "bastion" {
   }
 
   # In DNS
-  /*
   inbound_rule {
     protocol              = "udp"
     port_range            = "53"
     source_addresses      = ["0.0.0.0/0", "::/0"]
   }
 
+  /*
   # in ad-hoc connections
   inbound_rule {
     protocol              = "tcp"

@@ -21,7 +21,9 @@ module "logger-nuc" {
   log           = false
 
   elastic       = module.elk.elastic_ip
-  kibana        = module.elk.kibana_ip
+  kibana        = "https://${local.log.address}"
+  kibanaUser    = local.log.username
+  kibanaPassword= local.log.password
 
   # Ugly as fuck and counter intuitive, but we want to depend on the router availability
   // registry      = module.router.ip == "" ? "registry.dev.${module.router.domain}" : "registry.dev.${module.router.domain}"
