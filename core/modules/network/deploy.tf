@@ -2,7 +2,7 @@
 # - don't need to broadcast
 # - do not have specific performance requirements
 resource "docker_network" "dubo-bridge" {
-  name        = "dubo-bridge"
+  name        = "dubo-bridge-core"
   provider    = docker
 
   driver      = "bridge"
@@ -10,7 +10,7 @@ resource "docker_network" "dubo-bridge" {
 
 # Macvlan - for containers that broadcast, and that are not on wifi
 resource "docker_network" "dubo-vlan" {
-  name        = "dubo-vlan"
+  name        = "dubo-vlan-core"
   provider    = docker
 
   driver      = var.driver
