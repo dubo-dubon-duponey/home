@@ -4,6 +4,8 @@ locals {
   command       = []
   devices       = []
   env           = [
+    "USERNAME=${var.username}",
+    "PASSWORD=${var.password}",
     "REGISTRY_HTTP_ADDR=:${local.port}",
     "REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/data",
   ]
@@ -22,13 +24,21 @@ locals {
   port          = (var.user == "root" ? var.port : 5000)
 }
 
-
-
 # Service settings
 variable "expose" {
   description = "Whether to expose ports (only applicable to bridge networking)"
   type        = bool
   default     = false
+}
+
+variable "username" {
+  description = "Restricted access to username"
+  type        = string
+}
+
+variable "password" {
+  description = "Restricted access password"
+  type        = string
 }
 
 variable "data_path" {

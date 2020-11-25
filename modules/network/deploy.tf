@@ -16,7 +16,8 @@ resource "docker_network" "dubo-vlan" {
   driver      = var.driver
 
   options     = {
-    parent:     var.interface,
+    // XXXtmp
+    // parent:     var.interface,
     ipvlan_mode:  "l2",
   }
 

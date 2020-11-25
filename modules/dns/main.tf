@@ -84,7 +84,16 @@ resource "docker_container" "container" {
     }
   }
 
-  labels = merge({
-    "co.elastic.logs/enabled": local.log,
-  }, local.labels)
+  labels {
+    label = "co.elastic.logs/enabled"
+    value = local.log
+  }
+
+  dynamic "labels" {
+    for_each = local.labels
+    content {
+      label = labels.key
+      value = labels.value
+    }
+  }
 }
