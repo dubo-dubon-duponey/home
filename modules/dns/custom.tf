@@ -62,7 +62,7 @@ variable "upstream_ips" {
 variable "expose" {
   description = "Whether to expose ports (only applicable to bridge networking)"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "healthcheck" {

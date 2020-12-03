@@ -1,8 +1,8 @@
 locals {
   defaults = {
     // Defaults to apply if no variable is passed for these
-    nickname = "registry"
-    image = "${var.registry}/dubodubonduponey/registry"
+    nickname = "volume"
+    image = "${var.registry}/dubodubonduponey/homekit-alsa"
     // Custom for this image
   }
 }

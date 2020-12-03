@@ -5,10 +5,6 @@
 # UPDATE terraform on mac now builds with CGO and it seems that mDNS names are now usable...
 
 locals {
-  // Topology to use to configure docker network
-  gateway         = "10.0.4.1"
-  subnet          = "10.0.4.1/24"
-
   // Registry to pull from
   registry        = {
     address: var.registry_address,
@@ -35,6 +31,10 @@ locals {
       user      = "pi"
     }
   }
+
+  // Topology to use to configure docker network
+  gateway         = "10.0.4.1"
+  subnet          = "10.0.4.1/24"
 
   networks      = {
     dac: {

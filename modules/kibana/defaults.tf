@@ -1,8 +1,8 @@
 locals {
   defaults = {
     // Defaults to apply if no variable is passed for these
-    nickname = "registry"
-    image = "${var.registry}/dubodubonduponey/registry"
+    nickname = "kibana"
+    image = "${var.registry}/dubodubonduponey/kibana"
     // Custom for this image
   }
 }

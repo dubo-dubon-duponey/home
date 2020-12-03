@@ -1,8 +1,8 @@
 locals {
   defaults = {
     // Defaults to apply if no variable is passed for these
-    nickname = "registry"
-    image = "${var.registry}/dubodubonduponey/registry"
+    nickname = "roon"
+    image = "${var.registry}/dubodubonduponey/roon-server"
     // Custom for this image
   }
 }

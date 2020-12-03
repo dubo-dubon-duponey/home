@@ -14,7 +14,7 @@ ip route add 10.0.4.40/31 dev local-shim
 
 provider "docker" {
   version = "= 2.8.0"
-host = "ssh://${local.providers.nuc.user}@${local.providers.nuc.host}"
+  host = "ssh://${local.providers.nuc.user}@${local.providers.nuc.host}"
   alias = "nuc"
 
   registry_auth {
@@ -26,7 +26,7 @@ host = "ssh://${local.providers.nuc.user}@${local.providers.nuc.host}"
 
 provider "docker" {
   version = "= 2.8.0"
-host = "ssh://${local.providers.nig.user}@${local.providers.nig.host}"
+  host = "ssh://${local.providers.nig.user}@${local.providers.nig.host}"
   alias = "nig"
 
   registry_auth {
@@ -38,7 +38,7 @@ host = "ssh://${local.providers.nig.user}@${local.providers.nig.host}"
 
 provider "docker" {
   version = "= 2.8.0"
-host = "ssh://${local.providers.dac.user}@${local.providers.dac.host}"
+  host = "ssh://${local.providers.dac.user}@${local.providers.dac.host}"
   alias = "dac"
   registry_auth {
     address = local.registry.address
@@ -49,7 +49,7 @@ host = "ssh://${local.providers.dac.user}@${local.providers.dac.host}"
 
 provider "docker" {
   version = "= 2.8.0"
-alias = "mac"
+  alias = "mac"
   registry_auth {
     address = local.registry.address
     username = local.registry.username
