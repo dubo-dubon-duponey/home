@@ -1,3 +1,9 @@
+variable "prefix" {
+  description = "Name prefix for the created networks"
+  type        = string
+  default     = "dubo-core-"
+}
+
 variable "subnet" {
   description = "Subnet for ip/mac vlan"
   type        = string
@@ -25,5 +31,12 @@ variable "driver" {
 variable "interface" {
   description = "Parent interface for ip/mac vlan"
   type        = string
-  default     = "eth0"
+  default     = ""
 }
+
+variable "aux_address" {
+  description = "Auxiliary address for the vlan network"
+  type        = map(string)
+  default     = {}
+}
+

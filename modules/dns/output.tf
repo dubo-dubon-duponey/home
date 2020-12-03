@@ -1,5 +1,5 @@
-output "ip" {
-  value = docker_container.container.ip_address
+output "network" {
+  value = docker_container.container.network_data
 }
 
 output "name" {
