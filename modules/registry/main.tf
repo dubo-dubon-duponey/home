@@ -53,6 +53,8 @@ resource "docker_container" "container" {
     for_each = toset(local.devices)
     content {
       host_path = devices.value
+      container_path = devices.value
+      permissions = "rwm"
     }
   }
 
