@@ -1,6 +1,7 @@
 provider "docker" {
-  version = "= 2.6"
-  alias = "macarena"
+  version = "= 2.8.0"
+  host = "ssh://${local.providers.nuc.user}@${local.providers.nuc.host}"
+  alias = "nuc"
 
   registry_auth {
     address = local.registry.address
@@ -10,9 +11,9 @@ provider "docker" {
 }
 
 provider "docker" {
-  version = "= 2.6"
-  host = "ssh://${local.dac.user}@${local.dac.ip}"
-  alias = "dacodac"
+  version = "= 2.8.0"
+  host = "ssh://${local.providers.nig.user}@${local.providers.nig.host}"
+  alias = "nig"
 
   registry_auth {
     address = local.registry.address
@@ -22,10 +23,9 @@ provider "docker" {
 }
 
 provider "docker" {
-  version = "= 2.6"
-  host = "ssh://${local.nuc.user}@${local.nuc.ip}"
-  alias = "nucomedon"
-
+  version = "= 2.8.0"
+  host = "ssh://${local.providers.dac.user}@${local.providers.dac.host}"
+  alias = "dac"
   registry_auth {
     address = local.registry.address
     username = local.registry.username
@@ -34,10 +34,8 @@ provider "docker" {
 }
 
 provider "docker" {
-  version = "= 2.6"
-  host = "ssh://${local.cor.user}@${local.cor.ip}"
-  alias = "corpisone"
-
+  version = "= 2.8.0"
+  alias = "mac"
   registry_auth {
     address = local.registry.address
     username = local.registry.username
@@ -45,17 +43,19 @@ provider "docker" {
   }
 }
 
+// XXXtmp dead
+/*
 provider "docker" {
-  version = "= 2.6"
-  host = "ssh://${local.nig.user}@${local.nig.ip}"
-  alias = "nightingale"
-
+  version = "= 2.8.0"
+host = "ssh://${local.providers.cor.user}@${local.providers.cor.host}"
+  alias = "cor"
   registry_auth {
     address = local.registry.address
     username = local.registry.username
     password = local.registry.password
   }
 }
+*/
 
 provider "random" {
   version = "~> 2.2"

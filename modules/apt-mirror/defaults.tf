@@ -1,8 +1,8 @@
 locals {
   defaults = {
     // Defaults to apply if no variable is passed for these
-    nickname = "router"
-    image = "${var.registry}/dubodubonduponey/caddy:v1"
+    nickname = "apt-mirror"
+    image = "${var.registry}/dubodubonduponey/aptly"
     // Custom for this image
   }
 }

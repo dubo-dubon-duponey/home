@@ -4,39 +4,50 @@ variable "volumes_root" {
   default     = "/home/container"
 }
 
-variable "email" {
-  description = "Your email (mainly used for letsencrypt validation)"
+variable "registry_address" {
+  description = "Registry from where to pull the image"
+  type        = string
 }
 
-variable "domain" {
-  description = "Your top level routing domain"
+variable "registry_username" {
+  description = "Registry username to use"
+  type        = string
+}
+
+variable "registry_password" {
+  description = "Registry password to use"
+  type        = string
 }
 
 # DNS module
-variable "dns_upstream_name" {
+variable "service_dns_upstream_name" {
   description = "Upstream DNS server name"
   type        = string
 }
 
-variable "dns_upstream_ips" {
+variable "service_dns_upstream_ips" {
   description = "Upstream TLS DNS server urls"
   type        = list(string)
 }
 
 # Audio module
-variable "dac_audio_name" {
+variable "lounge_name" {
   description = "Name advertised by the Dacodac audio server"
   default     = "Totale Croquette"
 }
 
-variable "cor_audio_name" {
+variable "desk_name" {
   description = "Name advertised by the Corpisone audio server"
   default     = "Corpisone"
 }
 
-variable "nig_audio_name" {
+variable "bedroom_name" {
   description = "Name advertised by the Nightingale audio server"
   default     = "Nightingale"
+}
+
+variable "email" {
+  description = "Your email (mainly used for letsencrypt validation)"
 }
 
 # Video module
@@ -69,6 +80,20 @@ variable "afp_password" {
   default = ""
 }
 
+variable "push_registry_username" {
+  description = "User for the push registry"
+}
+
+variable "push_registry_password" {
+  description = "Passowrd for the push registry"
+}
+
+/*
+
+variable "domain" {
+  description = "Your top level routing domain"
+}
+
 # Router
 variable "restricted_user" {
   description = "User"
@@ -77,3 +102,4 @@ variable "restricted_user" {
 variable "restricted_pwd" {
   description = "Password"
 }
+*/

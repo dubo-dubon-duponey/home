@@ -53,10 +53,11 @@ resource "docker_container" "container" {
     for_each = toset(local.devices)
     content {
       host_path = devices.value
+      container_path = devices.value
+      permissions = "rwm"
     }
   }
-
-  dynamic "volumes" {
+dynamic "volumes" {
     for_each = local.volumes
     content {
       volume_name     = volumes.value
@@ -84,7 +85,16 @@ resource "docker_container" "container" {
     }
   }
 
-  labels = merge({
-    "co.elastic.logs/enabled": local.log,
-  }, local.labels)
+  labels {
+    label = "co.elastic.logs/enabled"
+    value = local.log
+  }
+
+  dynamic "labels" {
+    for_each = local.labels
+    content {
+      label = labels.key
+      value = labels.value
+    }
+  }
 }
