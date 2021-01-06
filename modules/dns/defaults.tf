@@ -4,6 +4,9 @@ locals {
     nickname = "dns"
     image = "${var.registry}/dubodubonduponey/coredns"
     // Custom for this image
+    privileged  = false
+    read_only   = true
+    restart     = "always"
     // Upstream DNS to use
     upstream_name = "cloudflare-dns.com"
     upstream_ips = [

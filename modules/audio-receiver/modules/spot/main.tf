@@ -20,8 +20,10 @@ resource "docker_container" "container" {
   dns           = local.container_dns
   user          = local.container_user
 
-  restart       = "always"
-  read_only     = true
+  restart       = local.container_restart
+  read_only     = local.container_read_only
+
+  privileged    = local.container_privileged
 
   capabilities {
     drop  = ["ALL"]

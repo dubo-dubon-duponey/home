@@ -4,5 +4,8 @@ locals {
     nickname = "plex"
     image = "${var.registry}/dubodubonduponey/plex"
     // Custom for this image
+    privileged  = false
+    read_only   = true
+    restart     = "always"
   }
 }

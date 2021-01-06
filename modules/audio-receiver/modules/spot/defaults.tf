@@ -4,5 +4,8 @@ locals {
     nickname = "spot"
     image = "${var.registry}/dubodubonduponey/librespot"
     // Custom for this image
+    privileged  = false
+    read_only   = true
+    restart     = "always"
   }
 }

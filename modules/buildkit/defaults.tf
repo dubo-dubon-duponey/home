@@ -1,10 +1,10 @@
 locals {
   defaults = {
     // Defaults to apply if no variable is passed for these
-    nickname = "raat"
-    image = "${var.registry}/dubodubonduponey/roon-bridge"
+    nickname = "buildkit"
+    image = "${var.registry}/dubodubonduponey/buildkit"
     // Custom for this image
-    privileged  = false
+    privileged = true
     read_only   = true
     restart     = "always"
   }

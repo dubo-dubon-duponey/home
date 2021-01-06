@@ -4,5 +4,8 @@ locals {
     nickname = "log"
     image = "${var.registry}/dubodubonduponey/filebeat"
     // Custom for this image
+    privileged  = false
+    read_only   = true
+    restart     = "always"
   }
 }

@@ -4,5 +4,8 @@ locals {
     nickname = "afp"
     image = "${var.registry}/dubodubonduponey/netatalk"
     // Custom for this image
+    privileged  = false
+    read_only   = false
+    restart     = "always"
   }
 }

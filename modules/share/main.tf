@@ -20,8 +20,10 @@ resource "docker_container" "container" {
   dns           = local.container_dns
   user          = local.container_user
 
-  restart       = "always"
-  read_only     = false # XXX right now, we have to have this, because of user creation
+  restart       = local.container_restart
+  read_only     = local.container_read_only
+
+  privileged    = local.container_privileged
 
   capabilities {
     drop  = ["ALL"]
@@ -97,9 +99,5 @@ resource "docker_container" "container" {
       label = labels.key
       value = labels.value
     }
-  }
-# XXX is this really a necessity?
-  provisioner "local-exec" {
-    command = "echo 'Users have been configured for netatalk: ${local.users} (${local.passwords}). This will never be displayed ever again.'"
   }
 }

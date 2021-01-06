@@ -4,5 +4,8 @@ locals {
     nickname = "apt-mirror"
     image = "${var.registry}/dubodubonduponey/aptly"
     // Custom for this image
+    privileged  = false
+    read_only   = true
+    restart     = "always"
   }
 }

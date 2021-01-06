@@ -4,5 +4,8 @@ locals {
     nickname = "goproxy"
     image = "${var.registry}/dubodubonduponey/goproxy"
     // Custom for this image
+    privileged  = false
+    read_only   = true
+    restart     = "always"
   }
 }

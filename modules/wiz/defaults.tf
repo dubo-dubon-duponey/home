@@ -4,5 +4,8 @@ locals {
     nickname = "wiz"
     image = "${var.registry}/dubodubonduponey/homekit-wiz"
     // Custom for this image
+    privileged  = false
+    read_only   = true
+    restart     = "always"
   }
 }

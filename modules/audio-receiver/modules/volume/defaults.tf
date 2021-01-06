@@ -4,5 +4,8 @@ locals {
     nickname = "volume"
     image = "${var.registry}/dubodubonduponey/homekit-alsa"
     // Custom for this image
+    privileged  = false
+    read_only   = true
+    restart     = "always"
   }
 }

@@ -4,5 +4,8 @@ locals {
     nickname = "elastic"
     image = "${var.registry}/dubodubonduponey/elastic"
     // Custom for this image
+    privileged  = false
+    read_only   = true
+    restart     = "always"
   }
 }
