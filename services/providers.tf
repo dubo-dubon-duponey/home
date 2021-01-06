@@ -1,5 +1,4 @@
 provider "docker" {
-  version = "= 2.8.0"
   host = "ssh://${local.providers.nuc.user}@${local.providers.nuc.host}"
   alias = "nuc"
 
@@ -11,7 +10,6 @@ provider "docker" {
 }
 
 provider "docker" {
-  version = "= 2.8.0"
   host = "ssh://${local.providers.nig.user}@${local.providers.nig.host}"
   alias = "nig"
 
@@ -23,7 +21,6 @@ provider "docker" {
 }
 
 provider "docker" {
-  version = "= 2.8.0"
   host = "ssh://${local.providers.dac.user}@${local.providers.dac.host}"
   alias = "dac"
   registry_auth {
@@ -34,7 +31,6 @@ provider "docker" {
 }
 
 provider "docker" {
-  version = "= 2.8.0"
   alias = "mac"
   registry_auth {
     address = local.registry.address
@@ -46,7 +42,6 @@ provider "docker" {
 // XXXtmp dead
 /*
 provider "docker" {
-  version = "= 2.8.0"
 host = "ssh://${local.providers.cor.user}@${local.providers.cor.host}"
   alias = "cor"
   registry_auth {
@@ -56,10 +51,6 @@ host = "ssh://${local.providers.cor.user}@${local.providers.cor.host}"
   }
 }
 */
-
-provider "random" {
-  version = "~> 2.2"
-}
 
 resource "random_string" "afp_pwd" {
   length  = 30
