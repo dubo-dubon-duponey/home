@@ -1,62 +1,90 @@
-# Local indirection
+####################################################################
+# This is internal and purely local variables derived from input variables and defaults
+# Specific to http services
+####################################################################
+
 locals {
-  capabilities  = var.user == "root" ? ["NET_BIND_SERVICE"] : []
-  command       = []
-  devices       = []
-  env           = [
-    "SERVER_HOST=${local.container_hostname}",
-    "SERVER_NAME=${local.container_hostname}",
-    "ELASTICSEARCH_HOSTS=${local.elastic_container}",
-    "HEALTHCHECK_URL=http://${local.container_hostname}:5601/api/status?healthcheck",
-  ]
-  // If in bridge, and if we want to expose, which ports
-  expose        = var.expose ? {
-    (var.port): local.internal_port,
-    5601 = 5601
+  // in-container port for the service - this will be public facing in case of a vlan or host network
+  service_port      = (var.user == "root" ? var.port : local.defaults.port)
+  // if at least one of the networks is a bridge, and if expose is true
+  container_expose  = var.expose ? {
+    (var.port): local.service_port,
   } : {}
-  expose_type   = "tcp"
-  group_add     = []
-  labels        = {
-    "co.elastic.logs/module": "kibana",
-    "co.elastic.logs/fileset": "log",
-  }
-  mounts        = {}
-  mountsrw      = {}
+
+  service_domain    = (var.domain != "" ? var.domain : "${local.container_name}.local")
+  mdns_host         = (var.mdns_host != "" ? var.mdns_host : local.container_name)
+  mdns_name         = (var.mdns_name != "" ? var.mdns_name : local.mdns_host)
+
+  env = [
+    "LOG_LEVEL=warn",
+    "TLS=${var.tls}",
+    "DOMAIN=${local.service_domain}",
+    "PORT=${local.service_port}",
+    "USERNAME=${var.username}",
+    "PASSWORD=${var.password}",
+    "REALM=${var.realm}",
+    "MDNS_ENABLED=${var.mdns_enabled}",
+    "MDNS_HOST=${local.mdns_host}",
+    "MDNS_NAME=${local.mdns_name}",
+
+    // +KIBANA specific
+    "ELASTICSEARCH_HOSTS=${local.elastic_container}",
+    // XXX unclear why but kibana will not use the os trust store... have to point it to the file...
+    "ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=/etc/ssl/certs/ca.pem",
+    "ELASTICSEARCH_USERNAME=${var.elastic_username}",
+    "ELASTICSEARCH_PASSWORD=${var.elastic_password}",
+    // -KIBANA specific
+  ]
+
   volumes       = {
-    "/data": docker_volume.data.name,
-    "/boot/optimize": docker_volume.xxx-hack.name,
+    "/tmp": docker_volume.tmp.name
+  }
+  mountsrw      = {
+    "/certs": var.cert_path,
+    "/data": var.data_path,
+  }
+  mounts        = {
+    "/etc/ssl/certs/ca.pem": "${var.cert_path}/pki/authorities/local/root.crt"
   }
 
   # Service
   elastic_container     = var.elastic_container
-
-  internal_port = (var.user == "root" ? var.port : 9200)
 }
 
-# Service settings
-variable "expose" {
-  description = "Whether to expose ports (only applicable to bridge networking)"
-  type        = bool
-  default     = false
+resource "docker_volume" "tmp" {
+  provider      = docker
+  name          = "tmp-${local.container_name}"
+}
+
+variable "cert_path" {
+  description = "Host path for persistent data & config"
+  type        = string
+  // TODO move this away later on to a central (non service dependent location)
+  // and/or mount the root cert from a location
+  default     = "/home/container/certs/registry"
+}
+
+variable "data_path" {
+  description = "Host path for persistent data & config"
+  type        = string
+  default     = "/home/container/data/elastic"
 }
 
 variable "elastic_container" {
-  description = "Where to find the elastic container"
+  description = "Address of the elastic container (including scheme and port)"
   type        = string
 }
 
-resource "docker_volume" "data" {
-  provider      = docker
-  name          = "data-${local.container_name}"
-}
-
-resource "docker_volume" "xxx-hack" {
-  provider      = docker
-  name          = "xxx-hack-${local.container_name}"
-}
-
-variable "port" {
-  description = "Main port to expose"
+variable "elastic_username" {
+  description = "Optional elastic username"
   type        = string
-  default     = "9200"
+  default     = ""
+  sensitive   = true
+}
+
+variable "elastic_password" {
+  description = "Optional elastic password"
+  type        = string
+  default     = ""
+  sensitive   = true
 }

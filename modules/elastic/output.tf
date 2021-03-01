@@ -5,7 +5,3 @@ output "network" {
 output "name" {
   value = docker_container.container.name
 }
-
-output "port" {
-  value = 9200
-}

@@ -1,11 +1,22 @@
+####################################################################
+# Default values for this container
+# Some values can be overridden with variables (image name, nickname, port)
+####################################################################
+
 locals {
   defaults = {
-    // Defaults to apply if no variable is passed for these
-    nickname = "log"
-    image = "${var.registry}/dubodubonduponey/filebeat"
-    // Custom for this image
-    privileged  = false
-    read_only   = true
-    restart     = "always"
+    nickname      = "log"
+    image         = "dubodubonduponey/filebeat"
+    privileged    = false
+    read_only     = true
+    restart       = "always"
+    expose_type   = ""
+    devices       = []
+    group_add     = []
+    command       = []
+    caps_if_root  = []
+    labels        = {
+    }
   }
 }
+
