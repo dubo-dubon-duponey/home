@@ -35,13 +35,20 @@ locals {
     "/data": var.data_path,
     "/certs": var.cert_path,
   }
-  volumes       = {}
+  volumes       = {
+    "/run": docker_volume.run.name,
+  }
+}
+
+resource "docker_volume" "run" {
+  provider      = docker
+  name          = "run-${local.container_name}"
 }
 
 variable "data_path" {
   description = "Host path for persistent data & config"
   type        = string
-  default     = "/home/container/data/apt-cache"
+  default     = "/home/container/data/buildkit"
 }
 
 variable "cert_path" {
