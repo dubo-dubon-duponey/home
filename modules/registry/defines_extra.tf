@@ -1,8 +1,12 @@
-# Local indirection
+####################################################################
+# This is internal and purely local variables derived from input variables and defaults
+# Specific to http services
+####################################################################
+
 locals {
   // in-container port for the service - this will be public facing in case of a vlan or host network
   service_port      = (var.user == "root" ? var.port : local.defaults.port)
-  // if at least one of the networks is a bridge, and if expose is true
+  // if expose is true (will be no-op if one of the network at least is not a bridge)
   container_expose  = var.expose ? {
     (var.port): local.service_port,
   } : {}

@@ -72,13 +72,13 @@ module "network-nuc" {
     docker  = docker.nuc
   }
 
-  prefix    = "dubo-"
-  driver    = local.networks.nuc.driver
-  range     = local.networks.nuc.range
-  interface = local.networks.nuc.iface
+  prefix      = "dubo-"
+  driver      = local.networks.nuc.driver
+  range       = local.networks.nuc.range
+  interface   = local.networks.nuc.iface
   aux_address = local.networks.nuc.aux
-  subnet    = local.subnet
-  gateway   = local.gateway
+  subnet      = local.networks.nuc.subnet
+  gateway     = local.networks.nuc.gateway
 }
 
 module "network-nig" {
@@ -92,12 +92,10 @@ module "network-nig" {
   range       = local.networks.nig.range
   interface   = local.networks.nig.iface
   aux_address = local.networks.nig.aux
-  subnet      = local.subnet
-  gateway     = local.gateway
+  subnet      = local.networks.nig.subnet
+  gateway     = local.networks.nig.gateway
 }
 
-// XXXtmp preserve for now
-/*
 module "network-dac" {
   source      = "../modules/network"
   providers   = {
@@ -109,11 +107,11 @@ module "network-dac" {
   range       = local.networks.dac.range
   interface   = local.networks.dac.iface
   aux_address = local.networks.dac.aux
-  subnet      = local.subnet
-  gateway     = local.gateway
+  subnet      = local.networks.dac.subnet
+  gateway     = local.networks.dac.gateway
 }
-*/
 
+/* XXX can't create custom vlan anymore because of latest changes
 module "network-mac" {
   source      = "../modules/network"
   providers   = {
@@ -125,10 +123,10 @@ module "network-mac" {
   range       = local.networks.mac.range
   interface   = local.networks.mac.iface
   aux_address = local.networks.mac.aux
-  subnet      = local.subnet
-  gateway     = local.gateway
+  subnet      = local.networks.mac.subnet
+  gateway     = local.networks.mac.gateway
 }
-
+*/
 
 // XXXtmp dead
 /*
@@ -156,10 +154,11 @@ module "network-cor" {
 # First, a working DNS server - every other system on the nuc depends on this
 module "dns-lan-1" {
   source        = "../modules/dns"
+  registry      = local.registry.address
+
   providers     = {
     docker        = docker.nuc
   }
-
   hostname      = local.networks.nuc.hostname
   nickname      = "dns-lan"
 
@@ -170,22 +169,20 @@ module "dns-lan-1" {
   }
 
   user          = "root"
-  # XXX bridged dns? IIRC some docker fuckerism over UDP
   expose        = true
   healthcheck   = local.services.dns.healthcheck
 
   upstream_name = local.services.dns.upstream_name
   upstream_ips  = local.services.dns.upstream_ips
-
-  registry      = local.registry.address
 }
 
 module "dns-lan-2" {
   source        = "../modules/dns"
+  registry      = local.registry.address
+
   providers     = {
     docker        = docker.nig
   }
-
   hostname      = local.networks.nig.hostname
   nickname      = "dns-lan"
 
@@ -196,24 +193,20 @@ module "dns-lan-2" {
   }
 
   user          = "root"
-  # bridged dns? IIRC some docker fuckerism over UDP
   expose        = true
   healthcheck   = local.services.dns.healthcheck
 
   upstream_name = local.services.dns.upstream_name
   upstream_ips  = local.services.dns.upstream_ips
-
-  registry      = local.registry.address
 }
 
-// XXXtmp
-/*
 module "dns-lan-3" {
   source        = "../modules/dns"
+  registry      = local.registry.address
+
   providers     = {
     docker        = docker.dac
   }
-
   hostname      = local.networks.dac.hostname
   nickname      = "dns-lan"
 
@@ -224,22 +217,21 @@ module "dns-lan-3" {
   }
 
   user          = "root"
-  # bridged dns? IIRC some docker fuckerism over UDP
   expose        = true
   healthcheck   = local.services.dns.healthcheck
 
   upstream_name = local.services.dns.upstream_name
   upstream_ips  = local.services.dns.upstream_ips
-
-  registry      = local.registry.address
 }
 
+/*
 module "dns-lan-4" {
   source        = "../modules/dns"
+  registry      = local.registry.address
+
   providers     = {
     docker        = docker.cor
   }
-
   hostname      = local.networks.cor.hostname
   nickname      = "dns-lan"
 
@@ -256,24 +248,24 @@ module "dns-lan-4" {
 
   upstream_name = local.services.dns.upstream_name
   upstream_ips  = local.services.dns.upstream_ips
-
-  registry      = local.registry.address
 }
 */
 
 module "dns-mac" {
   source        = "../modules/dns"
+  registry      = local.registry.address
+
   providers     = {
     docker        = docker.mac
   }
-
   hostname      = local.networks.mac.hostname
   nickname      = "dns-lan"
 
   networks      = {
-    (module.network-mac.vlan): "",
+    "bridge": "",
+    // (module.network-mac.vlan): "",
     // XXX does not work at this point: https://github.com/moby/libnetwork/issues/1729 and fix here: https://github.com/moby/libnetwork/pull/2577
-    (module.network-mac.bridge): "",
+    // (module.network-mac.bridge): "",
   }
 
   user          = "root"
@@ -283,25 +275,23 @@ module "dns-mac" {
 
   upstream_name = local.services.dns.upstream_name
   upstream_ips  = local.services.dns.upstream_ips
-
-  registry      = local.registry.address
 }
 
 # Then, a local registry, hopefully pre-populated with every required image
 module "registry" {
   source        = "../modules/registry"
+  registry      = local.registry.address
+
   providers     = {
     docker  = docker.nuc
   }
-
   hostname      = local.networks.nuc.hostname
-
-  // user          = "root"
-
   networks      = {
     // XXXtmp
     (module.network-nuc.vlan): "",
   }
+
+  user          = "root"
 
   # XXX this simply is not usable
   # module.dns.network[0].ip_address,
@@ -314,9 +304,13 @@ module "registry" {
 
   username      = local.services.registry.username
   password      = local.services.registry.password
+  mdns_host     = "registry"
+  mdns_name     = "Internal read-only registry"
+
+  pull          = "authenticated"
+  push          = "disabled"
 
   data_path     = "${var.volumes_root}/data/registry"
   cert_path     = "${var.volumes_root}/certs/registry"
 
-  registry      = local.registry.address
 }

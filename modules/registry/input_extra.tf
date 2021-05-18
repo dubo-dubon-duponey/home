@@ -32,7 +32,7 @@ variable "mdns_host" {
 }
 
 variable "mdns_name" {
-  description = "mDNS fancy name to advertise (if unspecified, will default to the container nickname)"
+  description = "mDNS fancy name to advertise (if left empty, will default to the container nickname)"
   type        = string
   default     = ""
 }
@@ -70,7 +70,7 @@ variable "tls" {
 }
 
 variable "domain" {
-  description = "Domain name served by caddy over TLS (will default to nickname.local if unspecified)"
+  description = "Domain name served by caddy over TLS (will default to nickname.local if left empty)"
   type        = string
   default     = ""
 }

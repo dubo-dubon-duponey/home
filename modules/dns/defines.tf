@@ -22,13 +22,11 @@ locals {
   # Container properties
   container_devices       = local.defaults.devices
   container_group_add     = local.defaults.group_add
-  container_command       = local.defaults.command
+  container_command       = length(var.command) != 0 ? var.command : local.defaults.command
 
   container_capabilities  = var.user == "root" ? local.defaults.caps_if_root : []
 
-  labels                  = local.defaults.labels
-
-  # Logger
+  # Labels
   log                     = var.log
-
+  labels                  = local.defaults.labels
 }
