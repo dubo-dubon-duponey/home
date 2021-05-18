@@ -10,7 +10,7 @@ locals {
     privileged    = false
     read_only     = true
     restart       = "always"
-    expose_type   = ""
+    expose_type   = "tcp"
     devices       = []
     group_add     = []
     command       = []

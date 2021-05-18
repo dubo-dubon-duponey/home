@@ -1,3 +1,8 @@
+####################################################################
+# Default values for this container
+# Some values can be overridden with variables (image name, nickname, port)
+####################################################################
+
 locals {
   defaults = {
     nickname      = "apt-mirror"

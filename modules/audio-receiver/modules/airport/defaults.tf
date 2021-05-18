@@ -1,11 +1,48 @@
+####################################################################
+# Default values for this container
+# Some values can be overridden with variables (image name, nickname, port)
+####################################################################
+
 locals {
   defaults = {
-    // Defaults to apply if no variable is passed for these
-    nickname = "airport"
-    image = "${var.registry}/dubodubonduponey/shairport-sync"
-    // Custom for this image
-    privileged  = false
-    read_only   = true
-    restart     = "always"
+    nickname      = "airport"
+    image         = "dubodubonduponey/shairport-sync"
+    privileged    = false
+    read_only     = true
+    restart       = "always"
+    expose_type   = "tcp"
+    devices       = [
+      "/dev/snd",
+    ]
+    group_add     = [
+      "audio",
+    ]
+    command       = [
+      "-vv",
+      "--statistics",
+      "--",
+      "-d",
+      "hw:0",
+    ]
+    caps_if_root  = []
+    labels        = {
+    }
   }
 }
+
+/*
+nickname      = "elastic"
+image         = "dubodubonduponey/elastic"
+privileged    = false
+read_only     = true
+restart       = "always"
+expose_type   = "tcp"
+devices       = []
+group_add     = []
+command       = []
+caps_if_root  = ["NET_BIND_SERVICE"]
+port          = 4443
+labels        = {
+  "co.elastic.logs/module": "elasticsearch",
+}
+*/

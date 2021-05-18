@@ -27,12 +27,12 @@ resource "docker_container" "container" {
 
   capabilities {
     drop  = ["ALL"]
-    add   = local.capabilities
+    add   = local.container_capabilities
   }
 
   env       = local.env
-  group_add = local.group_add
-  command   = local.command
+  group_add = local.container_group_add
+  command   = local.container_command
 
   dynamic "networks_advanced" {
     for_each = local.container_networks
@@ -43,16 +43,17 @@ resource "docker_container" "container" {
   }
 
   dynamic "ports" {
-    for_each = local.expose
+    for_each = local.container_expose
+    # XXX this is sub-optimal - certain fancy services may expose multiple ports with different types
     content {
       internal    = ports.value
       external    = ports.key
-      protocol    = local.expose_type
+      protocol    = local.container_expose_type
     }
   }
 
   dynamic "devices" {
-    for_each = toset(local.devices)
+    for_each = toset(local.container_devices)
     content {
       host_path = devices.value
       container_path = devices.value

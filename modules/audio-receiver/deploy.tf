@@ -1,16 +1,16 @@
 module "airport" {
   source = "./modules/airport"
+
+  registry = var.registry
   providers = {
     docker = docker
   }
+  hostname  = var.hostname
+  log       = var.log
+  networks  = var.networks
+  dns       = var.dns
 
-  hostname = var.hostname
-  log = var.log
-  networks = var.networks
-  dns = var.dns
-  user = var.user
-
-  station = var.station
+  station   = var.station
   command = [
     # "-vv",
     # "--statistics",
@@ -19,20 +19,19 @@ module "airport" {
     "hw:${var.hw_index}",
   ]
 
-  registry = var.registry
 }
 
 module "spot" {
   source = "./modules/spot"
+
+  registry = var.registry
   providers = {
     docker = docker
   }
-
-  hostname = var.hostname
-  log = var.log
-  networks = var.networks
-  dns = var.dns
-  user = var.user
+  hostname  = var.hostname
+  log       = var.log
+  networks  = var.networks
+  dns       = var.dns
 
   station = var.station
   command = [
@@ -47,40 +46,34 @@ module "spot" {
     "--enable-volume-normalisation",
     "-v",
   ]
-
-  registry = var.registry
 }
 
 module "raat" {
   source = "./modules/raat"
+
+  registry = var.registry
   providers = {
     docker = docker
   }
-
-  hostname = var.hostname
-  log = var.log
-  networks = var.networks
-  dns = var.dns
-  user = var.user
-
-  registry = var.registry
+  hostname  = var.hostname
+  log       = var.log
+  networks  = var.networks
+  dns       = var.dns
 }
 
 module "volume" {
   source = "./modules/volume"
+
+  registry = var.registry
   providers = {
     docker = docker
   }
-
-  hostname = var.hostname
-  log = var.log
-  networks = var.networks
-  dns = var.dns
-  user = var.user
+  hostname  = var.hostname
+  log       = var.log
+  networks  = var.networks
+  dns       = var.dns
 
   station = var.station
   device = var.mixer_name
   card = var.hw_index
-
-  registry = var.registry
 }

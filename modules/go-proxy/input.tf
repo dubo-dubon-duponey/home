@@ -49,3 +49,9 @@ variable "registry" {
   type        = string
   default     = "registry-1.docker.io"
 }
+
+variable "command" {
+  description = "If specified, override command-line arguments to start the container with"
+  type        = list(string)
+  default     = []
+}

@@ -1,11 +1,21 @@
+####################################################################
+# Default values for this container
+# Some values can be overridden with variables (image name, nickname, port)
+####################################################################
+
 locals {
   defaults = {
-    // Defaults to apply if no variable is passed for these
-    nickname = "wiz"
-    image = "${var.registry}/dubodubonduponey/homekit-wiz"
-    // Custom for this image
-    privileged  = false
-    read_only   = true
-    restart     = "always"
+    nickname      = "wiz"
+    image         = "dubodubonduponey/homekit-wiz"
+    privileged    = false
+    read_only     = true
+    restart       = "always"
+    expose_type   = "udp"
+    devices       = []
+    group_add     = []
+    command       = []
+    caps_if_root  = []
+    labels        = {
+    }
   }
 }

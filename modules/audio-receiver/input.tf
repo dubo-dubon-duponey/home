@@ -22,12 +22,6 @@ variable "log" {
   default     = true
 }
 
-variable "user" {
-  description = "User to run the container with (root may automatically add select caps and bind to priveleged ports)"
-  type        = string
-  default     = ""
-}
-
 variable "station" {
   description = "Station name"
   type        = string
