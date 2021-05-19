@@ -1,7 +1,7 @@
 variable "prefix" {
   description = "Name prefix for the created networks"
   type        = string
-  default     = "dubo-core-"
+  default     = "dubo-core"
 }
 
 variable "subnet" {

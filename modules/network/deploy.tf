@@ -4,7 +4,7 @@
 resource "docker_network" "dubo-bridge" {
   provider        = docker
 
-  name            = "${var.prefix}bridge"
+  name            = "${var.prefix}-bridge"
 
   driver          = "bridge"
 
@@ -19,7 +19,7 @@ resource "docker_network" "dubo-bridge" {
 resource "docker_network" "dubo-vlan" {
   provider        = docker
 
-  name            = "${var.prefix}vlan"
+  name            = "${var.prefix}-${var.driver}"
 
   driver          = var.driver
 
