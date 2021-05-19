@@ -7,6 +7,8 @@ locals {
   container_expose = {}
 
   env           = [
+    "LOG_LEVEL=${var.log_level}",
+
     "KIBANA_HOST=${var.kibana}",
     "KIBANA_USERNAME=${var.kibanaUser}",
     "KIBANA_PASSWORD=${var.kibanaPassword}",
@@ -25,23 +27,27 @@ locals {
     # XXX this is going to fail dramatically if docker daemon has a custom "data-root" - FIX: parse /etc/docker/daemon.json using remote-exec to figure that out
     "/var/lib/docker/containers": "/var/lib/docker/containers",
     "/var/run/docker.sock": "/var/run/docker.sock",
+    // XXX generalize this
     "/etc/ssl/certs/ca.pem": "/home/container/certs/ca.crt"
 
   }
 
+  // It should be possible for each important path (/data, /certs, /tmp)
+  // to pick either "tmpfs", a local path, or "volume"
+
   mountsrw      = {}
-  volumes       = {
-    "/data": docker_volume.data.name,
-    "/certs": docker_volume.certs.name,
+
+  ramdisks      = {
+    "/data": true
   }
+
+  volumes = {}
+  //volumes       = {
+  //  "/data": docker_volume.data.name,
+  //}
 
   # Healthcheck config - XXX this is BS at this point
   healthcheck_url         = var.elastic
-}
-
-resource "docker_volume" "certs" {
-  provider      = docker
-  name          = "certs-${local.container_name}"
 }
 
 resource "docker_volume" "data" {

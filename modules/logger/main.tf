@@ -79,6 +79,15 @@ resource "docker_container" "container" {
   }
 
   dynamic "mounts" {
+    for_each = local.ramdisks
+    content {
+      target      = mounts.key
+      type        = "tmpfs"
+      read_only   = mounts.value ? false : true
+    }
+  }
+
+  dynamic "mounts" {
     for_each = local.mounts
     content {
       target = mounts.key

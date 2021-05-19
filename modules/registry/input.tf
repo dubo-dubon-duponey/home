@@ -20,6 +20,16 @@ variable "log" {
   default     = true
 }
 
+variable "log_level" {
+  description = "Level of logging for the processes in the container"
+  type        = string
+  default     = "warning"
+  validation {
+    condition     = can(regex("^(?:debug|info|warning|error)$", var.log_level))
+    error_message = "Log level must be one of: 'debug, info, warning, error'."
+  }
+}
+
 variable "dns" {
   description = "DNS server ip(s) to use for this container"
   type        = list(string)

@@ -72,7 +72,7 @@ module "network-nuc" {
     docker  = docker.nuc
   }
 
-  prefix      = "dubo-"
+  prefix      = "dubo"
   driver      = local.networks.nuc.driver
   range       = local.networks.nuc.range
   interface   = local.networks.nuc.iface
@@ -87,7 +87,7 @@ module "network-nig" {
     docker    = docker.nig
   }
 
-  prefix      = "dubo-"
+  prefix      = "dubo"
   driver      = local.networks.nig.driver
   range       = local.networks.nig.range
   interface   = local.networks.nig.iface
@@ -102,7 +102,7 @@ module "network-dac" {
     docker    = docker.dac
   }
 
-  prefix      = "dubo-"
+  prefix      = "dubo"
   driver      = local.networks.dac.driver
   range       = local.networks.dac.range
   interface   = local.networks.dac.iface
@@ -303,7 +303,7 @@ module "registry" {
   ]
 
   username      = local.services.registry.username
-  password      = local.services.registry.password
+  password      = local.services.registry.bcrypt
   mdns_host     = "registry"
   mdns_name     = "Internal read-only registry"
 

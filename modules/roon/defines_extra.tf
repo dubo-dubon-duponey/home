@@ -18,7 +18,7 @@ locals {
   mdns_name         = (var.mdns_name != "" ? var.mdns_name : local.mdns_host)
 
   env = [
-    "LOG_LEVEL=warn",
+    "LOG_LEVEL=${var.log_level}",
     "TLS=${var.tls}",
     "DOMAIN=${local.service_domain}",
     "PORT=${local.service_port}",

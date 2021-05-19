@@ -70,8 +70,9 @@ locals {
     nuc: {
       iface     = "eno1"
       // XXX Soooo... macvlan means cluttering the client lists with a bunch of additional ARP records, right?
-      // driver    = "macvlan"
-      driver    = "ipvlan"
+      driver    = "macvlan"
+      // XXX Sooo... ipvlan does not allow for bridged host access
+      // driver    = "ipvlan"
       gateway   = "10.0.4.1"
       subnet    = "10.0.4.1/24"
       range     = "10.0.4.96/27"
@@ -106,8 +107,8 @@ locals {
       healthcheck   = "dns.healthcheck.jsboot.space"
     }
     registry: {
-      username: var.service_registry_username,
-      password: var.service_registry_password,
+      username      = var.service_registry_username,
+      bcrypt        = var.service_registry_password,
     }
   }
 
