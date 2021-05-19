@@ -14,6 +14,7 @@ locals {
   container_user          = var.user
   container_dns           = var.dns
   container_networks      = var.networks
+  container_hosts         = var.hosts
   container_privileged    = local.defaults.privileged
   container_read_only     = local.defaults.read_only
   container_restart       = local.defaults.restart

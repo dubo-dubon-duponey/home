@@ -26,6 +26,12 @@ variable "dns" {
   default     = []
 }
 
+variable "hosts" {
+  description = "Additional hosts to feed the container"
+  type        = map(string)
+  default     = {}
+}
+
 variable "nickname" {
   description = "Overrides the container name (this is also used as a base to populate defaults for a number of other properties, like domain names)"
   type        = string

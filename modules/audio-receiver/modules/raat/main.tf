@@ -42,6 +42,15 @@ resource "docker_container" "container" {
     }
   }
 
+  dynamic "host" {
+    for_each = local.container_hosts
+    # XXX this is sub-optimal - certain fancy services may expose multiple ports with different types
+    content {
+      host        = host.key
+      ip          = host.value
+    }
+  }
+
   dynamic "ports" {
     for_each = local.container_expose
     # XXX this is sub-optimal - certain fancy services may expose multiple ports with different types
