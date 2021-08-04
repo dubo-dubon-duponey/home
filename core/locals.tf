@@ -35,35 +35,35 @@ locals {
   // Topology to use to configure docker network
   networks      = {
     dac: {
-      iface     = "wlan0"
-      driver    = "ipvlan"
-      gateway   = "10.0.1.1"
-      subnet    = "10.0.1.1/24"
-      range     = "10.0.1.48/28"
+      iface     = "eth0"
+      driver    = "macvlan"
+      gateway   = "10.0.4.1"
+      subnet    = "10.0.4.1/24"
+      range     = "10.0.4.48/28"
       aux = {
-        link: "10.0.1.48",
+        link: "10.0.4.48",
       }
       hostname = "dacodac.local"
     },
     nig: {
-      iface     = "wlan0"
-      driver    = "ipvlan"
-      gateway   = "10.0.1.1"
-      subnet    = "10.0.1.1/24"
-      range     = "10.0.1.64/28"
+      iface     = "eth0"
+      driver    = "macvlan"
+      gateway   = "10.0.4.1"
+      subnet    = "10.0.4.1/24"
+      range     = "10.0.4.64/28"
       aux       = {
-        link: "10.0.1.64",
+        link: "10.0.4.64",
       }
       hostname  = "nightingale.local"
     },
     cor: {
       iface     = "wlan0"
-      driver    = "ipvlan"
-      gateway   = "10.0.1.1"
-      subnet    = "10.0.1.1/24"
-      range     = "10.0.1.80/28"
+      driver    = "macvlan"
+      gateway   = "10.0.4.1"
+      subnet    = "10.0.4.1/24"
+      range     = "10.0.4.80/28"
       aux = {
-        link: "10.0.1.80",
+        link: "10.0.4.80",
       }
       hostname  = "corpisone.local"
     },
@@ -98,9 +98,9 @@ locals {
     // 3. these addresses cannot be at the start of the range (docker will use these for dynamically allocated containers)
     // -> end-up using the last ip in the range...
     dns1: "10.0.4.127",
-    dns2: "10.0.1.79",
-    dns3: "10.0.1.63",
-    dns4: "10.0.1.95",
+    dns2: "10.0.4.79",
+    dns3: "10.0.4.63",
+    dns4: "10.0.4.95",
     dns: {
       upstream_name = var.service_dns_upstream_name
       upstream_ips  = var.service_dns_upstream_ips
@@ -111,5 +111,4 @@ locals {
       bcrypt        = var.service_registry_password,
     }
   }
-
 }
