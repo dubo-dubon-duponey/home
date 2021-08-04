@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "wiz"
-    image         = "dubodubonduponey/homekit-wiz"
+    image         = "dubo-dubon-duponey/homekit-wiz:bullseye-2021-06-01"
     privileged    = false
     read_only     = true
     restart       = "always"

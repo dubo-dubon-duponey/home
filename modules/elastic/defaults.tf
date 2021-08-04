@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "elastic"
-    image         = "dubodubonduponey/elastic"
+    image         = "dubo-dubon-duponey/elastic:bullseye-2021-06-01"
     privileged    = false
     read_only     = true
     restart       = "always"

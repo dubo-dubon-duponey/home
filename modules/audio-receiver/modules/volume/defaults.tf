@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "volume"
-    image         = "dubodubonduponey/homekit-alsa"
+    image         = "dubo-dubon-duponey/homekit-alsa:bullseye-2021-06-01"
     privileged    = false
     read_only     = true
     restart       = "always"

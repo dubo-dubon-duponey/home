@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "spot"
-    image         = "dubodubonduponey/librespot"
+    image         = "dubo-dubon-duponey/librespot:bullseye-2021-06-01"
     privileged    = false
     read_only     = true
     restart       = "always"

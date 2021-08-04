@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "roon"
-    image         = "dubodubonduponey/roon-server"
+    image         = "dubo-dubon-duponey/roon:server-bullseye-2021-06-01"
     privileged    = false
     read_only     = true
     restart       = "always"

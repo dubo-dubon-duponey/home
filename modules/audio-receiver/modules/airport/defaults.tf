@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "airport"
-    image         = "dubodubonduponey/shairport-sync"
+    image         = "dubo-dubon-duponey/shairport-sync:bullseye-2021-06-01"
     privileged    = false
     read_only     = true
     restart       = "always"
@@ -32,7 +32,7 @@ locals {
 
 /*
 nickname      = "elastic"
-image         = "dubodubonduponey/elastic"
+image         = "dubo-dubon-duponey/elastic:bullseye-2021-06-01"
 privileged    = false
 read_only     = true
 restart       = "always"

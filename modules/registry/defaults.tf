@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "registry"
-    image         = "dubodubonduponey/registry"
+    image         = "dubo-dubon-duponey/registry:bullseye-2021-07-01"
     privileged    = false
     read_only     = true
     restart       = "always"

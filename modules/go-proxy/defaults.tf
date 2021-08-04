@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "goproxy"
-    image         = "dubodubonduponey/goproxy"
+    image         = "dubo-dubon-duponey/goproxy:bullseye-2021-07-01"
     privileged    = false
     read_only     = true
     restart       = "always"

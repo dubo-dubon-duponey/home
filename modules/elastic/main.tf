@@ -103,6 +103,9 @@ resource "docker_container" "container" {
     value = local.log
   }
 
+  # XXX whether we want to bind filebeat collection and actual logging or not...
+  # log_driver = local.log ? "json-file" : "none"
+
   dynamic "labels" {
     for_each = local.labels
     content {

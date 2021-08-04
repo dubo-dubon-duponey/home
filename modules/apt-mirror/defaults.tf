@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "apt-mirror"
-    image         = "dubodubonduponey/aptly"
+    image         = "dubo-dubon-duponey/aptly:bullseye-2021-07-01"
     privileged    = false
     read_only     = true
     restart       = "always"

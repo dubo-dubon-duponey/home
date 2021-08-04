@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "afp"
-    image         = "dubodubonduponey/netatalk"
+    image         = "dubo-dubon-duponey/netatalk:bullseye-2021-06-01"
     privileged    = false
     // XXX why oh why
     read_only     = false

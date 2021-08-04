@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "apt-cache"
-    image         = "dubodubonduponey/aptutil"
+    image         = "dubo-dubon-duponey/aptutil:bullseye-2021-07-01"
     privileged    = false
     read_only     = true
     restart       = "always"

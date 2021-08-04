@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "log"
-    image         = "dubodubonduponey/filebeat"
+    image         = "dubo-dubon-duponey/filebeat:bullseye-2021-06-01"
     privileged    = false
     read_only     = true
     restart       = "always"

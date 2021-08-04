@@ -1,7 +1,7 @@
 locals {
   defaults = {
     nickname      = "buildkit"
-    image         = "dubodubonduponey/buildkit"
+    image         = "dubo-dubon-duponey/buildkit:bullseye-2021-06-01"
     privileged    = true
     // XXX revert this - apparently used by apt-get cert management right now
     read_only     = false // true

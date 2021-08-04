@@ -23,6 +23,7 @@ provider "docker" {
 provider "docker" {
   host = "ssh://${local.providers.dac.user}@${local.providers.dac.host}"
   alias = "dac"
+
   registry_auth {
     address = local.registry.address
     username = local.registry.username
@@ -32,6 +33,7 @@ provider "docker" {
 
 provider "docker" {
   alias = "mac"
+
   registry_auth {
     address = local.registry.address
     username = local.registry.username

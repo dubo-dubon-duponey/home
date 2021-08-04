@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "kibana"
-    image         = "dubodubonduponey/kibana"
+    image         = "dubo-dubon-duponey/kibana:bullseye-2021-06-01"
     privileged    = false
     read_only     = true
     restart       = "always"
