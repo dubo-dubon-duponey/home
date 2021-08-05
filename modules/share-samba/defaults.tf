@@ -5,8 +5,8 @@
 
 locals {
   defaults = {
-    nickname      = "roon"
-    image         = "dubo-dubon-duponey/roon:server-bullseye-2021-08-01"
+    nickname      = "samba"
+    image         = "dubo-dubon-duponey/samba:bullseye-2021-08-01"
     privileged    = false
     read_only     = true
     restart       = "always"
@@ -14,8 +14,17 @@ locals {
     devices       = []
     group_add     = []
     command       = []
-    caps_if_root  = ["NET_BIND_SERVICE"]
-    port          = 4443
+    caps_if_root  = [
+      # Required to bind
+      "NET_BIND_SERVICE",
+      # These caps are only required for user account management
+      # Ideally, that should be not granted to runtime image then
+      # But instead a separate instance should operate "one-time" on the same volumes
+      "CHOWN",
+      "FOWNER",
+      "SETUID", "SETGID",
+      "DAC_OVERRIDE",
+    ]
     labels        = {
     }
   }

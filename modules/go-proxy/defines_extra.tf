@@ -16,42 +16,45 @@ locals {
   mdns_name         = (var.mdns_name != "" ? var.mdns_name : local.mdns_host)
 
   env           = [
-    "LOG_LEVEL=${var.log_level}",
-    "TLS=${var.tls}",
-    "DOMAIN=${local.service_domain}",
     "PORT=${local.service_port}",
-    "USERNAME=${var.username}",
-    "PASSWORD=${var.password}",
-    "REALM=${var.realm}",
+    "PORT_HTTP=${var.tls_redirect_port}",
+    "DOMAIN=${local.service_domain}",
+    "ADDITIONAL_DOMAINS=${var.additional_domains}",
+    "TLS=${var.tls}",
+    "TLS_MIN=${var.tls_min}",
+    "TLS_MTLS_MODE=${var.tls_mtls_mode}",
+//    "TLS_ISSUER=${var.tls_issuer}",
+    "TLS_AUTO=${var.tls_auto}",
+    "AUTH_ENABLED=${var.auth_enabled}",
+    "AUTH_REALM=${var.auth_realm}",
+    "AUTH_USERNAME=${var.auth_username}",
+    "AUTH_PASSWORD=${var.auth_password}",
     "MDNS_ENABLED=${var.mdns_enabled}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
-
-    "ATHENS_DISK_STORAGE_ROOT=/tmp/athens",
-    "ATHENS_STORAGE_TYPE=disk",
-    #    "ATHENS_PORT=:${local.port}",
   ]
 }
 
 locals {
   mounts        = {}
+  volumes       = {}
+
   mountsrw      = {
+    "/data": var.data_path,
     "/certs": var.cert_path,
   }
-  volumes       = {
-    "/tmp": docker_volume.tmp.name,
+
+  ramdisks      = {
+    "/tmp": "10G"
   }
 }
 
-resource "docker_volume" "tmp" {
-  provider      = docker
-  name          = "tmp-${local.container_name}"
+variable "data_path" {
+  description = "Host path for persistent data"
+  type        = string
 }
 
 variable "cert_path" {
   description = "Host path for persistent data & config"
   type        = string
-  // TODO move this away later on to a central (non service dependent location)
-  // and/or mount the root cert from a location
-  default     = "/home/container/certs/registry"
 }

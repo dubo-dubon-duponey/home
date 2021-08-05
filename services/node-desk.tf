@@ -8,7 +8,7 @@ module "dns-cor" {
   hostname      = local.networks.cor.hostname
 
   networks      = {
-    (local.networks.cor.vlan): local.services.dns_cor,
+    (local.networks.cor.vlan): local.services.reserved.dns_cor,
   }
 
   user          = "root"
@@ -39,7 +39,7 @@ module "logger-cor" {
   user          = "root"
 
   dns           = [
-    local.services.dns_cor,
+    local.services.reserved.dns_cor,
   ]
 
   log           = false
@@ -66,7 +66,7 @@ module "sound-lounge" {
     (local.networks.cor.vlan): "",
   }
   dns           = [
-    local.services.dns_cor,
+    local.services.reserved.dns_cor,
   ]
 
   station       = local.services.sound.lounge.audio_name

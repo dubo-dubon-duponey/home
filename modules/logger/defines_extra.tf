@@ -29,7 +29,6 @@ locals {
     "/var/run/docker.sock": "/var/run/docker.sock",
     // XXX generalize this
     "/etc/ssl/certs/ca.pem": "/home/container/certs/ca.crt"
-
   }
 
   // It should be possible for each important path (/data, /certs, /tmp)
@@ -37,22 +36,16 @@ locals {
 
   mountsrw      = {}
 
+  // Note: in case this restarts, this may duplicate logs, since files being read may be read again from the beginning
   ramdisks      = {
-    "/data": true
+    // XXX implement size control?
+    "/data": "100G"
   }
 
   volumes = {}
-  //volumes       = {
-  //  "/data": docker_volume.data.name,
-  //}
 
   # Healthcheck config - XXX this is BS at this point
   healthcheck_url         = var.elastic
-}
-
-resource "docker_volume" "data" {
-  provider      = docker
-  name          = "data-${local.container_name}"
 }
 
 # Service specific configuration

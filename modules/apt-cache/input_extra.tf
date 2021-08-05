@@ -37,27 +37,33 @@ variable "mdns_name" {
   default     = ""
 }
 
-variable "username" {
+variable "auth_enabled" {
+  description = "Whether to enable credentials authentication"
+  type        = bool
+  default     = true
+}
+
+variable "auth_username" {
   description = "Username to restrict access to"
   type        = string
   sensitive   = true
   validation {
-    condition     = length(var.username) >= 3
+    condition     = length(var.auth_username) >= 3
     error_message = "Username must be at least three characters long."
   }
 }
 
-variable "password" {
+variable "auth_password" {
   description = "Password to restrict access to (must be base64 bcrypt - see container function 'hash' for instructions on how to generate)"
   type        = string
   sensitive   = true
   validation {
-    condition     = length(var.password) >= 10
+    condition     = length(var.auth_password) >= 10
     error_message = "Password must be a least 10 characters long."
   }
 }
 
-variable "realm" {
+variable "auth_realm" {
   description = "Realm for authentication"
   type        = string
   default     = "Is it a boy? Is it a girl? It's a poney!"
@@ -69,8 +75,67 @@ variable "tls" {
   default     = "internal"
 }
 
+variable "tls_min" {
+  description = "Minimum TLS protocol version accepted by the server"
+  type        = string
+  default     = "1.2"
+  validation {
+    condition     = can(regex("^1.[2-3]{1}$", var.tls_min))
+    error_message = "TLS min version must be one of 1.2 or 1.3."
+  }
+}
+
+variable "tls_mtls_mode" {
+  description = "Set the mutual TLS behavior (verify_if_given or require_and_verify)"
+  type        = string
+  default     = "verify_if_given"
+  validation {
+    condition     = can(regex("^(?:verify_if_given|require_and_verify|require|request|)$", var.tls_mtls_mode))
+    error_message = "Mutual TLS mode must be one of verify_if_given or require_and_verify."
+  }
+}
+
+//variable "tls_issuer" {
+//  description = "Sets the name of the issuer"
+//  type        = string
+//  default     = "Dubo Dubon Duponey"
+//}
+
+variable "tls_redirect_port" {
+  description = "If we want http on this port to redirect to the TLS variant (leave default 0 to disable)"
+  type        = number
+  default     = 0
+  validation {
+    // XXX cannot honor root vs. normal user in validation rules unfortunately...
+    condition     = var.tls_redirect_port >= 0  && var.tls_redirect_port < 65536
+    error_message = "The port must be in the range 1-65535."
+  }
+}
+
+variable "tls_auto" {
+  description = "Set the mutual TLS behavior (verify_if_given or require_and_verify)"
+  type        = string
+  default     = "disable_redirects"
+  validation {
+    condition     = can(regex("^(?:ignore_loaded_certs|disable_redirects)$", var.tls_auto))
+    error_message = "Auto must be one of disable_redirects or ignore_loaded_certs."
+  }
+}
+
 variable "domain" {
   description = "Domain name served by caddy over TLS (will default to nickname.local if left empty)"
   type        = string
   default     = ""
+}
+
+variable "additional_domains" {
+  description = "Additional domains to be served (useful for proxy patterns)"
+  type        = string
+  default     = ""
+}
+
+variable "is_proxy" {
+  description = "Whether this service will act as a proper proxy (this will *disable* mTLS entirely, since SNI will conflict with Host headers)"
+  type        = bool
+  default     = false
 }

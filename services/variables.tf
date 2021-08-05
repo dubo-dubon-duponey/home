@@ -76,7 +76,7 @@ variable "afp_server_name" {
 }
 
 variable "afp_password" {
-  description = "Account password for AFP/time mahine (randomly generated if empty)"
+  description = "Account password for AFP/time machine (randomly generated if empty)"
   default = ""
 }
 

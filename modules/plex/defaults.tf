@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "plex"
-    image         = "dubo-dubon-duponey/plex:bullseye-2021-06-01"
+    image         = "dubo-dubon-duponey/plex:bullseye-2021-08-01"
     privileged    = false
     read_only     = true
     restart       = "always"

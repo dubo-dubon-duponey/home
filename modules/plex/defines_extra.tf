@@ -16,19 +16,25 @@ locals {
   mdns_name         = (var.mdns_name != "" ? var.mdns_name : local.mdns_host)
 
   env = [
-    "LOG_LEVEL=${var.log_level}",
-    "TLS=${var.tls}",
-    "DOMAIN=${local.service_domain}",
     "PORT=${local.service_port}",
-    "USERNAME=${var.username}",
-    "PASSWORD=${var.password}",
-    "REALM=${var.realm}",
+    "PORT_HTTP=${var.tls_redirect_port}",
+    "DOMAIN=${local.service_domain}",
+    "ADDITIONAL_DOMAINS=${var.additional_domains}",
+    "TLS=${var.tls}",
+    "TLS_MIN=${var.tls_min}",
+    "TLS_MTLS_MODE=${var.tls_mtls_mode}",
+//    "TLS_ISSUER=${var.tls_issuer}",
+    "TLS_AUTO=${var.tls_auto}",
+    "AUTH_ENABLED=${var.auth_enabled}",
+    "AUTH_REALM=${var.auth_realm}",
+    "AUTH_USERNAME=${var.auth_username}",
+    "AUTH_PASSWORD=${var.auth_password}",
     "MDNS_ENABLED=${var.mdns_enabled}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
 
-    "DBDB_LOGIN=${var.username}",
-    "DBDB_PASSWORD=${var.password}",
+    "DBDB_LOGIN=${var.auth_username}",
+    "DBDB_PASSWORD=${var.auth_password}",
     "DBDB_ADVERTISE_IP=${var.public_ip}",
     "DBDB_MAIL=${var.email}",
     "DBDB_SERVER_NAME=${var.station}"

@@ -302,8 +302,8 @@ module "registry" {
     local.services.dns4,*/
   ]
 
-  username      = local.services.registry.username
-  password      = local.services.registry.bcrypt
+  auth_username = local.services.registry.username
+  auth_password = local.services.registry.bcrypt
   mdns_host     = "registry"
   mdns_name     = "Internal read-only registry"
 

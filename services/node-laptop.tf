@@ -1,13 +1,15 @@
+// XXX the usefulness of this is unclear
+/*
 module "dns-mac" {
   source        = "../modules/dns"
+  registry      = local.registry.address
+
   providers     = {
     docker        = docker.mac
   }
-
   hostname      = local.networks.mac.hostname
-
   networks      = {
-    (local.networks.mac.vlan): "" // local.services.dns_mac,
+    "bridge": "" // (local.networks.mac.vlan): "" // local.services.reserved.dns_mac,
   }
 
   user          = "root"
@@ -16,9 +18,8 @@ module "dns-mac" {
 
   upstream_name = local.services.dns.upstream_name
   upstream_ips  = local.services.dns.upstream_ips
-
-  registry      = local.registry.address
 }
+*/
 
 // XXX this one should point to the public endpoint of kibana / elastic, with authentication
 // XXX this one can not work with /var/sys/log it seems
@@ -38,7 +39,7 @@ module "logger-mac" {
   user          = "root"
 
   dns           = [
-    local.services.dns_mac,
+    local.services.reserved.dns_mac,
   ]
 
   log           = false
@@ -76,7 +77,7 @@ module "router" {
   domain        = var.domain
   email         = var.email
   #  kibana        = module.elk.kibana
-  username      = var.restricted_user
-  password      = var.restricted_pwd
+  auth_username = var.restricted_user
+  auth_password = var.restricted_pwd
 }
 */
