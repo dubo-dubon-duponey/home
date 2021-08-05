@@ -39,17 +39,15 @@ locals {
 }
 
 locals {
-  volumes       = {}
   mounts        = {}
-
   mountsrw      = {
     "/data": var.data_path,
     "/certs": var.cert_path,
   }
-
   ramdisks      = {
     "/tmp": "1M"
   }
+  volumes       = {}
 }
 
 variable "data_path" {

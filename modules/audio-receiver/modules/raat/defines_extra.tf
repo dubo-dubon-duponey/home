@@ -6,11 +6,11 @@ locals {
 
   mounts        = {}
   mountsrw      = {}
-  volumes       = {
-    "/data": docker_volume.data.name,
-  }
   ramdisks      = {
     "/tmp": "1M"
+  }
+  volumes       = {
+    "/data": docker_volume.data.name,
   }
 }
 

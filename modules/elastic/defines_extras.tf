@@ -40,7 +40,6 @@ locals {
 
   // right here, mostly because of elastic configuration mutability
   mounts        = {}
-
   mountsrw      = {
     "/certs": var.cert_path,
     "/data": var.data_path,

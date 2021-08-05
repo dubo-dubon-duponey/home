@@ -14,6 +14,7 @@ locals {
   volumes       = {
     "/data": docker_volume.data.name
   }
+  ramdisks      = {}
 }
 
 # Service settings

@@ -47,6 +47,7 @@ locals {
   volumes       = {
     "/run": docker_volume.run.name,
   }
+  ramdisks      = {}
 }
 
 resource "docker_volume" "run" {

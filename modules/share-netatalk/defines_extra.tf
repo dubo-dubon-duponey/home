@@ -22,6 +22,7 @@ locals {
     "/media/share": "/home/data/share",
     "/media/home": "/home/data/home",
   }
+  ramdisks      = {}
   volumes       = {
     "/data": docker_volume.data.name,
     "/etc": docker_volume.etc.name,

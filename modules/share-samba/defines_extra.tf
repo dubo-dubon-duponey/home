@@ -25,14 +25,14 @@ locals {
     "/media/share": "/home/data/share",
     "/media/home": "/home/data/home",
   }
+  ramdisks      = {
+    "/tmp": "100M"
+  }
   volumes       = {
     "/data": docker_volume.data.name,
     "/etc": docker_volume.etc.name,
     // "/var/log": docker_volume.log.name,
     // "/run": docker_volume.run.name,
-  }
-  ramdisks      = {
-    "/tmp": "100M"
   }
 
   # Service config

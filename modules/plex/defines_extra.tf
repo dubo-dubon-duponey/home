@@ -50,6 +50,7 @@ locals {
   mountsrw      = {
     "/data": var.data_path
   }
+  ramdisks      = {}
   volumes       = {
     "/transcode": docker_volume.tmp.name
   }

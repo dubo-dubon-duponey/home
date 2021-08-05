@@ -12,6 +12,7 @@ locals {
   volumes       = {
     "/tmp": docker_volume.tmp.name
   }
+  ramdisks      = {}
 }
 
 # Volumes

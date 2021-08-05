@@ -44,8 +44,6 @@ locals {
 }
 
 locals {
-  volumes       = {
-  }
   mountsrw      = {
     "/certs": var.cert_path,
     "/data": var.data_path,
@@ -53,7 +51,7 @@ locals {
   mounts        = {
     "/etc/ssl/certs/ca.pem": "${var.cert_path}/pki/authorities/local/root.crt"
   }
-
+  volumes       = {}
   ramdisks      = {
     "/tmp": "10M"
   }

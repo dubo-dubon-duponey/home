@@ -8,6 +8,7 @@ locals {
 
   mounts        = {}
   mountsrw      = {}
+  ramdisks      = {}
   volumes       = {}
 }
 

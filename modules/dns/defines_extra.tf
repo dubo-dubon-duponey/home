@@ -27,6 +27,7 @@ locals {
 
   mounts        = {}
   mountsrw      = {}
+  ramdisks      = {}
   volumes       = {
     "/certs": docker_volume.certs.name
   }

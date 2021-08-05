@@ -10,6 +10,7 @@ locals {
 
   mounts        = {}
   mountsrw      = {}
+  ramdisks      = {}
   volumes       = {
     "/data": docker_volume.data.name
   }
