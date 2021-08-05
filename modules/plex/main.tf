@@ -79,6 +79,14 @@ resource "docker_container" "container" {
   }
 
   dynamic "mounts" {
+    for_each = local.ramdisks
+    content {
+      target      = mounts.key
+      type        = "tmpfs"
+    }
+  }
+
+  dynamic "mounts" {
     for_each = local.mounts
     content {
       target = mounts.key
@@ -102,6 +110,9 @@ resource "docker_container" "container" {
     label = "co.elastic.logs/enabled"
     value = local.log
   }
+
+  # XXX whether we want to bind filebeat collection and actual logging or not...
+  # log_driver = local.log ? "json-file" : "none"
 
   dynamic "labels" {
     for_each = local.labels
