@@ -53,7 +53,7 @@ locals {
   }
   volumes       = {}
   ramdisks      = {
-    "/tmp": "10M"
+    "/tmp": "1000000"
   }
   # Service
   elastic_container     = var.elastic_container

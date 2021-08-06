@@ -44,7 +44,7 @@ locals {
     "/certs": var.cert_path,
   }
   ramdisks      = {
-    "/tmp": "100G"
+    "/tmp": "100000000000"
   }
   volumes       = {}
 }

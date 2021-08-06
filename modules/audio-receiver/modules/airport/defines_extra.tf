@@ -8,7 +8,9 @@ locals {
 
   mounts        = {}
   mountsrw      = {}
-  ramdisks      = {}
+  ramdisks      = {
+    "/tmp": "1000000"
+  }
   volumes       = {}
 }
 

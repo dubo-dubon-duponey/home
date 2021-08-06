@@ -58,7 +58,7 @@ locals {
   volumes       = {
   }
   ramdisks      = {
-    "/tmp": "1G"
+    "/tmp": "1000000"
   }
 }
 

@@ -26,7 +26,7 @@ locals {
     "/media/home": "/home/data/home",
   }
   ramdisks      = {
-    "/tmp": "100M"
+    "/tmp": "1000000"
   }
   volumes       = {
     "/data": docker_volume.data.name,

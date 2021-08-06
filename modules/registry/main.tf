@@ -83,6 +83,10 @@ resource "docker_container" "container" {
     content {
       target      = mounts.key
       type        = "tmpfs"
+      tmpfs_options {
+        size_bytes  = mounts.value
+        // mode = 0600
+      }
     }
   }
 

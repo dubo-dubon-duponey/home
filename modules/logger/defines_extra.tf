@@ -38,8 +38,7 @@ locals {
 
   // Note: in case this restarts, this may duplicate logs, since files being read may be read again from the beginning
   ramdisks      = {
-    // XXX implement size control?
-    "/data": "100G"
+    "/tmp": "500000000"
   }
 
   volumes = {}
