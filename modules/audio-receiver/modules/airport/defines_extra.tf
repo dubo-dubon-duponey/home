@@ -3,7 +3,7 @@ locals {
   container_expose = {}
 
   env           = [
-    "NAME=${var.station}"
+    "MDNS_NAME=${var.station}"
   ]
 
   mounts        = {}
