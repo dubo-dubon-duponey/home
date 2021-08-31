@@ -5,8 +5,8 @@
 
 locals {
   defaults = {
-    nickname      = "spot"
-    image         = "dubo-dubon-duponey/librespot:bullseye-2021-08-01"
+    nickname      = "airplay"
+    image         = "dubo-dubon-duponey/airplay:bullseye-2021-08-01"
     privileged    = false
     read_only     = true
     restart       = "always"
@@ -18,14 +18,13 @@ locals {
       "audio",
     ]
     command       = [
-      "--device", "default", # as seen with librespot --name foo --device ?
-      "--mixer-name", "PCM", # defaults to PCM
-      "--mixer-card", "hw:0", # (from aplay -l - defaults to default)
-      "--initial-volume", "75",
-      "--enable-volume-normalisation",
-      "-v",
+      #"-vv",
+      #"--statistics",
+      "--",
+      "-d",
+      "hw:0",
     ]
-    caps_if_root  = []
+    extra_caps  = ["NET_BIND_SERVICE"]
     labels        = {
     }
   }

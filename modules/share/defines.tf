@@ -24,8 +24,8 @@ locals {
   container_devices       = local.defaults.devices
   container_group_add     = local.defaults.group_add
   container_command       = length(var.command) != 0 ? var.command : local.defaults.command
-
-  container_capabilities  = var.user == "root" ? local.defaults.caps_if_root : []
+  // XXX Maybe make this more conditional / optional, based on port for example?
+  container_capabilities  = local.defaults.extra_caps
 
   # Labels
   log                     = var.log

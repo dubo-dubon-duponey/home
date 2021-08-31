@@ -14,7 +14,7 @@ locals {
     devices       = []
     group_add     = []
     command       = []
-    caps_if_root  = [
+    extra_caps  = [
       # Required to bind
       "NET_BIND_SERVICE",
       # These caps are only required for user account management

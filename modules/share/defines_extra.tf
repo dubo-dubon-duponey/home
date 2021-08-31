@@ -16,6 +16,7 @@ locals {
     "MDNS_ENABLED=${var.mdns_enabled}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
+    "LOG_LEVEL=${var.log_level}",
   ]
 
   // If in bridge, and if we want to expose, which ports

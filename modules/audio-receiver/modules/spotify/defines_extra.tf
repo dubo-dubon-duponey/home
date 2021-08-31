@@ -8,8 +8,11 @@ locals {
   ]
 
   mounts        = {}
-  mountsrw      = {}
+  mountsrw      = {
+    "/pipes": var.pipes_path,
+  }
   volumes       = {
+    // This is becoming big very fast (1GB), too big for tmfs
     "/tmp": docker_volume.tmp.name
   }
   ramdisks      = {}
@@ -26,4 +29,9 @@ variable "station" {
   description = "Spotify station name"
   type        = string
   default     = "Spotty Croquette"
+}
+
+variable "pipes_path" {
+  description = "Path for sound pipe"
+  type        = string
 }
