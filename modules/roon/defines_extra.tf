@@ -3,11 +3,9 @@
 # Specific to http services
 ####################################################################
 
-// XXX provisional, for when we will hook-up caddy in front of the display server
-/*
 locals {
   // in-container port for the service - this will be public facing in case of a vlan or host network
-  service_port      = (var.user == "root" ? var.port : local.defaults.port)
+  service_port      = var.port
   // if expose is true (will be no-op if one of the network at least is not a bridge)
   container_expose  = var.expose ? {
     (var.port): local.service_port,
@@ -25,7 +23,7 @@ locals {
     "TLS=${var.tls}",
     "TLS_MIN=${var.tls_min}",
     "TLS_MTLS_MODE=${var.tls_mtls_mode}",
-//    "TLS_ISSUER=${var.tls_issuer}",
+    //    "TLS_ISSUER=${var.tls_issuer}",
     "TLS_AUTO=${var.tls_auto}",
     "AUTH_ENABLED=${var.auth_enabled}",
     "AUTH_REALM=${var.auth_realm}",
@@ -34,9 +32,10 @@ locals {
     "MDNS_ENABLED=${var.mdns_enabled}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
+    "LOG_LEVEL=${var.log_level}",
   ]
 }
-*/
+
 // If Roon would want to play:
 // - add "/dev/snd" to the device list
 // - add "audio" to group_add

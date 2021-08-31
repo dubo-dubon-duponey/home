@@ -5,7 +5,7 @@
 
 locals {
   // in-container port for the service - this will be public facing in case of a vlan or host network
-  service_port      = (var.user == "root" ? var.port : local.defaults.port)
+  service_port      = var.port
   // if expose is true (will be no-op if one of the network at least is not a bridge)
   container_expose  = var.expose ? {
     (var.port): local.service_port,
@@ -32,6 +32,7 @@ locals {
     "MDNS_ENABLED=${var.mdns_enabled}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
+    "LOG_LEVEL=${var.log_level}",
 
     "DBDB_LOGIN=${var.auth_username}",
     "DBDB_PASSWORD=${var.auth_password}",

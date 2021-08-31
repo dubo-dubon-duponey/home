@@ -5,7 +5,7 @@
 
 locals {
   // in-container port for the service - this will be public facing in case of a vlan or host network
-  service_port      = (var.user == "root" ? var.port : local.defaults.port)
+  service_port      = var.port
   // if at least one of the networks is a bridge, and if expose is true
   container_expose  = var.expose ? {
     (var.port): local.service_port,
@@ -35,6 +35,7 @@ locals {
     "MDNS_ENABLED=${var.mdns_enabled}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
+    "LOG_LEVEL=${var.log_level}",
   ]
 }
 
