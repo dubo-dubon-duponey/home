@@ -48,8 +48,9 @@ variable "nickname" {
   default     = ""
 }
 
+// Deprecated
 variable "user" {
-  description = "Overrides the unix user to run the container with (if set to 'root', will automatically add capabilities listed in defaults.tf)"
+  description = "[DEPRECATED: no reason to run as root, ever] Overrides the unix user to run the container with (if set to 'root', will automatically add capabilities listed in defaults.tf)"
   type        = string
   default     = ""
 }
