@@ -14,7 +14,7 @@ locals {
     devices       = []
     group_add     = []
     command       = []
-    caps_if_root  = []
+    extra_caps  = []
     labels        = {
     }
   }

@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "volume"
-    image         = "dubo-dubon-duponey/homekit-alsa:bullseye-2021-08-01"
+    image         = "dubo-dubon-duponey/homekit-volume:bullseye-2021-08-01"
     privileged    = false
     read_only     = true
     restart       = "always"
@@ -18,7 +18,7 @@ locals {
       "audio",
     ]
     command       = []
-    caps_if_root  = []
+    extra_caps  = []
     labels        = {
     }
   }

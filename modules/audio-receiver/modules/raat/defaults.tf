@@ -18,7 +18,7 @@ locals {
       "audio",
     ]
     command       = []
-    caps_if_root  = []
+    extra_caps  = []
     labels        = {
     }
   }

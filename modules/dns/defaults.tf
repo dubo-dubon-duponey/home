@@ -14,7 +14,7 @@ locals {
     devices       = []
     group_add     = []
     command       = []
-    caps_if_root  = ["NET_BIND_SERVICE"]
+    extra_caps  = ["NET_BIND_SERVICE"]
     port          = 53
     labels        = {
       "co.elastic.logs/module": "coredns",

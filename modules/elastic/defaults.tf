@@ -14,8 +14,8 @@ locals {
     devices       = []
     group_add     = []
     command       = []
-    caps_if_root  = ["NET_BIND_SERVICE"]
-    port          = 4443
+    extra_caps  = ["NET_BIND_SERVICE"]
+    // port          = 4443
     labels        = {
       "co.elastic.logs/module": "elasticsearch",
     }

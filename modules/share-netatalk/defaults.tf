@@ -9,7 +9,7 @@ locals {
     image         = "dubo-dubon-duponey/netatalk:bullseye-2021-06-01"
     privileged    = false
     // XXX why oh why
-    read_only     = false
+    read_only     = true
     restart       = "always"
     expose_type   = "tcp"
     devices       = []
@@ -17,7 +17,7 @@ locals {
     command       = []
     # Default Docker caps:
     # "CHOWN", "DAC_OVERRIDE", "FSETID", "FOWNER", "MKNOD", "NET_RAW", "SETGID", "SETUID", "SETFCAP", "SETPCAP", "NET_BIND_SERVICE", "SYS_CHROOT", "KILL", "AUDIT_WRITE"
-    caps_if_root  = [
+    extra_caps  = [
       # Required to bind on 548
       "NET_BIND_SERVICE",
       # Required by useradd to write to shadow
