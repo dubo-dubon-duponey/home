@@ -1,5 +1,5 @@
-module "airport" {
-  source = "./modules/airport"
+module "airplay" {
+  source = "./modules/airplay"
 
   registry = var.registry
   providers = {
@@ -12,7 +12,7 @@ module "airport" {
 
   station   = var.station
   command = [
-    # "-vv",
+    # "-v",
     # "--statistics",
     "--",
     "-d",
@@ -21,8 +21,27 @@ module "airport" {
 
 }
 
-module "spot" {
-  source = "./modules/spot"
+module "airplay2" {
+  source = "./modules/airplay"
+
+  registry = var.registry
+  providers = {
+    docker = docker
+  }
+  hostname  = var.hostname
+  log       = var.log
+  networks  = var.networks
+  dns       = var.dns
+
+  station   = "${var.station} v2"
+  protocol_version = 2
+  command   = []
+  nickname  = "airplay2"
+}
+
+
+module "spotify" {
+  source = "./modules/spotify"
 
   registry = var.registry
   providers = {
@@ -34,6 +53,12 @@ module "spot" {
   dns       = var.dns
 
   station = var.station
+
+  pipes_path = "/home/container/pipes"
+/*  command = [
+    # XXX really dirty
+    "--backend", "pipe", "--device", "/pipes/librespot_pipe"
+  ]
   command = [
     "--device",
     "default:CARD=${var.card_name}",
@@ -44,8 +69,8 @@ module "spot" {
     "--initial-volume",
     var.volume,
     "--enable-volume-normalisation",
-    "-v",
-  ]
+    // "-v",
+  ]*/
 }
 
 module "raat" {
@@ -61,6 +86,7 @@ module "raat" {
   dns       = var.dns
 }
 
+/*
 module "volume" {
   source = "./modules/volume"
 
@@ -77,3 +103,4 @@ module "volume" {
   device = var.mixer_name
   card = var.hw_index
 }
+*/

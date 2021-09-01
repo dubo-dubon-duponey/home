@@ -17,9 +17,9 @@ variable "networks" {
 }
 
 variable "log" {
-  description = "Whether to flag for filebeat log collection or not"
+  description = "Whether to flag for filebeat log collection or not (disabled by default)"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "station" {

@@ -27,8 +27,8 @@ locals {
     "TLS_AUTO=${var.tls_auto}",
     "AUTH_ENABLED=${var.auth_enabled}",
     "AUTH_REALM=${var.auth_realm}",
-    "AUTH_USERNAME=${var.auth_username}",
-    "AUTH_PASSWORD=${var.auth_password}",
+    //"AUTH_USERNAME=${var.auth_username}",
+    //"AUTH_PASSWORD=${var.auth_password}",
     "MDNS_ENABLED=${var.mdns_enabled}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
@@ -38,7 +38,7 @@ locals {
     "DBDB_PASSWORD=${var.auth_password}",
     "DBDB_ADVERTISE_IP=${var.public_ip}",
     "DBDB_MAIL=${var.email}",
-    "DBDB_SERVER_NAME=${var.station}"
+    "DBDB_SERVER_NAME=${var.mdns_name}"
   ]
 }
 
@@ -50,6 +50,7 @@ locals {
   # XXX maybe a volume would be enough?
   mountsrw      = {
     "/data": var.data_path
+    "/certs": var.cert_path,
   }
   ramdisks      = {}
   volumes       = {
@@ -74,6 +75,11 @@ variable "data_path" {
   default     = "/home/container/data/plex"
 }
 
+variable "cert_path" {
+  description = "Host path for persistent data & config"
+  type        = string
+}
+
 variable "movie_path" {
   description = "Host path for mounted movie collection folder"
   type        = string
@@ -91,11 +97,4 @@ variable "email" {
   description = "Your email"
   type        = string
   default     = "you@me.com"
-}
-
-// XXX maybe de-duplicate with domain name?
-variable "station" {
-  description = "Plex Station Name"
-  type        = string
-  default     = "Plexouille"
 }

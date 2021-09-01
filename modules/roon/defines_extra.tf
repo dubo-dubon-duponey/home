@@ -43,16 +43,12 @@ locals {
 // Since we are now relying on the RoonBridge instead, this is useless
 
 locals {
-  env = []
-  container_expose = {}
-}
-
-locals {
   mounts        = {
     "/music": var.music_path,
   }
   mountsrw      = {
     "/data": var.data_path,
+    "/certs": var.cert_path,
   }
   volumes       = {
   }
@@ -63,6 +59,11 @@ locals {
 
 # Service specific configuration
 variable "data_path" {
+  description = "Host path for persistent data & config"
+  type        = string
+}
+
+variable "cert_path" {
   description = "Host path for persistent data & config"
   type        = string
 }

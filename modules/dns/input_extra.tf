@@ -13,7 +13,6 @@ variable "port" {
   type        = number
   default     = 53
   validation {
-    // XXX cannot honor root vs. normal user in validation rules unfortunately...
     condition     = var.port > 0  && var.port < 65536
     error_message = "The port must be in the range 1-65535."
   }
