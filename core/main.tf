@@ -53,19 +53,6 @@ provider "docker" {
   }
 }
 
-// XXXtmp dead
-/*
-provider "docker" {
-host = "ssh://${local.providers.cor.user}@${local.providers.cor.host}"
-  alias = "cor"
-  registry_auth {
-    address = local.registry.address
-    username = local.registry.username
-    password = local.registry.password
-  }
-}
-*/
-
 module "network-nuc" {
   source    = "../modules/network"
   providers = {
@@ -224,32 +211,6 @@ module "dns-lan-3" {
   upstream_ips  = local.services.dns.upstream_ips
 }
 
-/*
-module "dns-lan-4" {
-  source        = "../modules/dns"
-  registry      = local.registry.address
-
-  providers     = {
-    docker        = docker.cor
-  }
-  hostname      = local.networks.cor.hostname
-  nickname      = "dns-lan"
-
-  networks      = {
-    (module.network-cor.vlan): local.services.dns4,
-    // XXX does not work at this point: https://github.com/moby/libnetwork/issues/1729 and fix here: https://github.com/moby/libnetwork/pull/2577
-    (module.network-cor.bridge): "",
-  }
-
-  user          = "root"
-  # bridged dns? IIRC some docker fuckerism over UDP
-  expose        = true
-  healthcheck   = local.services.dns.healthcheck
-
-  upstream_name = local.services.dns.upstream_name
-  upstream_ips  = local.services.dns.upstream_ips
-}
-*/
 
 module "dns-mac" {
   source        = "../modules/dns"
@@ -314,3 +275,46 @@ module "registry" {
   cert_path     = "${var.volumes_root}/certs/registry"
 
 }
+
+
+
+/*
+module "dns-lan-4" {
+  source        = "../modules/dns"
+  registry      = local.registry.address
+
+  providers     = {
+    docker        = docker.cor
+  }
+  hostname      = local.networks.cor.hostname
+  nickname      = "dns-lan"
+
+  networks      = {
+    (module.network-cor.vlan): local.services.dns4,
+    // XXX does not work at this point: https://github.com/moby/libnetwork/issues/1729 and fix here: https://github.com/moby/libnetwork/pull/2577
+    (module.network-cor.bridge): "",
+  }
+
+  user          = "root"
+  # bridged dns? IIRC some docker fuckerism over UDP
+  expose        = true
+  healthcheck   = local.services.dns.healthcheck
+
+  upstream_name = local.services.dns.upstream_name
+  upstream_ips  = local.services.dns.upstream_ips
+}
+*/
+
+// XXXtmp dead
+/*
+provider "docker" {
+host = "ssh://${local.providers.cor.user}@${local.providers.cor.host}"
+  alias = "cor"
+  registry_auth {
+    address = local.registry.address
+    username = local.registry.username
+    password = local.registry.password
+  }
+}
+*/
+
