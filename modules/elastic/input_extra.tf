@@ -13,7 +13,6 @@ variable "port" {
   type        = number
   default     = 443
   validation {
-    // XXX cannot honor root vs. normal user in validation rules unfortunately...
     condition     = var.port > 0  && var.port < 65536
     error_message = "The port must be in the range 1-65535."
   }
@@ -47,6 +46,7 @@ variable "auth_username" {
   description = "Username to restrict access to"
   type        = string
   sensitive   = true
+  default     = "dmp"
   validation {
     condition     = length(var.auth_username) >= 3
     error_message = "Username must be at least three characters long."
@@ -57,6 +57,7 @@ variable "auth_password" {
   description = "Password to restrict access to (must be base64 bcrypt - see container function 'hash' for instructions on how to generate)"
   type        = string
   sensitive   = true
+  default     = "bmhlaGVoZWhleW91d2lsbG5ldmVyZmluZG1lbG9sCg=="
   validation {
     condition     = length(var.auth_password) >= 10
     error_message = "Password must be a least 10 characters long."
@@ -106,19 +107,18 @@ variable "tls_redirect_port" {
   type        = number
   default     = 0
   validation {
-    // XXX cannot honor root vs. normal user in validation rules unfortunately...
     condition     = var.tls_redirect_port >= 0  && var.tls_redirect_port < 65536
     error_message = "The port must be in the range 1-65535."
   }
 }
 
 variable "tls_auto" {
-  description = "Set the mutual TLS behavior (verify_if_given or require_and_verify)"
+  description = "Set the TLS auto behavior (ignore_loaded_certs or disable_redirects)"
   type        = string
   default     = "disable_redirects"
   validation {
     condition     = can(regex("^(?:ignore_loaded_certs|disable_redirects)$", var.tls_auto))
-    error_message = "Auto must be one of disable_redirects or ignore_loaded_certs."
+    error_message = "Auto must be one of ignore_loaded_certs or disable_redirects."
   }
 }
 
