@@ -1,6 +1,8 @@
 # Bridge network - default for all containers that
 # - don't need to broadcast
 # - do not have specific performance requirements
+# XXX disabled now - terraform-docker not happy about it anymore
+/*
 resource "docker_network" "dubo-bridge" {
   provider        = docker
 
@@ -14,6 +16,7 @@ resource "docker_network" "dubo-bridge" {
   check_duplicate = true
   ipv6            = false
 }
+*/
 
 # Macvlan - for containers that broadcast, and that are not on wifi
 resource "docker_network" "dubo-vlan" {
@@ -30,7 +33,7 @@ resource "docker_network" "dubo-vlan" {
   ipv6            = false
 
   options         = {
-    parent:     var.interface,
+    parent:       var.interface,
     ipvlan_mode:  "l2",
   }
 
