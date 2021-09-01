@@ -12,7 +12,6 @@ locals {
     group_add     = []
     command       = []
     extra_caps  = ["NET_BIND_SERVICE"]
-    // port          = 4443
     labels        = {
     }
   }
