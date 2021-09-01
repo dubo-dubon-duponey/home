@@ -1,7 +1,9 @@
 locals {
   defaults = {
     nickname      = "buildkit"
-    image         = "dubo-dubon-duponey/buildkit:bullseye-2021-06-01"
+    // This has served us quite well
+    // image         = "dubo-dubon-duponey/buildkit:bullseye-2021-06-01"
+    image         = "dubo-dubon-duponey/buildkit:bullseye-2021-09-01"
     privileged    = true
     read_only     = true
     restart       = "always"
