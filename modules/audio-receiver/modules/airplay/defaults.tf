@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "airplay"
-    image         = "dubo-dubon-duponey/airplay:bullseye-2021-08-01"
+    image         = "dubo-dubon-duponey/airplay:bullseye-2021-09-01"
     privileged    = false
     read_only     = true
     restart       = "always"

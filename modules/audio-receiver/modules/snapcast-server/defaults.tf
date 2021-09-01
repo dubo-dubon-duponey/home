@@ -5,17 +5,19 @@
 
 locals {
   defaults = {
-    nickname      = "roon"
-    image         = "dubo-dubon-duponey/roon:server-bullseye-2021-09-01"
+    nickname      = "snapcast"
+    image         = "dubo-dubon-duponey/snapcast:bullseye-2021-09-01"
     privileged    = false
     read_only     = true
     restart       = "always"
     expose_type   = "tcp"
-    devices       = []
-    group_add     = []
-    command       = []
-    extra_caps  = ["NET_BIND_SERVICE"]
-    port          = 443
+    devices       = [
+    ]
+    group_add     = [
+    ]
+    command       = [
+    ]
+    extra_caps  = []
     labels        = {
     }
   }
