@@ -5,8 +5,8 @@
 
 locals {
   defaults = {
-    nickname      = "apt-cache"
-    image         = "dubo-dubon-duponey/aptutil:bullseye-2021-09-01"
+    nickname      = "apt-proxy"
+    image         = "dubo-dubon-duponey/apt-proxy:bullseye-2021-09-01"
     privileged    = false
     read_only     = true
     restart       = "always"
