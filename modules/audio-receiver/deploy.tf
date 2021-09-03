@@ -12,7 +12,7 @@ module "airplay" {
 
   station   = var.station
   command = [
-    # "-v",
+    # "-vv",
     # "--statistics",
     "--",
     "-d",
@@ -33,12 +33,11 @@ module "airplay2" {
   networks  = var.networks
   dns       = var.dns
 
-  station   = "${var.station} v2"
+  station   = "[EXPERIMENTAL] ${var.station}"
   protocol_version = 2
   command   = []
   nickname  = "airplay2"
 }
-
 
 module "spotify" {
   source = "./modules/spotify"
@@ -58,7 +57,7 @@ module "spotify" {
 /*  command = [
     # XXX really dirty
     "--backend", "pipe", "--device", "/pipes/librespot_pipe"
-  ]
+  ]*/
   command = [
     "--device",
     "default:CARD=${var.card_name}",
@@ -70,7 +69,7 @@ module "spotify" {
     var.volume,
     "--enable-volume-normalisation",
     // "-v",
-  ]*/
+  ]
 }
 
 module "raat" {
