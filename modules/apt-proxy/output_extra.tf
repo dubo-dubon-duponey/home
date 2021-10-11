@@ -1,5 +1,5 @@
 output "port" {
-  value = local.service_port
+  value = 443
 }
 
 output "domain" {

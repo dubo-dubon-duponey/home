@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "apt-proxy"
-    image         = "dubo-dubon-duponey/apt-proxy:bullseye-2021-09-01"
+    image         = "dubo-dubon-duponey/apt-proxy:bullseye-2021-09-15"
     privileged    = false
     read_only     = true
     restart       = "always"
