@@ -21,6 +21,14 @@ module "airplay" {
 
 }
 
+/*
+2021-10-01
+Somehow, recent changes on our side made it so we lost the audio (alsa device/soundcard pointer is wrong?)
+Also, pairing does not work with mobiles anymore
+https://github.com/openairplay/goplay2/issues/29
+Abandoning this - this is simply not ready
+Shame
+
 module "airplay2" {
   source = "./modules/airplay"
 
@@ -37,7 +45,11 @@ module "airplay2" {
   protocol_version = 2
   command   = []
   nickname  = "airplay2"
+
+  # XXX rationalize all this garbage
+  alsa_device = "default:CARD=${var.card_name}"
 }
+*/
 
 module "spotify" {
   source = "./modules/spotify"
@@ -53,6 +65,9 @@ module "spotify" {
 
   station = var.station
 
+  display_enabled = var.display_enabled
+  spotify_id = var.spotify_id
+  spotify_secret = var.spotify_secret
   pipes_path = "/home/container/pipes"
 /*  command = [
     # XXX really dirty

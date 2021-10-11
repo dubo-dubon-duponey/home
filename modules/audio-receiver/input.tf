@@ -57,3 +57,21 @@ variable "registry" {
   type        = string
   default     = "registry-1.docker.io"
 }
+
+variable "display_enabled" {
+  description = "Enable display for Spotify"
+  type        = bool
+  default     = false
+}
+
+variable "spotify_id" {
+  description = "Spot id for display"
+  type        = string
+  default     = ""
+}
+
+variable "spotify_secret" {
+  description = "Spot secret for display"
+  type        = string
+  default     = ""
+}

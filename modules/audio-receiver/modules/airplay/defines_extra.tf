@@ -8,6 +8,7 @@ locals {
     "LOG_LEVEL=${var.log_level}",
     "PORT=5000",
     "OUTPUT=alsa",
+    "DEVICE=${var.alsa_device}",
   ]
 
   mounts        = {}
@@ -44,4 +45,9 @@ variable "protocol_version" {
     condition     = var.protocol_version > 0  && var.protocol_version < 3
     error_message = "Only version 1 or 2 are supported."
   }
+}
+variable "alsa_device" {
+  description = "Alsa Device"
+  type = string
+  default = "default"
 }
