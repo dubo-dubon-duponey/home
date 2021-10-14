@@ -8,20 +8,10 @@ variable "expose" {
   default     = false
 }
 
-variable "port" {
-  description = "Service port: this controls the port exposed if in bridge networking, or if the user is root, the port being used inside the container in all other networking modes"
-  type        = number
-  default     = 443
-  validation {
-    condition     = var.port > 0  && var.port < 65536
-    error_message = "The port must be in the range 1-65535."
-  }
-}
-
-variable "mdns_enabled" {
+variable "mdns" {
   description = "Whether to enable mDNS (this requires mac/ip vlan or host networking)"
-  type        = bool
-  default     = true
+  type        = string
+  default     = "_http._tcp"
 }
 
 variable "mdns_host" {
@@ -36,10 +26,10 @@ variable "mdns_name" {
   default     = ""
 }
 
-variable "auth_enabled" {
-  description = "Whether to enable credentials authentication"
-  type        = bool
-  default     = true
+variable "auth" {
+  description = "Realm for authentication. Set to empty to disabled authentication."
+  type        = string
+  default     = "Is it a boy? Is it a girl? It's a poney!"
 }
 
 variable "auth_username" {
@@ -64,52 +54,26 @@ variable "auth_password" {
   }
 }
 
-variable "auth_realm" {
-  description = "Realm for authentication"
+variable "mtls" {
+  description = "Set the mutual TLS behavior (verify_if_given or require_and_verify)"
   type        = string
-  default     = "Is it a boy? Is it a girl? It's a poney!"
+  default     = "require_and_verify"
+  validation {
+    condition     = can(regex("^(?:|verify_if_given|require_and_verify|require|request|)$", var.mtls))
+    error_message = "Mutual TLS mode must be one of verify_if_given, require_and_verify."
+  }
+}
+
+variable "mtls_ca" {
+  description = "What root CA to trust for client certificate verification"
+  type        = string
+  default     = "/somewhere/ca.crt"
 }
 
 variable "tls" {
   description = "Set empty to disable TLS entirely, use 'internal' for self-signed certificates, or provide an email address for letsencrypt (you have to figure out networking for LE)"
   type        = string
   default     = "internal"
-}
-
-variable "tls_min" {
-  description = "Minimum TLS protocol version accepted by the server"
-  type        = string
-  default     = "1.2"
-  validation {
-    condition     = can(regex("^1.[2-3]{1}$", var.tls_min))
-    error_message = "TLS min version must be one of 1.2 or 1.3."
-  }
-}
-
-variable "tls_mtls_mode" {
-  description = "Set the mutual TLS behavior (verify_if_given or require_and_verify)"
-  type        = string
-  default     = "verify_if_given"
-  validation {
-    condition     = can(regex("^(?:verify_if_given|require_and_verify|require|request|)$", var.tls_mtls_mode))
-    error_message = "Mutual TLS mode must be one of verify_if_given or require_and_verify."
-  }
-}
-
-//variable "tls_issuer" {
-//  description = "Sets the name of the issuer"
-//  type        = string
-//  default     = "Dubo Dubon Duponey"
-//}
-
-variable "tls_redirect_port" {
-  description = "If we want http on this port to redirect to the TLS variant (leave default 0 to disable)"
-  type        = number
-  default     = 0
-  validation {
-    condition     = var.tls_redirect_port >= 0  && var.tls_redirect_port < 65536
-    error_message = "The port must be in the range 1-65535."
-  }
 }
 
 variable "tls_auto" {
@@ -132,4 +96,14 @@ variable "additional_domains" {
   description = "Additional domains to be served (useful for proxy patterns)"
   type        = string
   default     = ""
+}
+
+variable "data_path" {
+  description = "Host path for persistent data"
+  type        = string
+}
+
+variable "cert_path" {
+  description = "Host path for persistent certificate management"
+  type        = string
 }
