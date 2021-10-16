@@ -28,6 +28,18 @@ variable "station" {
   default     = "Totale Croquette"
 }
 
+variable "device" {
+  description = "Card name"
+  type        = string
+  default     = ""
+}
+
+variable "output" {
+  description = "Output backend - alsa, pipe"
+  type        = string
+  default     = ""
+}
+
 variable "hw_index" {
   description = "Hardware index as reported by aplay -l"
   type        = number
@@ -37,13 +49,7 @@ variable "hw_index" {
 variable "mixer_name" {
   description = "Alsa mixer name"
   type        = string
-  default     = "PCM"
-}
-
-variable "card_name" {
-  description = "Card name"
-  type        = string
-  default     = "Mojo"
+  default     = "Digital" // "PCM"
 }
 
 variable "volume" {

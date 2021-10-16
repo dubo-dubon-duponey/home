@@ -3,17 +3,19 @@ locals {
   container_expose = {}
 
   env           = [
-    "NAME=${var.station}",
+    "MDNS_NAME=${var.station}",
     "PORT=10042",
     "DISPLAY_ENABLED=${var.display_enabled}",
     "SPOTIFY_CLIENT_ID=${var.spotify_id}",
     "SPOTIFY_CLIENT_SECRET=${var.spotify_secret}",
+    "OUTPUT=${var.output}",
+    "DEVICE=${var.device}",
   ]
 
   mounts        = {}
-  mountsrw      = {
-    "/pipes": var.pipes_path,
-  }
+  mountsrw      = var.output == "pipe" ? {
+    "/pipes": var.device,
+  } : {}
   volumes       = {
     // This is becoming big very fast (1GB), too big for tmfs
     "/tmp": docker_volume.tmp.name
@@ -34,6 +36,18 @@ variable "station" {
   default     = "Spotty Croquette"
 }
 
+variable "device" {
+  description = "Alsa Device, or pipe path"
+  type = string
+  default = ""
+}
+
+variable "output" {
+  description = "Output backend (alsa, pulseaudio, pipe, process)"
+  type = string
+  default = ""
+}
+
 variable "display_enabled" {
   description = "Enable framebuffer display"
   type        = bool
@@ -50,9 +64,4 @@ variable "spotify_secret" {
   description = "Spotify Client Secret (for display)"
   type        = string
   default     = ""
-}
-
-variable "pipes_path" {
-  description = "Path for sound pipe"
-  type        = string
 }

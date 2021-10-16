@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "spotify"
-    image         = "dubo-dubon-duponey/spotify:bullseye-2021-10-01"
+    image         = "dubo-dubon-duponey/spotify:bullseye-2021-10-15"
     privileged    = false
     read_only     = true
     restart       = "always"
@@ -16,7 +16,9 @@ locals {
       "/dev/snd",
       "/dev/tty2",
       "/dev/fb0",
-    ] : ["/dev/snd"]
+    ] : [
+      "/dev/snd"
+    ]
     group_add       = var.display_enabled ?  [
       "audio",
       "tty",
@@ -30,7 +32,6 @@ locals {
       "--mixer-card", "hw:0", # (from aplay -l - defaults to default)
       "--initial-volume", "75",
       "--enable-volume-normalisation",
-      "-v",
     ]
     # Necessary for framebuffer output
     extra_caps  = [

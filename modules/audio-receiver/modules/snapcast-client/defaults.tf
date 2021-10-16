@@ -6,9 +6,9 @@
 locals {
   defaults = {
     nickname      = "snapcast"
-    image         = "dubo-dubon-duponey/snapcast:bullseye-2021-10-01"
+    image         = "dubo-dubon-duponey/snapcast:bullseye-2021-10-15"
     privileged    = false
-    read_only     = false
+    read_only     = true
     restart       = "always"
     expose_type   = "tcp"
     devices       = [

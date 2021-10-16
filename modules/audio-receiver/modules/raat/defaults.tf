@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "raat"
-    image         = "dubo-dubon-duponey/roon:bridge-bullseye-2021-10-01"
+    image         = "dubo-dubon-duponey/roon:bridge-bullseye-2021-10-15"
     privileged    = false
     read_only     = true
     restart       = "always"

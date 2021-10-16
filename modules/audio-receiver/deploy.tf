@@ -1,6 +1,32 @@
 module "airplay" {
   source = "./modules/airplay"
+  registry = var.registry
+  providers = {
+    docker = docker
+  }
+  hostname  = var.hostname
+  log       = var.log
+  networks  = var.networks
+  dns       = []
 
+  station   = var.station
+  device    = var.device
+}
+
+module "raat" {
+  source = "./modules/raat"
+  registry = var.registry
+  providers = {
+    docker = docker
+  }
+  hostname  = var.hostname
+  log       = var.log
+  networks  = var.networks
+  dns       = var.dns
+}
+
+module "spotify" {
+  source = "./modules/spotify"
   registry = var.registry
   providers = {
     docker = docker
@@ -10,16 +36,26 @@ module "airplay" {
   networks  = var.networks
   dns       = var.dns
 
-  station   = var.station
-  command = [
-    # "-vv",
-    # "--statistics",
-    "--",
-    "-d",
-    "hw:${var.hw_index}",
-  ]
+  station = var.station
+  device = var.device
 
+  display_enabled = var.display_enabled
+  spotify_id = var.spotify_id
+  spotify_secret = var.spotify_secret
+
+  output = var.output // /home/container/pipes/librespot_pipe
+
+  command = [
+    "--mixer-name",
+    var.mixer_name,
+    "--mixer-card",
+    "hw:${var.hw_index}",
+    "--initial-volume",
+    var.volume,
+    "--enable-volume-normalisation",
+  ]
 }
+
 
 /*
 2021-10-01
@@ -42,7 +78,7 @@ module "airplay2" {
   dns       = var.dns
 
   station   = "[EXPERIMENTAL] ${var.station}"
-  protocol_version = 2
+  _experimental_protocol_version = 2
   command   = []
   nickname  = "airplay2"
 
@@ -50,55 +86,6 @@ module "airplay2" {
   alsa_device = "default:CARD=${var.card_name}"
 }
 */
-
-module "spotify" {
-  source = "./modules/spotify"
-
-  registry = var.registry
-  providers = {
-    docker = docker
-  }
-  hostname  = var.hostname
-  log       = var.log
-  networks  = var.networks
-  dns       = var.dns
-
-  station = var.station
-
-  display_enabled = var.display_enabled
-  spotify_id = var.spotify_id
-  spotify_secret = var.spotify_secret
-  pipes_path = "/home/container/pipes"
-/*  command = [
-    # XXX really dirty
-    "--backend", "pipe", "--device", "/pipes/librespot_pipe"
-  ]*/
-  command = [
-    "--device",
-    "default:CARD=${var.card_name}",
-    "--mixer-name",
-    var.mixer_name,
-    "--mixer-card",
-    "hw:${var.hw_index}",
-    "--initial-volume",
-    var.volume,
-    "--enable-volume-normalisation",
-    // "-v",
-  ]
-}
-
-module "raat" {
-  source = "./modules/raat"
-
-  registry = var.registry
-  providers = {
-    docker = docker
-  }
-  hostname  = var.hostname
-  log       = var.log
-  networks  = var.networks
-  dns       = var.dns
-}
 
 /*
 module "volume" {
