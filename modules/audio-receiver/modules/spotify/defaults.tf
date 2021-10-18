@@ -27,9 +27,11 @@ locals {
       "audio"
     ]
     command       = [
-      "--device", "default", # as seen with librespot --name foo --device ?
-      "--mixer-name", "PCM", # defaults to PCM
-      "--mixer-card", "hw:0", # (from aplay -l - defaults to default)
+      // "--device", "default", # as seen from: `librespot --name foo --device ?`
+      /*
+      "--alsa-mixer-control", "PCM", # defaults to PCM
+      "--alsa-mixer-device", "hw:0", # (from aplay -l - defaults to default)
+      */
       "--initial-volume", "75",
       "--enable-volume-normalisation",
     ]

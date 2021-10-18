@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "snapcast"
-    image         = "dubo-dubon-duponey/snapcast:bullseye-2021-10-15"
+    image         = "dubo-dubon-duponey/snapcast:bullseye-2021-10-01"
     privileged    = false
     read_only     = true
     restart       = "always"

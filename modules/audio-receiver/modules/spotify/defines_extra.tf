@@ -4,6 +4,7 @@ locals {
 
   env           = [
     "MDNS_NAME=${var.station}",
+    "MDNS_HOST=${local.container_hostname}",
     "PORT=10042",
     "DISPLAY_ENABLED=${var.display_enabled}",
     "SPOTIFY_CLIENT_ID=${var.spotify_id}",

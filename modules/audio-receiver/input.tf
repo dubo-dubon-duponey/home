@@ -40,6 +40,7 @@ variable "output" {
   default     = ""
 }
 
+/*
 variable "hw_index" {
   description = "Hardware index as reported by aplay -l"
   type        = number
@@ -49,13 +50,14 @@ variable "hw_index" {
 variable "mixer_name" {
   description = "Alsa mixer name"
   type        = string
-  default     = "Digital" // "PCM"
+  default     = "Digital"
 }
+*/
 
 variable "volume" {
   description = "Initial volume"
   type        = number
-  default     = 100
+  default     = 75
 }
 
 variable "registry" {

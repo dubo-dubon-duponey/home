@@ -11,15 +11,21 @@ variable "device" {
   default = ""
 }
 
+variable "output" {
+  description = "alsa / pipe, etc"
+  type = string
+  default = "alsa"
+}
+
 # Local indirection
 locals {
   container_expose = {}
 
   env           = [
-    "MDNS_NAME=${var.station}",
     "LOG_LEVEL=${var.log_level}",
     "PORT=5000",
-    "OUTPUT=alsa",
+    "MDNS_NAME=${var.station}",
+    "OUTPUT=${var.output}",
     "DEVICE=${var.device}",
     "_EXPERIMENTAL_AIRPLAY_VERSION=${var._experimental_protocol_version}",
   ]

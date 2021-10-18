@@ -9,6 +9,7 @@ module "airplay" {
   networks  = var.networks
   dns       = []
 
+  output    = "alsa"
   station   = var.station
   device    = var.device
 }
@@ -36,6 +37,7 @@ module "spotify" {
   networks  = var.networks
   dns       = var.dns
 
+  output = var.output
   station = var.station
   device = var.device
 
@@ -43,27 +45,24 @@ module "spotify" {
   spotify_id = var.spotify_id
   spotify_secret = var.spotify_secret
 
-  output = var.output // /home/container/pipes/librespot_pipe
-
   command = [
-    "--mixer-name",
+    /*"--alsa-mixer-control",
     var.mixer_name,
-    "--mixer-card",
-    "hw:${var.hw_index}",
+    "--alsa-mixer-device",
+    "hw:${var.hw_index}",*/
     "--initial-volume",
     var.volume,
     "--enable-volume-normalisation",
   ]
 }
 
-
 /*
 2021-10-01
 Somehow, recent changes on our side made it so we lost the audio (alsa device/soundcard pointer is wrong?)
+XXX or it was just the nightingale snaff
 Also, pairing does not work with mobiles anymore
 https://github.com/openairplay/goplay2/issues/29
-Abandoning this - this is simply not ready
-Shame
+Abandoning this - this is simply not ready yet
 
 module "airplay2" {
   source = "./modules/airplay"

@@ -97,3 +97,13 @@ variable "additional_domains" {
   type        = string
   default     = ""
 }
+
+variable "data_path" {
+  description = "Host path for persistent data"
+  type        = string
+}
+
+variable "cert_path" {
+  description = "Host path for persistent certificate management"
+  type        = string
+}
