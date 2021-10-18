@@ -4,7 +4,6 @@ locals {
 
   env           = [
     "MODE=client",
-    "MDNS_ENABLED=false",
     // Server name to find
     "MDNS_HOST=snappy",
   ]

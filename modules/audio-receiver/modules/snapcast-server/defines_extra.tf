@@ -4,7 +4,6 @@ locals {
 
   env           = [
     "MODE=server",
-    "MDNS_ENABLED=true",
     "MDNS_NAME=Dubo Snapcast Server",
     "MDNS_HOST=snappy"
   ]

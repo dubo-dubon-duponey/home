@@ -8,7 +8,7 @@ variable "expose" {
   default     = false
 }
 
-variable "mdns" {
+variable "mdns_type" {
   description = "Whether to enable mDNS (this requires mac/ip vlan or host networking)"
   type        = string
   default     = "_http._tcp"

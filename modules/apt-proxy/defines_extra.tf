@@ -28,7 +28,7 @@ locals {
     "MTLS=${var.mtls}",
     "MTLS_TRUST=/config/mtls_ca.crt",
 
-    "MDNS=${var.mdns}",
+    "MDNS_TYPE=${var.mdns_type}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
     "MDNS_STATION=true",
