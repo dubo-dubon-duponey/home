@@ -4,7 +4,9 @@ locals {
 
   env           = [
     "MDNS_NAME=${var.station}",
-    "MDNS_HOST=${local.container_hostname}",
+    // XXX unfortunately, discovery cannot use the sidecar
+    // New image version will have this disabled by default
+    "MDNS_HOST=",
     "PORT=10042",
     "DISPLAY_ENABLED=${var.display_enabled}",
     "SPOTIFY_CLIENT_ID=${var.spotify_id}",
