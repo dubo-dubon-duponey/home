@@ -28,12 +28,14 @@ locals {
     "MTLS=${var.mtls}",
     "MTLS_TRUST=/config/mtls_ca.crt",
 
-    "MDNS=${var.mdns}",
+    "MDNS_TYPE=${var.mdns_type}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
     "MDNS_STATION=true",
 
-    "LOG_LEVEL=debug", // "${var.log_level}",
+    "LOG_LEVEL=${var.log_level}",
+
+    // *******************************************
     "ATHENS_GO_BINARY_ENV_VARS=GOPROXY=${var.goproxy}",
   ]
 }
@@ -46,13 +48,14 @@ locals {
     "/data": var.data_path,
     "/certs": var.cert_path,
   }
+  // XXX turns out this is problematic - at 1G it still exhausts with some modules (not sure why they would be so big)
+  // In a shell: athens downloads to /tmp, then move to storage /data
   ramdisks      = {
-    "/tmp": "1000000000"
+    "/tmp": "8000000000"
   }
   volumes       = {}
 }
 
-// XXX deprecated / unhooked
 variable "goproxy" {
   description = "Control the way athens behave"
   default     = "direct"
