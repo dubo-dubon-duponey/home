@@ -28,7 +28,7 @@ locals {
     "MTLS=${var.mtls}",
     "MTLS_TRUST=/config/mtls_ca.crt",
 
-    "MDNS=${var.mdns}",
+    "MDNS_TYPE=${var.mdns_type}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
     "MDNS_STATION=true",
@@ -43,30 +43,22 @@ locals {
 // - likely rebuild the Roon image with libasound2 (currently not)
 // Since we are now relying on the RoonBridge instead, this is useless
 
+
 locals {
-  mounts        = {
+  mounts        = (var.mtls != "" ? {
     "/music": var.music_path,
-  }
+    "/config/mtls_ca.crt": var.mtls_ca,
+  } : {
+    "/music": var.music_path,
+  })
   mountsrw      = {
     "/data": var.data_path,
     "/certs": var.cert_path,
   }
-  volumes       = {
-  }
   ramdisks      = {
     "/tmp": "1000000"
   }
-}
-
-# Service specific configuration
-variable "data_path" {
-  description = "Host path for persistent data & config"
-  type        = string
-}
-
-variable "cert_path" {
-  description = "Host path for persistent data & config"
-  type        = string
+  volumes       = {}
 }
 
 variable "music_path" {

@@ -8,7 +8,7 @@ variable "expose" {
   default     = false
 }
 
-variable "mdns" {
+variable "mdns_type" {
   description = "Whether to enable mDNS (this requires mac/ip vlan or host networking)"
   type        = string
   default     = "_http._tcp"
@@ -96,4 +96,14 @@ variable "additional_domains" {
   description = "Additional domains to be served (useful for proxy patterns)"
   type        = string
   default     = ""
+}
+
+variable "data_path" {
+  description = "Host path for persistent data"
+  type        = string
+}
+
+variable "cert_path" {
+  description = "Host path for persistent certificate management"
+  type        = string
 }

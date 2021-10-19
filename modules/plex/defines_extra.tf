@@ -28,7 +28,7 @@ locals {
     "MTLS=${var.mtls}",
     "MTLS_TRUST=/config/mtls_ca.crt",
 
-    "MDNS=${var.mdns}",
+    "MDNS_TYPE=${var.mdns_type}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
     "MDNS_STATION=true",
@@ -45,12 +45,6 @@ locals {
 }
 
 locals {
-  mounts        = (var.mtls != "" ? {
-    "/media": var.movie_path
-    "/config/mtls_ca.crt": var.mtls_ca,
-  } : {
-    "/media": var.movie_path
-  })
   mountsrw      = {
     "/data": var.data_path,
     "/certs": var.cert_path,
@@ -58,19 +52,17 @@ locals {
   ramdisks      = {
     "/tmp": "1000000"
   }
+
+  mounts        = (var.mtls != "" ? {
+    "/media": var.movie_path
+    "/config/mtls_ca.crt": var.mtls_ca,
+  } : {
+    "/media": var.movie_path
+  })
+
   volumes       = {
     "/transcode": docker_volume.tmp.name
   }
-}
-
-variable "data_path" {
-  description = "Host path for persistent data"
-  type        = string
-}
-
-variable "cert_path" {
-  description = "Host path for persistent certificate management"
-  type        = string
 }
 
 /*
@@ -80,26 +72,3 @@ resource "docker_volume" "config" {
 }
 */
 
-resource "docker_volume" "tmp" {
-  provider      = docker
-  name          = "tmp-${local.container_name}"
-}
-
-variable "movie_path" {
-  description = "Host path for mounted movie collection folder"
-  type        = string
-  default     = "/home/data/movie"
-}
-
-variable "public_ip" {
-  description = "Plex publicly visible ip (defaults to myip.opendns.com)"
-  type        = string
-  default     = ""
-}
-
-// XXX check what this is and how to generalize
-variable "email" {
-  description = "Your email"
-  type        = string
-  default     = "you@me.com"
-}
