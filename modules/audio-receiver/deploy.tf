@@ -46,10 +46,13 @@ module "spotify" {
   spotify_secret = var.spotify_secret
 
   command = [
-    /*"--alsa-mixer-control",
+    "--alsa-mixer-control",
     var.mixer_name,
-    "--alsa-mixer-device",
+    /* "--alsa-mixer-device",
     "hw:${var.hw_index}",*/
+    // Unclear if that will work with outputs that do not let one control the volume
+    // The question now: do we even want the apps to be able to control hardware volume or should they be left with
+    // purely software volume control?
     "--initial-volume",
     var.volume,
     "--enable-volume-normalisation",

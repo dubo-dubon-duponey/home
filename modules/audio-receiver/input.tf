@@ -47,12 +47,13 @@ variable "hw_index" {
   default     = 0
 }
 
+*/
+
 variable "mixer_name" {
   description = "Alsa mixer name"
   type        = string
-  default     = "Digital"
+  default     = ""
 }
-*/
 
 variable "volume" {
   description = "Initial volume"
