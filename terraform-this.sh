@@ -1,20 +1,22 @@
 #!/usr/bin/env bash
+set -o errexit -o errtrace -o functrace -o nounset -o pipefail
 
-project="${1:-.}"
-current="$(pwd)"
-case "$2" in
-  "plan")
-    terraform -chdir="$1" init
-    terraform -chdir="$1" plan -var-file="$current/config/$project.tfvars"
-  ;;
-  "destroy")
-    terraform -chdir="$1" destroy -auto-approve -var-file="$current/config/$project.tfvars"
-  ;;
+readonly project="nodes/${1:-.}"
+readonly command="${2:-apply}"
+readonly current="$(pwd)"
+
+terraform -chdir="$project" init
+
+case "$command" in
   "output")
-    terraform -chdir="$1" output
+    terraform -chdir="$project" "$command"
   ;;
+  "plan")
+    terraform -chdir="$project" "$command" -var-file="$current/config/$project.tfvars"
+  ;;
+  #"apply")
+  #"destroy")
   *)
-    terraform -chdir="$1" init
-    terraform -chdir="$1" apply -auto-approve -var-file="$current/config/$project.tfvars"
+    terraform -chdir="$project" "$command" -auto-approve -var-file="$current/config/$project.tfvars"
   ;;
 esac
