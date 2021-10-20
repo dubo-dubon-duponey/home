@@ -45,18 +45,26 @@ module "spotify" {
   spotify_id = var.spotify_id
   spotify_secret = var.spotify_secret
 
-  command = [
+  // Only Digital should be allowed - otherwise, softvol
+  command = var.mixer_name != "" ? [
+    "--mixer",
+    "alsa",
     "--alsa-mixer-control",
     var.mixer_name,
-    /* "--alsa-mixer-device",
-    "hw:${var.hw_index}",*/
-    // Unclear if that will work with outputs that do not let one control the volume
-    // The question now: do we even want the apps to be able to control hardware volume or should they be left with
-    // purely software volume control?
+    "--initial-volume",
+    var.volume,
+    "--enable-volume-normalisation",
+  ] : [
     "--initial-volume",
     var.volume,
     "--enable-volume-normalisation",
   ]
+  // Volume ctrl linear is too brutal
+  //"--volume-ctrl",
+  //"linear",
+  // Mixer device does not appear to be necessary
+  //"--alsa-mixer-device",
+  // "hw:0",
 }
 
 /*
