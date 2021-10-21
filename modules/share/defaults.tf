@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "samba"
-    image         = "dubo-dubon-duponey/samba:bullseye-2021-08-01"
+    image         = "dubo-dubon-duponey/samba:bullseye-2021-10-15"
     privileged    = false
     read_only     = true
     restart       = "always"
@@ -24,6 +24,7 @@ locals {
       "FOWNER",
       "SETUID", "SETGID",
       "DAC_OVERRIDE",
+      // "LINUX_IMMUTABLE",
     ]
     labels        = {
     }

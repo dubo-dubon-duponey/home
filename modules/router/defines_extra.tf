@@ -18,9 +18,7 @@ locals {
     "ADDITIONAL_DOMAINS=${var.additional_domains}",
 
     "TLS=${var.tls}",
-    // XXX leftover from previous refactor
-    "TLS_MODE=${var.tls}",
-    "TLS_MIN=1.3",
+    "TLS_MIN=1.2", // At least macos webdav client is not happy with 1.3 - public properties still need 1.2 for now
     "TLS_AUTO=${var.tls_auto}",
 
     "AUTH=${var.auth}",
@@ -37,31 +35,40 @@ locals {
 
     "LOG_LEVEL=${var.log_level}",
 
-    // **********************************
-    // XXX review this
-    "PORT=443",
-    "PORT_HTTP=80",
-    // XXX very wrong but trying to recover bk for now
-    "HEALTHCHECK_URL=http://127.0.0.1:10042",
+    "STAGING=${local.staging}",
   ]
 }
 
 locals {
-  mounts        = {
-    # XXX fix this / generalize
-    "/etc/ssl/certs/ca.pem": "/home/container/certs/ca.crt"
-  }
   mountsrw      = {
     "/data": var.data_path,
     "/certs": var.cert_path,
   }
-  volumes       = {
-    "/run": docker_volume.run.name,
+  ramdisks      = {
+    "/tmp": "1000000"
   }
-  ramdisks      = {}
+
+  // XXX what a fucking tangle
+  mounts        = (var.mtls != "" ? {
+    "/config/mtls_ca.crt": var.mtls_ca,
+    "/config/caddy/sites.d": "/home/container/config/router/sites.d",
+    "/config/caddy/static": "/home/container/config/router/static",
+  } : {
+    "/config/caddy/sites.d": "/home/container/config/router/sites.d",
+    "/config/caddy/static": "/home/container/config/router/static",
+  })
+
+  volumes = {}
+
+  # Service config
+  staging                 = var.staging ? "true" : ""
+
 }
 
-resource "docker_volume" "run" {
-  provider      = docker
-  name          = "run-${local.container_name}"
+// XXX centralize
+variable "staging" {
+  description = "Staging for letsencrypt"
+  type        = bool
+  default     = true
 }
+
