@@ -2,6 +2,8 @@
 locals {
   container_expose = {}
 
+  device = var.output == "alsa" ? var.device : "/pipe"
+
   env           = [
     "MDNS_NAME=${var.station}",
     // XXX unfortunately, discovery cannot use the sidecar
@@ -12,12 +14,12 @@ locals {
     "SPOTIFY_CLIENT_ID=${var.spotify_id}",
     "SPOTIFY_CLIENT_SECRET=${var.spotify_secret}",
     "OUTPUT=${var.output}",
-    "DEVICE=${var.device}",
+    "DEVICE=${local.device}",
   ]
 
   mounts        = {}
   mountsrw      = var.output == "pipe" ? {
-    "/pipes": var.device,
+    (local.device): var.device,
   } : {}
   volumes       = {
     // This is becoming big very fast (1GB), too big for tmfs

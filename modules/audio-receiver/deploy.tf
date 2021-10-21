@@ -67,6 +67,18 @@ module "spotify" {
   // "hw:0",
 }
 
+module "snap" {
+  source = "./modules/snapcast-client"
+  registry = var.registry
+  providers = {
+    docker = docker
+  }
+  hostname  = var.hostname
+  log       = var.log
+  networks  = var.networks
+  dns       = var.dns
+}
+
 /*
 2021-10-01
 Somehow, recent changes on our side made it so we lost the audio (alsa device/soundcard pointer is wrong?)

@@ -5,12 +5,13 @@ locals {
   env           = [
     "MODE=client",
     // Server name to find
+    // XXX hardcoded for now
     "MDNS_HOST=snappy",
   ]
 
   mounts        = {}
   mountsrw      = {
-    "/pipes": var.pipes_path,
+    // "/pipes": var.pipes_path,
   }
   volumes       = {
     // This is becoming big very fast (1GB), too big for tmfs
@@ -41,8 +42,9 @@ variable "station" {
   default     = "Spotty Croquette"
 }
 */
-
+/*
 variable "pipes_path" {
   description = "Path for sound pipe"
   type        = string
 }
+*/
