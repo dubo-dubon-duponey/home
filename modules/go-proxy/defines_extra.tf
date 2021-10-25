@@ -26,7 +26,7 @@ locals {
     "AUTH_PASSWORD=${var.auth_password}",
 
     "MTLS=${var.mtls}",
-    "MTLS_TRUST=/config/mtls_ca.crt",
+    "MTLS_TRUST=/certs/mtls_ca.crt",
 
     "MDNS_TYPE=${var.mdns_type}",
     "MDNS_HOST=${local.mdns_host}",
@@ -42,7 +42,7 @@ locals {
 
 locals {
   mounts        = (var.mtls != "" ? {
-    "/config/mtls_ca.crt": var.mtls_ca,
+    "/certs/mtls_ca.crt": var.mtls_ca,
   } : {})
   mountsrw      = {
     "/data": var.data_path,

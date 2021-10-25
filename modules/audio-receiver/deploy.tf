@@ -74,6 +74,8 @@ module "snap" {
   networks  = var.networks
   dns       = var.dns
 
+  mdns_nss      = var.mdns_nss
+
   device    = var.device
   mixer     = var.mixer_name
   master    = var.master

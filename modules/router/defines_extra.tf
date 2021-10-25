@@ -26,7 +26,7 @@ locals {
     "AUTH_PASSWORD=${var.auth_password}",
 
     "MTLS=${var.mtls}",
-    "MTLS_TRUST=/config/mtls_ca.crt",
+    "MTLS_TRUST=/certs/mtls_ca.crt",
 
     "MDNS_TYPE=${var.mdns_type}",
     "MDNS_HOST=${local.mdns_host}",
@@ -50,7 +50,7 @@ locals {
 
   // XXX what a fucking tangle
   mounts        = (var.mtls != "" ? {
-    "/config/mtls_ca.crt": var.mtls_ca,
+    "/certs/mtls_ca.crt": var.mtls_ca,
     "/config/caddy/sites.d": "/home/container/config/router/sites.d",
     "/config/caddy/static": "/home/container/config/router/static",
   } : {

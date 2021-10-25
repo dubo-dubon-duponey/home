@@ -8,6 +8,7 @@ locals {
 
   env           = [
     "LOG_LEVEL=${var.log_level}",
+    "MDNS_NSS_ENABLED=${var.mdns_nss}",
 
     "KIBANA_HOST=${var.kibana}",
     "KIBANA_USERNAME=${var.kibanaUser}",
@@ -81,3 +82,10 @@ variable "kibanaPassword" {
   type        = string
   sensitive   = true
 }
+
+variable "mdns_nss" {
+  description = "Whether to enable avahi resolution"
+  type        = bool
+  default     = true
+}
+

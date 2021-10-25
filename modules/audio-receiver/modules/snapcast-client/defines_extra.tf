@@ -4,8 +4,8 @@ locals {
 
   env           = [
     "MODE=client",
-    "MDNS_NSS_ENABLED=true",
-    "SNAPCAST_SERVER=${var.server}",
+    "MDNS_NSS_ENABLED=${var.mdns_nss}",
+    "SNAPCAST_SERVER=${var.master}",
     "DEVICE=${var.device}",
     "MIXER=${var.mixer}",
   ]
@@ -38,8 +38,14 @@ variable "mixer" {
   default = ""
 }
 
-variable "server" {
+variable "master" {
   description = "IP or host name of the snap server to hook-up with"
   type = string
   default = ""
+}
+
+variable "mdns_nss" {
+  description = "Whether to enable avahi resolution"
+  type        = bool
+  default     = true
 }

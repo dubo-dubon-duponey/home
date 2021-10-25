@@ -4,11 +4,9 @@
 ####################################################################
 
 locals {
-  // in-container port for the service - this will be public facing in case of a vlan or host network
-  service_port      = var.port
-  // if expose is true (will be no-op if one of the network at least is not a bridge)
   container_expose  = var.expose ? {
-    (var.port): local.service_port,
+    443: 443,
+    80: 80,
   } : {}
 
   service_domain    = (var.domain != "" ? var.domain : "${local.container_name}.local")
@@ -16,22 +14,25 @@ locals {
   mdns_name         = (var.mdns_name != "" ? var.mdns_name : local.mdns_host)
 
   env = [
-    "PORT=${local.service_port}",
-    "PORT_HTTP=${var.tls_redirect_port}",
     "DOMAIN=${local.service_domain}",
     "ADDITIONAL_DOMAINS=${var.additional_domains}",
+
     "TLS=${var.tls}",
-    "TLS_MIN=${var.tls_min}",
-    "TLS_MTLS_MODE=${var.tls_mtls_mode}",
-//    "TLS_ISSUER=${var.tls_issuer}",
+    "TLS_MIN=1.3",
     "TLS_AUTO=${var.tls_auto}",
-    "AUTH_ENABLED=${var.auth_enabled}",
-    "AUTH_REALM=${var.auth_realm}",
+
+    "AUTH=${var.auth}",
     "AUTH_USERNAME=${var.auth_username}",
     "AUTH_PASSWORD=${var.auth_password}",
-    "MDNS_ENABLED=${var.mdns_enabled}",
+
+    "MTLS=${var.mtls}",
+    "MTLS_TRUST=/certs/mtls_ca.crt",
+
+    "MDNS_TYPE=${var.mdns_type}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
+    "MDNS_STATION=true",
+
     "LOG_LEVEL=${var.log_level}",
 
     // +KIBANA specific
@@ -45,30 +46,23 @@ locals {
 }
 
 locals {
-  mountsrw      = {
-    "/certs": var.cert_path,
-    "/data": var.data_path,
-  }
-  mounts        = {
+  mounts        = (var.mtls != "" ? {
+    "/certs/mtls_ca.crt": var.mtls_ca,
     "/etc/ssl/certs/ca.pem": "${var.cert_path}/pki/authorities/local/root.crt"
+  } : {
+    "/etc/ssl/certs/ca.pem": "${var.cert_path}/pki/authorities/local/root.crt"
+  })
+  mountsrw      = {
+    "/data": var.data_path,
+    "/certs": var.cert_path,
   }
-  volumes       = {}
   ramdisks      = {
     "/tmp": "1000000"
   }
+  volumes       = {}
+
   # Service
   elastic_container     = var.elastic_container
-}
-
-variable "cert_path" {
-  description = "Host path for persistent data & config"
-  type        = string
-}
-
-variable "data_path" {
-  description = "Host path for persistent data & config"
-  type        = string
-  default     = "/home/container/data/elastic"
 }
 
 variable "elastic_container" {

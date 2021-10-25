@@ -90,3 +90,9 @@ variable "spotify_secret" {
   type        = string
   default     = ""
 }
+
+variable "mdns_nss" {
+  description = "Whether to enable avahi resolution"
+  type        = bool
+  default     = true
+}

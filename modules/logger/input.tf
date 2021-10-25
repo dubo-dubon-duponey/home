@@ -26,7 +26,7 @@ variable "log_level" {
   default     = "info"
   validation {
     condition     = can(regex("^(?:debug|info|warn|error)$", var.log_level))
-    error_message = "Log level must be one of: 'debug, info, warning, error'."
+    error_message = "Log level must be one of: 'debug, info, warn, error'."
   }
 }
 
