@@ -17,7 +17,7 @@ locals {
     ]
     command       = [
     ]
-    extra_caps  = []
+    extra_caps  = ["NET_BIND_SERVICE"]
     labels        = {
     }
   }

@@ -19,7 +19,10 @@ locals {
     ]
     command       = [
     ]
-    extra_caps  = []
+    extra_caps  = [
+      // These two are for avahi daemon ran as user
+      "CAP_CHOWN", "CAP_DAC_OVERRIDE"
+    ]
     labels        = {
     }
   }

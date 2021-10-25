@@ -55,6 +55,12 @@ variable "mixer_name" {
   default     = ""
 }
 
+variable "master" {
+  description = "Parent node (typically used to find snapcast server)"
+  type        = string
+  default     = "snappy.local"
+}
+
 variable "volume" {
   description = "Initial volume"
   type        = number

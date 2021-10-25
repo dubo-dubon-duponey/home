@@ -2,7 +2,7 @@
 locals {
   container_expose = {}
 
-  device = var.output == "alsa" ? var.device : "/pipe"
+  device = var.output == "pipe" ? "/pipe" : var.device
 
   env           = [
     "MDNS_NAME=${var.station}",

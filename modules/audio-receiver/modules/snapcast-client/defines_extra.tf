@@ -4,19 +4,17 @@ locals {
 
   env           = [
     "MODE=client",
-    // Server name to find
-    // XXX hardcoded for now
-    "MDNS_HOST=snappy",
+    "MDNS_NSS_ENABLED=true",
+    "SNAPCAST_SERVER=${var.server}",
+    "DEVICE=${var.device}",
+    "MIXER=${var.mixer}",
   ]
 
   mounts        = {}
   mountsrw      = {
-    // "/pipes": var.pipes_path,
   }
   volumes       = {
-    // This is becoming big very fast (1GB), too big for tmfs
     "/data": docker_volume.data.name
-//    "/tmp": docker_volume.tmp.name
   }
   ramdisks      = {
     "/tmp": "1000000"
@@ -28,23 +26,20 @@ resource "docker_volume" "data" {
   name          = "data-${local.container_name}"
 }
 
-# Volumes
-/*
-resource "docker_volume" "tmp" {
-  provider      = docker
-  name          = "tmp-${local.container_name}"
+variable "device" {
+  description = "Alsa Device"
+  type = string
+  default = ""
 }
 
-# Service settings
-variable "station" {
-  description = "Spotify station name"
-  type        = string
-  default     = "Spotty Croquette"
+variable "mixer" {
+  description = "Name of mixer (hardware)"
+  type = string
+  default = ""
 }
-*/
-/*
-variable "pipes_path" {
-  description = "Path for sound pipe"
-  type        = string
+
+variable "server" {
+  description = "IP or host name of the snap server to hook-up with"
+  type = string
+  default = ""
 }
-*/

@@ -59,10 +59,6 @@ module "spotify" {
     var.volume,
     "--enable-volume-normalisation",
   ]
-  // Volume ctrl linear is too brutal
-  //"--volume-ctrl",
-  //"linear",
-  // Mixer device does not appear to be necessary
   //"--alsa-mixer-device",
   // "hw:0",
 }
@@ -77,6 +73,10 @@ module "snap" {
   log       = var.log
   networks  = var.networks
   dns       = var.dns
+
+  device    = var.device
+  mixer     = var.mixer_name
+  master    = var.master
 }
 
 /*
