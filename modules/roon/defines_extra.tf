@@ -18,7 +18,6 @@ locals {
     "ADDITIONAL_DOMAINS=${var.additional_domains}",
 
     "TLS=${var.tls}",
-    "TLS_MIN=1.3",
     "TLS_AUTO=${var.tls_auto}",
 
     "AUTH=${var.auth}",
@@ -26,7 +25,6 @@ locals {
     "AUTH_PASSWORD=${var.auth_password}",
 
     "MTLS=${var.mtls}",
-    "MTLS_TRUST=/certs/mtls_ca.crt",
 
     "MDNS_TYPE=${var.mdns_type}",
     "MDNS_HOST=${local.mdns_host}",

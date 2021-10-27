@@ -18,7 +18,8 @@ locals {
     "ADDITIONAL_DOMAINS=${var.additional_domains}",
 
     "TLS=${var.tls}",
-    "TLS_MIN=1.2", // At least macos webdav client is not happy with 1.3 - public properties still need 1.2 for now
+    "ADVANCED_TLS_MIN=1.2", // At least macos webdav client is not happy with 1.3 - public properties still need 1.2 for now
+    "TLS_MIN=1.2", // Deprecated - replaced by above - to be removed 11/01
     "TLS_AUTO=${var.tls_auto}",
 
     "AUTH=${var.auth}",
@@ -26,7 +27,6 @@ locals {
     "AUTH_PASSWORD=${var.auth_password}",
 
     "MTLS=${var.mtls}",
-    "MTLS_TRUST=/certs/mtls_ca.crt",
 
     "MDNS_TYPE=${var.mdns_type}",
     "MDNS_HOST=${local.mdns_host}",

@@ -18,7 +18,6 @@ locals {
     "ADDITIONAL_DOMAINS=${var.additional_domains}",
 
     "TLS=${var.tls}",
-    "TLS_MIN=1.3",
     "TLS_AUTO=${var.tls_auto}",
 
     "AUTH=${var.auth}",
@@ -26,7 +25,6 @@ locals {
     "AUTH_PASSWORD=${var.auth_password}",
 
     "MTLS=${var.mtls}",
-    "MTLS_TRUST=/certs/mtls_ca.crt",
 
     "MDNS_TYPE=${var.mdns_type}",
     "MDNS_HOST=${local.mdns_host}",
@@ -40,7 +38,9 @@ locals {
     "DBDB_PASSWORD=${var.auth_password}",
     "DBDB_ADVERTISE_IP=${var.public_ip}",
     "DBDB_MAIL=${var.email}",
-    "DBDB_SERVER_NAME=${local.service_domain}"
+    // XXX temp hack
+    "DBDB_SERVER_NAME=sinema.farcloser.world",
+    // "DBDB_SERVER_NAME=${local.service_domain}"
   ]
 }
 

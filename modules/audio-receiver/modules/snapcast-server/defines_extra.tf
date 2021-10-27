@@ -7,14 +7,11 @@ locals {
     "ADDITIONAL_DOMAINS=",
 
     "TLS=internal",
-    "TLS_MIN=1.3",
     // "TLS_AUTO=${var.tls_auto}",
     "AUTH=",
     //"AUTH=${var.auth}",
     //"AUTH_USERNAME=${var.auth_username}",
     //"AUTH_PASSWORD=${var.auth_password}",
-    //"PORT_HTTP=80",
-    //"PORT_HTTPS=443",
 
     "MTLS=${var.mtls}",
 
@@ -26,6 +23,8 @@ locals {
     "MDNS_STATION=true",
 
     "SOURCES=${var.sources}",
+
+    "SNAPCAST_TCP_ENABLED=true",
   ]
 
   mounts        = (var.mtls != "" ? {

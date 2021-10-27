@@ -17,31 +17,27 @@ locals {
     "DOMAIN=${local.service_domain}",
     "ADDITIONAL_DOMAINS=${var.additional_domains}",
 
+    // Uses ghost
+    "DUBO_EXPERIMENTAL=true",
+    // XXX broke buildkit - caddy is binding to 443, so, disabling it for now, but need to rebuild before cert expires
     "TLS=${var.tls}",
-    // XXX leftover from previous refactor
-    "TLS_MODE=${var.tls}",
-    "TLS_MIN=1.3",
     "TLS_AUTO=${var.tls_auto}",
 
     "AUTH=${var.auth}",
     "AUTH_USERNAME=${var.auth_username}",
     "AUTH_PASSWORD=${var.auth_password}",
 
-    "MTLS=${var.mtls}",
-    "MTLS_TRUST=/config/mtls_ca.crt",
+    "MTLS=", // "${var.mtls}",
 
     "MDNS_TYPE=${var.mdns_type}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
     "MDNS_STATION=true",
+    "MDNS_NSS=${var.mdns_nss}",
 
     "LOG_LEVEL=${var.log_level}",
 
     // **********************************
-    // XXX review this
-    "PORT=443",
-    "PORT_HTTP=80",
-    // XXX very wrong but trying to recover bk for now
     "HEALTHCHECK_URL=http://127.0.0.1:10042",
   ]
 }
@@ -64,4 +60,10 @@ locals {
 resource "docker_volume" "run" {
   provider      = docker
   name          = "run-${local.container_name}"
+}
+
+variable "mdns_nss" {
+  description = "Enable avahi based nss/mdns resolution"
+  type = bool
+  default = true
 }
