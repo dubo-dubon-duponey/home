@@ -14,6 +14,11 @@ locals {
   mdns_name         = (var.mdns_name != "" ? var.mdns_name : local.mdns_host)
 
   env = [
+    // Disable these two
+    "MDNS_ENABLED=false",
+    "PROXY_HTTPS_ENABLED=false",
+    "HEALTHCHECK_URL=http://127.0.0.1:32400/?healthcheck=",
+
     "DOMAIN=${local.service_domain}",
     "ADDITIONAL_DOMAINS=${var.additional_domains}",
 
@@ -50,7 +55,7 @@ locals {
     "/certs": var.cert_path,
   }
   ramdisks      = {
-    "/tmp": "1000000"
+    "/tmp": "1000000000"
   }
 
   mounts        = (var.mtls != "" ? {
@@ -61,8 +66,11 @@ locals {
   })
 
   volumes       = {
-    "/transcode": docker_volume.tmp.name
+    // "/transcode": docker_volume.tmp.name
   }
+  /*
+  }
+*/
 }
 
 /*

@@ -1,8 +1,3 @@
-resource "docker_volume" "tmp" {
-  provider      = docker
-  name          = "tmp-${local.container_name}"
-}
-
 variable "movie_path" {
   description = "Host path for mounted movie collection folder"
   type        = string
