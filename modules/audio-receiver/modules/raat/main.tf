@@ -44,7 +44,6 @@ resource "docker_container" "container" {
 
   dynamic "host" {
     for_each = local.container_hosts
-    # XXX this is sub-optimal - certain fancy services may expose multiple ports with different types
     content {
       host        = host.key
       ip          = host.value
@@ -53,7 +52,7 @@ resource "docker_container" "container" {
 
   dynamic "ports" {
     for_each = local.container_expose
-    # XXX this is sub-optimal - certain fancy services may expose multiple ports with different types
+    // XXX this is sub-optimal - certain fancy services may expose multiple ports with different types
     content {
       internal    = ports.value
       external    = ports.key
@@ -85,7 +84,6 @@ resource "docker_container" "container" {
       type        = "tmpfs"
       tmpfs_options {
         size_bytes  = mounts.value
-        // mode = 0600
       }
     }
   }
@@ -114,9 +112,6 @@ resource "docker_container" "container" {
     label = "co.elastic.logs/enabled"
     value = local.log
   }
-
-  # XXX whether we want to bind filebeat collection and actual logging or not...
-  # log_driver = local.log ? "json-file" : "none"
 
   dynamic "labels" {
     for_each = local.labels
