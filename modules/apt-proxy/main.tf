@@ -13,7 +13,7 @@ resource "docker_image" "image" {
 # Container
 resource "docker_container" "container" {
   provider      = docker
-  image         = docker_image.image.latest
+  image         = docker_image.image.image_id
 
   name          = local.container_name
   hostname      = local.container_hostname
