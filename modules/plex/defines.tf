@@ -10,7 +10,7 @@ locals {
 
   # Container settings
   container_name          = length(var.nickname) != 0 ? var.nickname : local.defaults.nickname
-  container_hostname      = "${local.container_name}.${var.hostname}"
+  container_hostname      = "${local.container_name}-${var.hostname}"
   container_user          = var.user
   container_dns           = var.dns
   container_networks      = var.networks
