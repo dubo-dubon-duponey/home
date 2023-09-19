@@ -14,24 +14,31 @@ locals {
   mdns_name         = (var.mdns_name != "" ? var.mdns_name : local.mdns_host)
 
   env = [
-    "DOMAIN=${local.service_domain}",
-    "ADDITIONAL_DOMAINS=${var.additional_domains}",
+    // XXXdamage
+    //"DOMAIN=${local.service_domain}",
+    "DOMAIN=http://snapshot.debian.org",
+    "ADDITIONAL_DOMAINS=", // "${var.additional_domains}",
 
-    "TLS=${var.tls}",
+    // XXXdamage
+    "TLS=", // "${var.tls}",
     "TLS_AUTO=${var.tls_auto}",
 
     "AUTH=${var.auth}",
     "AUTH_USERNAME=${var.auth_username}",
     "AUTH_PASSWORD=${var.auth_password}",
 
-    "MTLS=${var.mtls}",
+    // XXXdamage
+    // "MTLS=${var.mtls}",
+    "MTLS=", //verify_if_given
 
     "MDNS_TYPE=${var.mdns_type}",
     "MDNS_HOST=${local.mdns_host}",
     "MDNS_NAME=${local.mdns_name}",
     "MDNS_STATION=true",
 
-    "LOG_LEVEL=${var.log_level}",
+    // XXXdamage
+//    "LOG_LEVEL=${var.log_level}",
+    "LOG_LEVEL=DEBUG",
   ]
 }
 
