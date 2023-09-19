@@ -4,11 +4,14 @@ module "airplay" {
   providers = {
     docker = docker
   }
-  hostname  = var.hostname
-  log       = var.log
-  networks  = var.networks
-  dns       = []
+  hostname    = var.hostname
+  log_collect = var.log_collect
+  log_level   = var.log_level
+  networks    = var.networks
+  // Does not need to connect out
+  dns         = []
 
+  // We just support alsa at this time
   output    = "alsa"
   station   = var.station
   device    = var.device
@@ -20,10 +23,11 @@ module "raat" {
   providers = {
     docker = docker
   }
-  hostname  = var.hostname
-  log       = var.log
+  hostname    = var.hostname
+  log_collect = var.log_collect
+  log_level   = var.log_level
   networks  = var.networks
-  dns       = var.dns
+  dns         = []
 }
 
 module "spotify" {
@@ -33,7 +37,7 @@ module "spotify" {
     docker = docker
   }
   hostname  = var.hostname
-  log       = var.log
+  log_collect       = var.log_collect
   networks  = var.networks
   dns       = var.dns
 
@@ -63,6 +67,7 @@ module "spotify" {
   // "hw:0",
 }
 
+/*
 module "snap" {
   source = "./modules/snapcast-client"
   registry = var.registry
@@ -70,7 +75,7 @@ module "snap" {
     docker = docker
   }
   hostname  = var.hostname
-  log       = var.log
+  log_collect       = var.log_collect
   networks  = var.networks
   dns       = var.dns
 
@@ -80,6 +85,7 @@ module "snap" {
   mixer     = var.mixer_name
   master    = var.master
 }
+*/
 
 /*
 2021-10-01
@@ -97,7 +103,7 @@ module "airplay2" {
     docker = docker
   }
   hostname  = var.hostname
-  log       = var.log
+  log_collect       = var.log_collect
   networks  = var.networks
   dns       = var.dns
 
@@ -120,7 +126,7 @@ module "volume" {
     docker = docker
   }
   hostname  = var.hostname
-  log       = var.log
+  log_collect       = var.log_collect
   networks  = var.networks
   dns       = var.dns
 

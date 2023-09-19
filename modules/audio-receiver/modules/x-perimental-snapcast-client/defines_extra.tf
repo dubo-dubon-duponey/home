@@ -3,11 +3,14 @@ locals {
   container_expose = {}
 
   env           = [
-    "MODE=client",
+    "LOG_LEVEL=${var.log_level}",
+
     "MDNS_NSS_ENABLED=${var.mdns_nss}",
+
     "SNAPCAST_SERVER=${var.master}",
     "DEVICE=${var.device}",
     "MIXER=${var.mixer}",
+    "MODE=client",
   ]
 
   mounts        = {}

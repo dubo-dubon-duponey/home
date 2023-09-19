@@ -6,12 +6,12 @@
 locals {
   defaults = {
     nickname      = "spotify"
-    image         = "dubo-dubon-duponey/spotify:bullseye-2021-10-15"
+    image         = "dubodubonduponey/spotify:bookworm-2023-09-05"
     privileged    = false
     read_only     = true
     restart       = "always"
     expose_type   = "tcp"
-    // XXX Very hackish
+    // XXX experimental fbi support for embedded display
     devices       = var.display_enabled ?  [
       "/dev/snd",
       "/dev/tty2",
@@ -19,6 +19,7 @@ locals {
     ] : [
       "/dev/snd"
     ]
+    // XXX experimental fbi support for embedded display
     group_add       = var.display_enabled ?  [
       "audio",
       "tty",
@@ -30,14 +31,15 @@ locals {
       // "--device", "default", # as seen from: `librespot --name foo --device ?`
       /*
       "--alsa-mixer-control", "PCM", # defaults to PCM
-      "--alsa-mixer-device", "hw:0", # (from aplay -l - defaults to default)
+      "--alsa-mixer-device", "hw:0", # (from: aplay -l - defaults to default)
       */
       "--initial-volume", "75",
       "--enable-volume-normalisation",
     ]
-    # Necessary for framebuffer output
-    extra_caps  = [
+    // XXX experimental fbi support for embedded display
+    extra_caps  = var.display_enabled ?  [
       "CAP_SYS_TTY_CONFIG"
+    ] : [
     ]
     labels        = {
     }

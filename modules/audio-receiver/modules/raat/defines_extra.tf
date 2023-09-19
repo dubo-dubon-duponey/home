@@ -2,7 +2,9 @@
 locals {
   container_expose = {}
 
-  env = []
+  env = [
+    "LOG_LEVEL=${var.log_level}",
+  ]
 
   mounts   = {}
   mountsrw = {}

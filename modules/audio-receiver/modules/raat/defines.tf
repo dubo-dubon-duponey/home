@@ -28,6 +28,6 @@ locals {
   container_capabilities  = local.defaults.extra_caps
 
   # Labels
-  log                     = var.log
+  log_collect             = var.log_collect
   labels                  = local.defaults.labels
 }

@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "raat"
-    image         = "dubo-dubon-duponey/roon:bridge-bullseye-2021-10-15"
+    image         = "dubodubonduponey/roon:bridge-bookworm-2023-09-05"
     privileged    = false
     read_only     = true
     restart       = "always"
@@ -17,8 +17,10 @@ locals {
     group_add     = [
       "audio",
     ]
-    command       = []
-    extra_caps  = []
+    command       = [
+    ]
+    extra_caps  = [
+    ]
     labels        = {
     }
   }

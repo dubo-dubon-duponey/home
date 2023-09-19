@@ -16,10 +16,20 @@ variable "networks" {
   default     = {}
 }
 
-variable "log" {
+variable "log_collect" {
   description = "Whether to flag for filebeat log collection or not (disabled by default)"
   type        = bool
   default     = false
+}
+
+variable "log_level" {
+  description = "Level of logging for the processes in the container"
+  type        = string
+  default     = "info"
+  validation {
+    condition     = can(regex("^(?:debug|info|warn|error)$", var.log_level))
+    error_message = "Log level must be one of: 'debug, info, warning, error'."
+  }
 }
 
 variable "station" {
@@ -70,7 +80,7 @@ variable "volume" {
 variable "registry" {
   description = "Base registry for images"
   type        = string
-  default     = "registry-1.docker.io"
+  default     = "index.docker.io"
 }
 
 variable "display_enabled" {

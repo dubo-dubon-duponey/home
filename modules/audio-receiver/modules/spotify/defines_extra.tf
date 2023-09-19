@@ -2,20 +2,23 @@
 locals {
   container_expose = {}
 
-  device = var.output == "pipe" ? "/pipe" : var.device
-
   env           = [
-    "MDNS_NAME=${var.station}",
-    // XXX unfortunately, discovery cannot use the sidecar
-    // New image version will have this disabled by default
-    "MDNS_HOST=",
+    "LOG_LEVEL=${var.log_level}",
+
+    // librespot mdns implementation is internal only
+    "MOD_MDNS_NAME=${var.station}",
+
     "PORT=10042",
     "DISPLAY_ENABLED=${var.display_enabled}",
     "SPOTIFY_CLIENT_ID=${var.spotify_id}",
     "SPOTIFY_CLIENT_SECRET=${var.spotify_secret}",
     "OUTPUT=${var.output}",
     "DEVICE=${local.device}",
+    // XXX mdns errors are still clogging things...
+    // RUST_LOG
   ]
+
+  device = var.output == "pipe" ? "/pipe" : var.device
 
   mounts        = {}
   mountsrw      = var.output == "pipe" ? {

@@ -3,27 +3,30 @@ locals {
   container_expose = {}
 
   env           = [
+    "LOG_LEVEL=${var.log_level}",
+
+    ### Mutual TLS ###
+    "MTLS_ENABLED=true",
+    "MTLS_MODE=${var.mtls}",
+
+    "MDNS_ENABLED=true",
+    "MDNS_NAME=Dubo Snapcast Server",
+    "MDNS_HOST=snappy",
+    "MDNS_STATION=true",
+
     "DOMAIN=snappy.local",
     "ADDITIONAL_DOMAINS=",
-
     "TLS=internal",
     // "TLS_AUTO=${var.tls_auto}",
+
     "AUTH=",
     //"AUTH=${var.auth}",
     //"AUTH_USERNAME=${var.auth_username}",
     //"AUTH_PASSWORD=${var.auth_password}",
 
-    "MTLS=${var.mtls}",
-
-    "LOG_LEVEL=${var.log_level}",
 
     "MODE=server",
-    "MDNS_NAME=Dubo Snapcast Server",
-    "MDNS_HOST=snappy",
-    "MDNS_STATION=true",
-
     "SOURCES=${var.sources}",
-
     "SNAPCAST_TCP_ENABLED=true",
   ]
 
@@ -78,6 +81,6 @@ variable "cert_path" {
 }
 
 variable "sources" {
-  description = "pipe or els"
+  description = "pipe or else"
   type        = string
 }
