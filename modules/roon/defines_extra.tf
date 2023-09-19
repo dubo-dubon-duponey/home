@@ -53,9 +53,13 @@ locals {
     "/data": var.data_path,
     "/certs": var.cert_path,
   }
+  ramdisks = {}
+  /*
+  // XXX otherwise downloads will fail...
   ramdisks      = {
     "/tmp": "1000000"
   }
+  */
   volumes       = {}
 }
 
