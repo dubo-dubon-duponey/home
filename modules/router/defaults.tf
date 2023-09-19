@@ -6,10 +6,11 @@
 locals {
   defaults = {
     nickname      = "router"
-    image         = "dubo-dubon-duponey/router:bullseye-2021-10-15"
+    image         = "dubodubonduponey/router:bookworm-2023-09-05"
+//    image         = "dubodubonduponey/router:bullseye-2022-05-01"
     privileged    = false
     read_only     = true
-    restart       = "no" // always"
+    restart       = "always"
     expose_type   = "tcp"
     devices       = []
     group_add     = []
