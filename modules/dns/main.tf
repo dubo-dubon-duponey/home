@@ -110,7 +110,7 @@ resource "docker_container" "container" {
 
   labels {
     label = "co.elastic.logs/enabled"
-    value = local.log
+    value = local.log_collect
   }
 
   dynamic "labels" {

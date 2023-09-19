@@ -6,7 +6,7 @@
 locals {
   defaults = {
     nickname      = "dns"
-    image         = "dubo-dubon-duponey/dns:bullseye-2021-10-15"
+    image         = "dubodubonduponey/dns:bookworm-2023-09-05"
     privileged    = false
     read_only     = true
     restart       = "always"
