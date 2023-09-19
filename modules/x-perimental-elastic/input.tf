@@ -14,7 +14,7 @@ variable "networks" {
   default     = {}
 }
 
-variable "log" {
+variable "log_collect" {
   description = "Whether to flag for filebeat log collection or not (defaults to true)"
   type        = bool
   default     = true

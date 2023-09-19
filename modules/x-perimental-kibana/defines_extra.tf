@@ -35,8 +35,9 @@ locals {
 
     // +KIBANA specific
     "ELASTICSEARCH_HOSTS=${local.elastic_container}",
+    // XXX moving out of local
     // XXX unclear why but kibana will not use the os trust store... have to point it to the file...
-    "ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=/etc/ssl/certs/ca.pem",
+    // "ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=/etc/ssl/certs/ca.pem",
     "ELASTICSEARCH_USERNAME=${var.elastic_username}",
     "ELASTICSEARCH_PASSWORD=${var.elastic_password}",
     // -KIBANA specific
@@ -46,9 +47,11 @@ locals {
 locals {
   mounts        = (var.mtls != "" ? {
     "/certs/mtls_ca.crt": var.mtls_ca,
-    "/etc/ssl/certs/ca.pem": "${var.cert_path}/pki/authorities/local/root.crt"
+    // XXX moving to public thingie
+    // "/etc/ssl/certs/ca.pem": "${var.cert_path}/pki/authorities/local/root.crt"
   } : {
-    "/etc/ssl/certs/ca.pem": "${var.cert_path}/pki/authorities/local/root.crt"
+    // XXX moving to public thingie
+    // "/etc/ssl/certs/ca.pem": "${var.cert_path}/pki/authorities/local/root.crt"
   })
   mountsrw      = {
     "/data": var.data_path,

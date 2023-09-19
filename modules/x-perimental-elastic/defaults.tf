@@ -5,8 +5,8 @@
 
 locals {
   defaults = {
-    nickname      = "kibana"
-    image         = "dubo-dubon-duponey/kibana:bullseye-2021-10-15"
+    nickname      = "elastic"
+    image         = "dubodubonduponey/elastic:bullseye-2022-05-01"
     privileged    = false
     read_only     = true
     restart       = "always"
@@ -16,8 +16,7 @@ locals {
     command       = []
     extra_caps  = ["NET_BIND_SERVICE"]
     labels        = {
-      "co.elastic.logs/module": "kibana",
-      "co.elastic.logs/fileset": "log",
+      "co.elastic.logs/module": "elasticsearch",
     }
   }
 }
