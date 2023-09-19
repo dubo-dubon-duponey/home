@@ -7,6 +7,7 @@ locals {
   container_expose  = var.expose ? {
     443: 443,
     80: 80,
+    32400: 32400,
   } : {}
 
   service_domain    = (var.domain != "" ? var.domain : "${local.container_name}.local")
